@@ -1,0 +1,6 @@
+@ProjectQLDCCT_HostAddress = http://localhost:5072
+
+GET {{ProjectQLDCCT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
