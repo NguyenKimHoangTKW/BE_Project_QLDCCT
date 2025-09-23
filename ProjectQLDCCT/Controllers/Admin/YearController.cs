@@ -20,42 +20,25 @@ namespace ProjectQLDCCT.Controllers.Admin
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
         [HttpGet]
-        [Route("civil-servants")]
+        [Route("load-danh-sach-nam")]
         public async Task<IActionResult> GetALlTest()
         {
-            var civil = await _context.CivilServants
+            var civil = await _context.Years
                 .Select(x => new
                 {
-                    x.id_yearNavigation.name_year,
-                    x.code_civilSer
+                    x.id_year,
+                    x.name_year
                 })
                 .ToListAsync();
-            return Ok(civil);
-        }
-        [HttpPost]
-        [Route("add-civil-servants")]
-        public async Task<IActionResult> AddNewCivils([FromBody] CivilServant items)
-        {
-            if (string.IsNullOrEmpty(items.code_civilSer))
+            if (civil.Count > 0)
             {
-                return BadRequest("Không được bỏ trống Mã viên chức");
+                return Ok(new { data = civil, success = true });
             }
-            if (string.IsNullOrEmpty(items.fullname_civilSer))
+            else
             {
-                return BadRequest("Không được bỏ trống Tên viên chức");
+                return Ok(new { message = "Chưa có dữ liệu", success = false });
             }
-            var new_record = new CivilServant
-            {
-                code_civilSer = items.code_civilSer,
-                fullname_civilSer = items.fullname_civilSer,
-                email = items.email,
-                id_year = items.id_year,
-                time_cre = unixTimestamp,
-                time_up = unixTimestamp
-            };
-            _context.CivilServants.Add(new_record);
-            await _context.SaveChangesAsync();
-            return Ok(new { message = "Thêm mới dữ liệu thành công" });
+
         }
     }
 }

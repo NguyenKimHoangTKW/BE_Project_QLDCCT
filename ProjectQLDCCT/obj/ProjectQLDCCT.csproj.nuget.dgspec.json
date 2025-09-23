@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BaoCaoTotNghiep\\BackEnd\\ProjectQLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {}
+    "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {}
   },
   "projects": {
-    "D:\\BaoCaoTotNghiep\\BackEnd\\ProjectQLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {
+    "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BaoCaoTotNghiep\\BackEnd\\ProjectQLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
+        "projectUniqueName": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
         "projectName": "ProjectQLDCCT",
-        "projectPath": "D:\\BaoCaoTotNghiep\\BackEnd\\ProjectQLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
-        "packagesPath": "C:\\Users\\Nguyen Kim Hoang\\.nuget\\packages\\",
-        "outputPath": "D:\\BaoCaoTotNghiep\\BackEnd\\ProjectQLDCCT\\ProjectQLDCCT\\obj\\",
+        "projectPath": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
+        "packagesPath": "C:\\Users\\Kim Hoang\\.nuget\\packages\\",
+        "outputPath": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Nguyen Kim Hoang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Kim Hoang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

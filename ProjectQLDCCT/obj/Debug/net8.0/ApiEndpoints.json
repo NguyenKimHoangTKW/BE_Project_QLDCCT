@@ -1,24 +1,8 @@
 [
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "AddNewCivils",
-    "RelativePath": "api/admin/add-civil-servants",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "items",
-        "Type": "ProjectQLDCCT.Models.CivilServant",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
     "Method": "GetALlTest",
-    "RelativePath": "api/admin/civil-servants",
+    "RelativePath": "api/admin/load-danh-sach-nam",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
