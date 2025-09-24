@@ -513,3 +513,4 @@ D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\refi
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.pdb
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.genruntimeconfig.cache
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ref\ProjectQLDCCT.dll
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
