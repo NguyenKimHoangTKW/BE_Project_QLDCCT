@@ -1,18 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\admin\\yearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\backend\\be_project_qldcct\\projectqldcct\\controllers\\admin\\yearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\admin\\yearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\data\\qldccontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\data\\qldccontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\backend\\be_project_qldcct\\projectqldcct\\models\\dtos\\yearsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\yearsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,44 +18,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 297,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "YearController.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "YearsDTO.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\YearsDTO.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\DTOs\\YearsDTO.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\YearsDTO.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Models\\DTOs\\YearsDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T03:20:00.438Z",
+              "WhenOpened": "2025-09-24T02:47:56.254Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Program.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Program.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Program.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Program.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAAAkAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "YearController.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Admin\\YearController.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAgwEoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T03:59:04.15Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "QLDCContext.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Data\\QLDCContext.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Data\\QLDCContext.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Data\\QLDCContext.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Data\\QLDCContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T03:20:40.608Z"
+              "WhenOpened": "2025-09-22T03:20:00.438Z",
+              "EditorCaption": ""
             }
           ]
         }

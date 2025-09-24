@@ -1,12 +1,76 @@
 [
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
+    "Method": "CapNhatNamHoc",
+    "RelativePath": "api/admin/year/cap-nhat-nam-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.YearsDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
     "Method": "GetALlTest",
-    "RelativePath": "api/admin/load-danh-sach-nam",
+    "RelativePath": "api/admin/year/load-danh-sach-nam",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
+    "Method": "LoadInfo",
+    "RelativePath": "api/admin/year/load-thong-tin-nam-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.YearsDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
+    "Method": "ThemMoiNam",
+    "RelativePath": "api/admin/year/them-moi-nam-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.YearsDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
+    "Method": "XoaNamHoc",
+    "RelativePath": "api/admin/year/xoa-du-lieu-nam-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.YearsDTO",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]
