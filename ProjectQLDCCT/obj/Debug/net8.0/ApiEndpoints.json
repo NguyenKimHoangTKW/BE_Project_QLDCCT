@@ -2,7 +2,7 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
     "Method": "GetCivilServants",
-    "RelativePath": "api/admin/civilservants/civil-servants",
+    "RelativePath": "api/admin/civilservants",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -16,13 +16,19 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "GetAll",
-    "RelativePath": "api/admin/year",
-    "HttpMethod": "GET",
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "AddNew",
+    "RelativePath": "api/admin/civilservants/add-new",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -89,6 +95,22 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
+    "Method": "GetAll",
+    "RelativePath": "api/admin/year/lay-du-lieu-nam-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
         "IsRequired": true
       }
     ],

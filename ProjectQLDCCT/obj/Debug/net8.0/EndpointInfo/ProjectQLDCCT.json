@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/admin/civilservants/civil-servants": {
+    "/api/admin/civilservants": {
       "post": {
         "tags": [
           "CivilServantsApiAdmin"
@@ -36,17 +36,38 @@
         }
       }
     },
-    "/api/admin/year": {
-      "get": {
+    "/api/admin/civilservants/add-new": {
+      "post": {
         "tags": [
-          "Year"
+          "CivilServantsApiAdmin"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/admin/year/lay-du-lieu-nam-hoc": {
       "post": {
         "tags": [
           "Year"
@@ -55,17 +76,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/YearsDTO"
+                "$ref": "#/components/schemas/DataTableRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/YearsDTO"
+                "$ref": "#/components/schemas/DataTableRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/YearsDTO"
+                "$ref": "#/components/schemas/DataTableRequest"
               }
             }
           }
@@ -160,10 +181,68 @@
           }
         }
       }
+    },
+    "/api/admin/year": {
+      "post": {
+        "tags": [
+          "Year"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/YearsDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/YearsDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/YearsDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "CivilServantsDTOs": {
+        "type": "object",
+        "properties": {
+          "code_civilSer": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullname_civilSer": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "value_year": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "DataTableRequest": {
         "type": "object",
         "properties": {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
+using ProjectQLDCCT.Helpers;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.Threading.Tasks;
@@ -21,17 +22,15 @@ namespace ProjectQLDCCT.Controllers.Admin
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpPost]
+        [Route("lay-du-lieu-nam-hoc")]
+        public async Task<IActionResult> GetAll([FromBody] DataTableRequest request)
         {
-            var years = await _context.Years
-                .Select(x => new { x.id_year, x.name_year })
-                .ToListAsync();
-
-            if (years.Any())
-                return Ok(new { data = years, success = true });
-
-            return Ok(new { message = "Chưa có dữ liệu", success = false });
+            var years = _context.Years
+                .Select(x => new { x.id_year, x.name_year });
+            var result = await DataTableHelper.GetDataTableAsync(years, request,
+                x => x.name_year);
+            return Ok(result);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -44,7 +43,7 @@ namespace ProjectQLDCCT.Controllers.Admin
             if (year == null)
                 return NotFound(new { message = "Không tìm thấy dữ liệu", success = false });
 
-            return Ok(new { data = year, success = true });
+            return Ok(year);
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] YearsDTO items)

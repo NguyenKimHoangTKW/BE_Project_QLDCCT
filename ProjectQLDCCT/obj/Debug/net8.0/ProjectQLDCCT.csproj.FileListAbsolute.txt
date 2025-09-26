@@ -341,6 +341,7 @@ D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\refint\ProjectQLDCCT.dl
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.pdb
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.genruntimeconfig.cache
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ref\ProjectQLDCCT.dll
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\appsettings.Development.json
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\appsettings.json
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\ProjectQLDCCT.staticwebassets.endpoints.json
@@ -404,6 +405,7 @@ D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\Syst
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Formats.Asn1.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.IO.Pipelines.dll
+D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Memory.Data.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Runtime.Caching.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
@@ -513,4 +515,3 @@ D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\refi
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.pdb
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.genruntimeconfig.cache
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ref\ProjectQLDCCT.dll
-D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
