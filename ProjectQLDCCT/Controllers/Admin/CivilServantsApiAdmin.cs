@@ -20,13 +20,26 @@ namespace ProjectQLDCCT.Controllers.Admin
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
-
+        [HttpGet]
+        [Route("load-option-civilservants")]
+        public async Task<IActionResult> LoadOption()
+        {
+            var GetYear = await db.Years
+                .Select(x => new
+                {
+                    value = x.id_year,
+                    text = x.name_year
+                })
+                .ToListAsync();
+            return Ok(GetYear);
+        }
         [HttpPost]
         public async Task<IActionResult> GetCivilServants([FromBody] DataTableRequest request)
         {
             var query = db.CivilServants
                 .Select(x => new
                 {
+                    x.id_civilSer,
                     x.code_civilSer,
                     x.fullname_civilSer,
                     x.email,
@@ -64,7 +77,7 @@ namespace ProjectQLDCCT.Controllers.Admin
             };
             db.CivilServants.Add(new_record);
             await db.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "Thêm mới dữ liệu thành công", success = true });
         }
         [HttpGet]
         [Route("load-thong-tin/{id}")]

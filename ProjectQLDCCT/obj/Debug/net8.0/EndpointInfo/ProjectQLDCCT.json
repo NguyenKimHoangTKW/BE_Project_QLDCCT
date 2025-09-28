@@ -67,6 +67,71 @@
         }
       }
     },
+    "/api/admin/civilservants/load-thong-tin/{id}": {
+      "get": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/update/{id}": {
+      "put": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/year/lay-du-lieu-nam-hoc": {
       "post": {
         "tags": [
