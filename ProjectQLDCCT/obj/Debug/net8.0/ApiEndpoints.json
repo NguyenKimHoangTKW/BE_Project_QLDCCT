@@ -33,6 +33,16 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "LoadOption",
+    "RelativePath": "api/admin/civilservants/load-option-civilservants",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
     "Method": "LoadInfo",
     "RelativePath": "api/admin/civilservants/load-thong-tin/{id}",
     "HttpMethod": "GET",

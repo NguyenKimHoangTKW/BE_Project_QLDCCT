@@ -34,9 +34,11 @@ namespace ProjectQLDCCT.Controllers.Admin
             return Ok(GetYear);
         }
         [HttpPost]
-        public async Task<IActionResult> GetCivilServants([FromBody] DataTableRequest request)
+        [Route("{id}")]
+        public async Task<IActionResult> GetCivilServants(int id, [FromBody] DataTableRequest request)
         {
             var query = db.CivilServants
+                .Where(x => x.id_year == id)
                 .Select(x => new
                 {
                     x.id_civilSer,
@@ -61,9 +63,9 @@ namespace ProjectQLDCCT.Controllers.Admin
         public async Task<IActionResult> AddNew([FromBody] CivilServantsDTOs items)
         {
             if (string.IsNullOrEmpty(items.code_civilSer))
-                return BadRequest(new { message = "Không được bỏ trống trường Mã viên chức", success = false });
+                return Ok(new { message = "Không được bỏ trống trường Mã viên chức", success = false });
             if (string.IsNullOrEmpty(items.fullname_civilSer))
-                return BadRequest(new { message = "Không được bỏ trống trường Tên viên chức", success = false });
+                return Ok(new { message = "Không được bỏ trống trường Tên viên chức", success = false });
 
             var new_record = new CivilServant
             {
@@ -87,6 +89,7 @@ namespace ProjectQLDCCT.Controllers.Admin
                 .Where(x => x.id_civilSer == id)
                 .Select(x => new
                 {
+                    x.id_civilSer,
                     x.code_civilSer,
                     x.fullname_civilSer,
                     x.email,
@@ -101,17 +104,34 @@ namespace ProjectQLDCCT.Controllers.Admin
         public async Task<IActionResult> Update(int id, [FromBody] CivilServantsDTOs items)
         {
             if (string.IsNullOrEmpty(items.code_civilSer))
-                return BadRequest(new { message = "Không được bỏ trống trường Mã viên chức", success = false });
+                return Ok(new { message = "Không được bỏ trống trường Mã viên chức", success = false });
             if (string.IsNullOrEmpty(items.fullname_civilSer))
-                return BadRequest(new { message = "Không được bỏ trống trường Tên viên chức", success = false });
+                return Ok(new { message = "Không được bỏ trống trường Tên viên chức", success = false });
             var GetItems = await db.CivilServants.FirstOrDefaultAsync(x => x.id_civilSer == id);
             GetItems.code_civilSer = items.code_civilSer;
             GetItems.fullname_civilSer = items.fullname_civilSer;
             GetItems.email = items.email;
-            GetItems.id_year = items.value_year;
             GetItems.time_up = unixTimestamp;
             await db.SaveChangesAsync();
             return Ok(new { message = "Cập nhật dữ liệu thành công", success = true });
         }
+        [HttpDelete]
+        [Route("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var checkItems = await db.CivilServants
+                .FirstOrDefaultAsync(x => x.id_civilSer == id);
+            if (checkItems != null)
+            {
+                db.CivilServants.Remove(checkItems);
+            }
+            else
+            {
+                return Ok(new { message = "Không tìm thấy thông tin dữ liệu", success = false });
+            }
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Xóa dữ liệu thành công", success = true });
+        }
+
     }
 }

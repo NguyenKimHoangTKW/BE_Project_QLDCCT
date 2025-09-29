@@ -5,6 +5,18 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/admin/civilservants/load-option-civilservants": {
+      "get": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/civilservants": {
       "post": {
         "tags": [
