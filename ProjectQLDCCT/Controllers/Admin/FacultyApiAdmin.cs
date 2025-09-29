@@ -49,7 +49,7 @@ namespace ProjectQLDCCT.Controllers.Admin
                 .Where(x => x.id_year == id)
                 .Select(x => new
                 {
-                    x.id_year,
+                    x.id_faculty,
                     x.code_faciulty,
                     x.name_faculty,
                     x.time_cre,
@@ -60,7 +60,7 @@ namespace ProjectQLDCCT.Controllers.Admin
                 x => x.code_faciulty,
                 x => x.name_faculty
                 );
-            return Ok(query);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -92,6 +92,7 @@ namespace ProjectQLDCCT.Controllers.Admin
                 .Where(x => x.id_faculty == items.id_faculty)
                 .Select(x => new
                 {
+                    x.id_faculty,
                     x.code_faciulty,
                     x.name_faculty,
                 })

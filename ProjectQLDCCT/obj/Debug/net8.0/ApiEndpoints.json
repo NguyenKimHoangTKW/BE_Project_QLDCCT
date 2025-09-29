@@ -2,11 +2,16 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
     "Method": "GetCivilServants",
-    "RelativePath": "api/admin/civilservants",
+    "RelativePath": "api/admin/civilservants/{id}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "request",
         "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
@@ -26,6 +31,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "Delete",
+    "RelativePath": "api/admin/civilservants/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -73,6 +94,101 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "Info",
+    "RelativePath": "api/admin/faculty/info-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.FacultyDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "LoadData",
+    "RelativePath": "api/admin/faculty/loadsdonvibynam/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "LoadOptionFaculty",
+    "RelativePath": "api/admin/faculty/loadsnambydonvi",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "AddNew",
+    "RelativePath": "api/admin/faculty/them-moi-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.FacultyDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "Updated",
+    "RelativePath": "api/admin/faculty/update-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.FacultyDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "Delete",
+    "RelativePath": "api/admin/faculty/xoa-thong-tin-don-vi/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
