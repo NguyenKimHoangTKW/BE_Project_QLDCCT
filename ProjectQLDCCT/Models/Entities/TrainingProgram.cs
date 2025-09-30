@@ -14,8 +14,6 @@ public partial class TrainingProgram
 
     public int? id_faculty { get; set; }
 
-    public int? id_deparment { get; set; }
-
     [StringLength(50)]
     public string? code_program { get; set; }
 
@@ -27,11 +25,10 @@ public partial class TrainingProgram
     public int? time_up { get; set; }
 
     [InverseProperty("id_programNavigation")]
-    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+    public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 
-    [ForeignKey("id_deparment")]
-    [InverseProperty("TrainingPrograms")]
-    public virtual Deparment? id_deparmentNavigation { get; set; }
+    [InverseProperty("id_programNavigation")]
+    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
     [ForeignKey("id_faculty")]
     [InverseProperty("TrainingPrograms")]

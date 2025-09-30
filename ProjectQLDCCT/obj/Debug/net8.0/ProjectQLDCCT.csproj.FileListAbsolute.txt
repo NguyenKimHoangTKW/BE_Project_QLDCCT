@@ -508,10 +508,10 @@ D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\stat
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.development.json
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQ.7B345E24.Up2Date
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\refint\ProjectQLDCCT.dll
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.pdb
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.genruntimeconfig.cache
 D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ref\ProjectQLDCCT.dll
+D:\BaoCaoTotNghiep\BackEnd\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

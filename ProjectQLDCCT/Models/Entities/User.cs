@@ -27,6 +27,9 @@ public partial class User
 
     public int status { get; set; }
 
+    [InverseProperty("id_userNavigation")]
+    public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
+
     [ForeignKey("id_type_users")]
     [InverseProperty("Users")]
     public virtual TypeUser? id_type_usersNavigation { get; set; }

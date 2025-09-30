@@ -24,15 +24,29 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<CivilServant> CivilServants { get; set; }
 
-    public virtual DbSet<Course> Courses { get; set; }
+    public virtual DbSet<Class> Classes { get; set; }
 
-    public virtual DbSet<Deparment> Deparments { get; set; }
+    public virtual DbSet<Course> Courses { get; set; }
 
     public virtual DbSet<Faculty> Faculties { get; set; }
 
     public virtual DbSet<FunctionUser> FunctionUsers { get; set; }
 
+    public virtual DbSet<GroupPLO> GroupPLOs { get; set; }
+
+    public virtual DbSet<Group_Course> Group_Courses { get; set; }
+
+    public virtual DbSet<KeyYearSemester> KeyYearSemesters { get; set; }
+
     public virtual DbSet<LogOperation> LogOperations { get; set; }
+
+    public virtual DbSet<SectionPLIbyPLO> SectionPLIbyPLOs { get; set; }
+
+    public virtual DbSet<Semester> Semesters { get; set; }
+
+    public virtual DbSet<SessionPLO> SessionPLOs { get; set; }
+
+    public virtual DbSet<Student> Students { get; set; }
 
     public virtual DbSet<Syllabus> Syllabi { get; set; }
 
@@ -47,6 +61,8 @@ public partial class QLDCContext : DbContext
     public virtual DbSet<SyllabusTemplate> SyllabusTemplates { get; set; }
 
     public virtual DbSet<SyllabusTemplateSection> SyllabusTemplateSections { get; set; }
+
+    public virtual DbSet<TeacherBySubject> TeacherBySubjects { get; set; }
 
     public virtual DbSet<TrainingProgram> TrainingPrograms { get; set; }
 
@@ -98,16 +114,22 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_yearNavigation).WithMany(p => p.CivilServants).HasConstraintName("FK_CivilServants_Year");
         });
 
-        modelBuilder.Entity<Course>(entity =>
+        modelBuilder.Entity<Class>(entity =>
         {
-            entity.HasOne(d => d.id_deparmentNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Deparment");
-
-            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Program");
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Classes).HasConstraintName("FK_Class_TrainingProgram");
         });
 
-        modelBuilder.Entity<Deparment>(entity =>
+        modelBuilder.Entity<Course>(entity =>
         {
-            entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.Deparments).HasConstraintName("FK_Deparment_Faculty");
+            entity.HasOne(d => d.id_gr_courseNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Group_Course");
+
+            entity.HasOne(d => d.id_key_year_semesterNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_KeyYearSemesterr");
+
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Program");
+
+            entity.HasOne(d => d.id_semesterNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Semester");
+
+            entity.HasOne(d => d.id_yearNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Year");
         });
 
         modelBuilder.Entity<Faculty>(entity =>
@@ -118,6 +140,31 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<FunctionUser>(entity =>
         {
             entity.HasOne(d => d.id_type_usersNavigation).WithMany(p => p.FunctionUsers).HasConstraintName("FK_FunctionUsers_TypeUsers");
+        });
+
+        modelBuilder.Entity<Group_Course>(entity =>
+        {
+            entity.Property(e => e.id_gr_course).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<KeyYearSemester>(entity =>
+        {
+            entity.HasKey(e => e.id_key_year_semester).HasName("PK_KeyYearSemesterr");
+        });
+
+        modelBuilder.Entity<SectionPLIbyPLO>(entity =>
+        {
+            entity.HasOne(d => d.id_ploNavigation).WithMany(p => p.SectionPLIbyPLOs).HasConstraintName("FK_SectionPLIbyPLO_SessionPLO");
+        });
+
+        modelBuilder.Entity<SessionPLO>(entity =>
+        {
+            entity.HasOne(d => d.id_gr_ploNavigation).WithMany(p => p.SessionPLOs).HasConstraintName("FK_SessionPLO_GroupPLO");
+        });
+
+        modelBuilder.Entity<Student>(entity =>
+        {
+            entity.HasOne(d => d.id_classNavigation).WithMany(p => p.Students).HasConstraintName("FK_Student_Class");
         });
 
         modelBuilder.Entity<Syllabus>(entity =>
@@ -183,11 +230,16 @@ public partial class QLDCContext : DbContext
                 .HasConstraintName("FK__SyllabusT__id_te__6A30C649");
         });
 
+        modelBuilder.Entity<TeacherBySubject>(entity =>
+        {
+            entity.HasOne(d => d.id_courseNavigation).WithMany(p => p.TeacherBySubjects).HasConstraintName("FK_TeacherBySubject_Course");
+
+            entity.HasOne(d => d.id_userNavigation).WithMany(p => p.TeacherBySubjects).HasConstraintName("FK_TeacherBySubject_Users");
+        });
+
         modelBuilder.Entity<TrainingProgram>(entity =>
         {
             entity.HasKey(e => e.id_program).HasName("PK_Program");
-
-            entity.HasOne(d => d.id_deparmentNavigation).WithMany(p => p.TrainingPrograms).HasConstraintName("FK_Program_Deparment");
 
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.TrainingPrograms).HasConstraintName("FK_Program_Faculty");
         });

@@ -25,9 +25,6 @@ public partial class Faculty
     public int? id_year { get; set; }
 
     [InverseProperty("id_facultyNavigation")]
-    public virtual ICollection<Deparment> Deparments { get; set; } = new List<Deparment>();
-
-    [InverseProperty("id_facultyNavigation")]
     public virtual ICollection<TrainingProgram> TrainingPrograms { get; set; } = new List<TrainingProgram>();
 
     [ForeignKey("id_year")]
