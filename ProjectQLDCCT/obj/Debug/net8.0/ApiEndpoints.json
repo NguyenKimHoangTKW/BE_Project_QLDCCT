@@ -195,6 +195,117 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "UpdateCTDT",
+    "RelativePath": "api/admin/program/cap-nhat-thong-tin-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "InfoCTDT",
+    "RelativePath": "api/admin/program/get-thong-tin-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "LoadData",
+    "RelativePath": "api/admin/program/loads-ctdt-thuoc-don-vi/{idDonvi}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idDonvi",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "LoadDonViByCTDT",
+    "RelativePath": "api/admin/program/loads-select-don-vi-by-year/{value_year}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "value_year",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "LoadNamHoc",
+    "RelativePath": "api/admin/program/loads-select-nam",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "ThemMoiCTDT",
+    "RelativePath": "api/admin/program/them-moi-ctdt-thuoc-nam",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "DeleteCTDT",
+    "RelativePath": "api/admin/program/xoa-du-lieu-ctdt/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
     "Method": "Create",
     "RelativePath": "api/admin/year",

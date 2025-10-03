@@ -49,8 +49,11 @@ namespace ProjectQLDCCT.Controllers.Admin
         public async Task<IActionResult> Create([FromBody] YearsDTO items)
         {
             if (string.IsNullOrWhiteSpace(items.name_year))
-                return BadRequest(new { message = "Không được bỏ trống Tên năm học", success = false });
-
+                return Ok(new { message = "Không được bỏ trống Tên năm học", success = false });
+            if(_context.Years.SingleOrDefault(x => x.name_year.ToLower().Trim() == items.name_year.ToLower().Trim()) != null)
+            {
+                return Ok(new { message = "Tên năm học này đã tồn tại, vui lòng kiểm tra lại", success = false });
+            }
             var newYear = new Year
             {
                 name_year = items.name_year,
@@ -67,11 +70,11 @@ namespace ProjectQLDCCT.Controllers.Admin
         public async Task<IActionResult> Update(int id, [FromBody] YearsDTO items)
         {
             if (string.IsNullOrWhiteSpace(items.name_year))
-                return BadRequest(new { message = "Không được bỏ trống Tên năm học", success = false });
+                return Ok(new { message = "Không được bỏ trống Tên năm học", success = false });
 
             var year = await _context.Years.FirstOrDefaultAsync(x => x.id_year == id);
             if (year == null)
-                return NotFound(new { message = "Không tìm thấy dữ liệu", success = false });
+                return Ok(new { message = "Không tìm thấy dữ liệu", success = false });
 
             year.name_year = items.name_year;
             year.time_up = unixTimestamp;
@@ -85,7 +88,7 @@ namespace ProjectQLDCCT.Controllers.Admin
         {
             var year = await _context.Years.FirstOrDefaultAsync(x => x.id_year == id);
             if (year == null)
-                return NotFound(new { message = "Không tìm thấy dữ liệu", success = false });
+                return Ok(new { message = "Không tìm thấy dữ liệu", success = false });
 
             _context.Years.Remove(year);
             await _context.SaveChangesAsync();

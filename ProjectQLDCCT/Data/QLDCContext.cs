@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectQLDCCT.Helpers;
 using ProjectQLDCCT.Models;
+using System;
+using System.Collections.Generic;
 
 namespace ProjectQLDCCT.Data;
 
@@ -78,6 +79,22 @@ public partial class QLDCContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            var clrType = entityType.ClrType;
+            var tableName = entityType.GetTableName();
+            var schema = entityType.GetSchema();
+
+            if (clrType != null && !string.IsNullOrEmpty(tableName))
+            {
+                modelBuilder.Entity(clrType).ToTable(tableName, schema, tb =>
+                {
+                    tb.HasTrigger("HasAnyTrigger");
+                });
+            }
+        }
         modelBuilder.Entity<AssessmentCLO>(entity =>
         {
             entity.HasKey(e => e.id_assess_clo).HasName("PK__Assessme__D6EEA2E41C45109A");
@@ -248,7 +265,6 @@ public partial class QLDCContext : DbContext
         {
             entity.HasOne(d => d.id_type_usersNavigation).WithMany(p => p.Users).HasConstraintName("FK_Users_TypeUsers");
         });
-
         OnModelCreatingPartial(modelBuilder);
     }
 

@@ -348,6 +348,199 @@
         }
       }
     },
+    "/api/admin/program/loads-select-nam": {
+      "get": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/loads-select-don-vi-by-year/{value_year}": {
+      "get": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "parameters": [
+          {
+            "name": "value_year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/loads-ctdt-thuoc-don-vi/{idDonvi}": {
+      "post": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "parameters": [
+          {
+            "name": "idDonvi",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataTableRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataTableRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataTableRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/them-moi-ctdt-thuoc-nam": {
+      "post": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/get-thong-tin-ctdt": {
+      "post": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/cap-nhat-thong-tin-ctdt": {
+      "post": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/xoa-du-lieu-ctdt/{id}": {
+      "delete": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/year/lay-du-lieu-nam-hoc": {
       "post": {
         "tags": [
@@ -571,6 +764,45 @@
           },
           "name_faculty": {
             "type": "string",
+            "nullable": true
+          },
+          "id_year": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TrainingProgramDTOs": {
+        "type": "object",
+        "properties": {
+          "id_program": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_faculty": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "code_program": {
+            "type": "string",
+            "nullable": true
+          },
+          "name_program": {
+            "type": "string",
+            "nullable": true
+          },
+          "time_cre": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "time_up": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "id_year": {
