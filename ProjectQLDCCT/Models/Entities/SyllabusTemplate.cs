@@ -15,12 +15,18 @@ public partial class SyllabusTemplate
     [StringLength(200)]
     public string template_name { get; set; } = null!;
 
-    public bool? is_default { get; set; }
+    public int? is_default { get; set; }
 
     public int? time_cre { get; set; }
 
     public int? time_up { get; set; }
 
+    public int? id_faculty { get; set; }
+
     [InverseProperty("id_templateNavigation")]
     public virtual ICollection<SyllabusTemplateSection> SyllabusTemplateSections { get; set; } = new List<SyllabusTemplateSection>();
+
+    [ForeignKey("id_faculty")]
+    [InverseProperty("SyllabusTemplates")]
+    public virtual Faculty? id_facultyNavigation { get; set; }
 }

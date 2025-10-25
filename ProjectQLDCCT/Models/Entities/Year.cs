@@ -23,8 +23,5 @@ public partial class Year
     public virtual ICollection<CivilServant> CivilServants { get; set; } = new List<CivilServant>();
 
     [InverseProperty("id_yearNavigation")]
-    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
-
-    [InverseProperty("id_yearNavigation")]
     public virtual ICollection<Faculty> Faculties { get; set; } = new List<Faculty>();
 }

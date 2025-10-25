@@ -1,36 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {}
+    "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {}
   },
   "projects": {
-    "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {
+    "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
+        "projectUniqueName": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
         "projectName": "ProjectQLDCCT",
-        "projectPath": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
-        "packagesPath": "C:\\Users\\Nguyen Kim Hoang\\.nuget\\packages\\",
-        "outputPath": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\obj\\",
+        "projectPath": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\ProjectQLDCCT.csproj",
+        "packagesPath": "C:\\Users\\Kim Hoang\\.nuget\\packages\\",
+        "outputPath": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Nguyen Kim Hoang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Kim Hoang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -47,9 +47,25 @@
         "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.0.10, )"
+            },
+            "Google.Apis.Auth": {
+              "target": "Package",
+              "version": "[1.72.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.AspNetCore.SignalR": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -63,6 +79,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.14.0, )"
             },
             "System.Linq.Dynamic.Core": {
               "target": "Package",
@@ -88,7 +108,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

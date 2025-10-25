@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.IdentityModel.Logging;
+using OfficeOpenXml;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Helpers;
+using ProjectQLDCCT.Hubs;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
+using System.ComponentModel;
 
 namespace ProjectQLDCCT.Controllers.Admin
 {
@@ -15,11 +20,13 @@ namespace ProjectQLDCCT.Controllers.Admin
     {
         private readonly QLDCContext db;
         private readonly int unixTimestamp;
-        public FacultyApiAdmin(QLDCContext _db)
+        private readonly IHubContext<ImportHub> _hubContext;
+        public FacultyApiAdmin(QLDCContext _db, IHubContext<ImportHub> hubContext)
         {
             db = _db;
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            _hubContext = hubContext;
         }
         [HttpGet]
         [Route("loadsnambydonvi")]
@@ -56,10 +63,14 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.time_up,
                     x.id_yearNavigation.name_year
                 });
-            var result = await DataTableHelper.GetDataTableAsync(query, request,
-                x => x.code_faciulty,
-                x => x.name_faculty
-                );
+            if (!string.IsNullOrEmpty(request.SearchText))
+            {
+                var keyword = request.SearchText.ToLower().Trim();
+                query = query.Where(x =>
+                    x.name_faculty.ToLower().Contains(keyword) ||
+                    (x.code_faciulty ?? "").ToLower().Contains(keyword));
+            }
+            var result = await DataTableHelper.GetDataTableAsync(query, request);
             return Ok(result);
         }
 
@@ -127,6 +138,89 @@ namespace ProjectQLDCCT.Controllers.Admin
             db.Faculties.Remove(CheckItems);
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
+        }
+
+
+        [HttpPost("upload-excel-khoa-vien-truong")]
+        public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
+
+            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
+                return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
+            try
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+                        }
+
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var ma_khoa = worksheet.Cells[row, 2].Text?.Trim();
+                            var ten_khoa = worksheet.Cells[row, 3].Text?.Trim();
+                            var ten_nam_hoc = worksheet.Cells[row, 4].Text?.Trim();
+
+                            if (string.IsNullOrEmpty(ten_nam_hoc))
+                                continue;
+
+                            var check_nam_hoc = await db.Years
+                                .FirstOrDefaultAsync(x => x.name_year.ToLower().Trim() == ten_nam_hoc.ToLower());
+
+                            if (check_nam_hoc == null)
+                            {
+                                return Ok(new
+                                {
+                                    message = $"Năm học {ten_nam_hoc} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại.",
+                                    success = false
+                                });
+                            }
+
+                            var check_khoa = await db.Faculties
+                                .FirstOrDefaultAsync(x =>
+                                    x.code_faciulty.ToLower().Trim() == ma_khoa.ToLower() &&
+                                    x.name_faculty.ToLower().Trim() == ten_khoa.ToLower());
+
+                            if (check_khoa == null)
+                            {
+                                check_khoa = new Faculty
+                                {
+                                    code_faciulty = string.IsNullOrWhiteSpace(ma_khoa) ? null : ma_khoa.ToUpper(),
+                                    name_faculty = ten_khoa,
+                                    id_year = check_nam_hoc.id_year,
+                                    time_cre = unixTimestamp,
+                                    time_up = unixTimestamp
+                                };
+                                db.Faculties.Add(check_khoa);
+                            }
+                            else
+                            {
+                                check_khoa.time_up = unixTimestamp;
+                            }
+
+                            await db.SaveChangesAsync();
+                        }
+
+                        return Ok(new { message = "Import dữ liệu thành công", success = true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
+            }
         }
     }
 }

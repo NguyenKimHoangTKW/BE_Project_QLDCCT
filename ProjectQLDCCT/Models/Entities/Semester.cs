@@ -13,12 +13,21 @@ public partial class Semester
     public int id_semester { get; set; }
 
     [StringLength(50)]
+    public string? code_semester { get; set; }
+
+    [StringLength(50)]
     public string? name_semester { get; set; }
+
+    public int? id_faculty { get; set; }
 
     public int? tim_cre { get; set; }
 
     public int? time_up { get; set; }
 
     [InverseProperty("id_semesterNavigation")]
-    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+    public virtual ICollection<CourseByKey> CourseByKeys { get; set; } = new List<CourseByKey>();
+
+    [ForeignKey("id_faculty")]
+    [InverseProperty("Semesters")]
+    public virtual Faculty? id_facultyNavigation { get; set; }
 }

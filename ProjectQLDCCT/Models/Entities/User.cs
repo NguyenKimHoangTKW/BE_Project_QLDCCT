@@ -28,7 +28,13 @@ public partial class User
     public int status { get; set; }
 
     [InverseProperty("id_userNavigation")]
+    public virtual ICollection<JWTSession> JWTSessions { get; set; } = new List<JWTSession>();
+
+    [InverseProperty("id_userNavigation")]
     public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
+
+    [InverseProperty("id_usersNavigation")]
+    public virtual ICollection<UserByFaculProgram> UserByFaculPrograms { get; set; } = new List<UserByFaculProgram>();
 
     [ForeignKey("id_type_users")]
     [InverseProperty("Users")]

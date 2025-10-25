@@ -28,10 +28,23 @@ namespace ProjectQLDCCT.Controllers.Admin
         {
             var years = _context.Years
                 .Select(x => new { x.id_year, x.name_year });
-            var result = await DataTableHelper.GetDataTableAsync(years, request,
-                x => x.name_year);
+            var result = await DataTableHelper.GetDataTableAsync(years, request);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("loads-selected-year")]
+        public async Task<IActionResult> LoadSelectedYear()
+        {
+            var ListYear = await _context.Years
+                .Select(x => new
+                {
+                    x.id_year,
+                    x.name_year
+                })
+                .ToListAsync();
+            return Ok(ListYear);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -50,7 +63,7 @@ namespace ProjectQLDCCT.Controllers.Admin
         {
             if (string.IsNullOrWhiteSpace(items.name_year))
                 return Ok(new { message = "Không được bỏ trống Tên năm học", success = false });
-            if(_context.Years.SingleOrDefault(x => x.name_year.ToLower().Trim() == items.name_year.ToLower().Trim()) != null)
+            if (_context.Years.SingleOrDefault(x => x.name_year.ToLower().Trim() == items.name_year.ToLower().Trim()) != null)
             {
                 return Ok(new { message = "Tên năm học này đã tồn tại, vui lòng kiểm tra lại", success = false });
             }

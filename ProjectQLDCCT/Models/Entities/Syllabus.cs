@@ -26,13 +26,7 @@ public partial class Syllabus
     public int? time_up { get; set; }
 
     [InverseProperty("id_syllabusNavigation")]
-    public virtual ICollection<CLO> CLOs { get; set; } = new List<CLO>();
-
-    [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<SyllabusApproval> SyllabusApprovals { get; set; } = new List<SyllabusApproval>();
-
-    [InverseProperty("id_syllabusNavigation")]
-    public virtual ICollection<SyllabusAssessment> SyllabusAssessments { get; set; } = new List<SyllabusAssessment>();
 
     [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<SyllabusSection> SyllabusSections { get; set; } = new List<SyllabusSection>();

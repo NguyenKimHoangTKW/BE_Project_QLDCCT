@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Helpers;
 using ProjectQLDCCT.Models;
@@ -72,10 +73,15 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.time_cre,
                     x.id_facultyNavigation.name_faculty
                 });
-            var result = await DataTableHelper.GetDataTableAsync(_query, items,
-                x => x.code_program,
-                x => x.name_program
-                );
+
+            if (!string.IsNullOrEmpty(items.SearchText))
+            {
+                var keyword = items.SearchText.ToLower().Trim();
+                _query = _query.Where(x => x.name_program.ToLower().Contains(keyword) ||
+                (x.code_program ?? "").ToLower().Contains(keyword) ||
+                x.name_faculty.ToLower().Contains(keyword));
+            }
+            var result = await DataTableHelper.GetDataTableAsync(_query, items);
             return Ok(result);
         }
         [HttpPost]
@@ -154,6 +160,101 @@ namespace ProjectQLDCCT.Controllers.Admin
             db.TrainingPrograms.Remove(CheckItems);
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
+        }
+        [HttpPost("upload-excel-chuong-trinh-dao-tao")]
+        public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
+
+            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
+                return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
+            try
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+                        }
+
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var ten_don_vi = worksheet.Cells[row, 2].Text?.Trim();
+                            var ma_ctdt = worksheet.Cells[row, 3].Text?.Trim();
+                            var ten_ctdt = worksheet.Cells[row, 4].Text?.Trim();
+                            var ten_nam_hoc = worksheet.Cells[row, 5].Text?.Trim();
+                            if (string.IsNullOrEmpty(ten_nam_hoc))
+                                continue;
+
+                            var check_nam_hoc = await db.Years
+                                .FirstOrDefaultAsync(x => x.name_year.ToLower().Trim() == ten_nam_hoc.ToLower());
+
+                            if (check_nam_hoc == null)
+                            {
+                                return Ok(new
+                                {
+                                    message = $"Năm học {ten_nam_hoc} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại ở dòng {row}.",
+                                    success = false
+                                });
+                            }
+                            var checkDonVi = await db.Faculties
+                                    .FirstOrDefaultAsync(x =>
+                                        (x.name_faculty ?? "").ToLower().Trim() == ten_don_vi.ToLower().Trim() &&
+                                        x.id_year == check_nam_hoc.id_year);
+                            if (string.IsNullOrEmpty(ten_don_vi))
+                                continue;
+
+                            if (checkDonVi == null)
+                            {
+                                return Ok(new
+                                {
+                                    message = $"Đơn vị '{ten_don_vi}' không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại ở dòng {row}.",
+                                    success = false
+                                });
+                            }
+                            var check_ctdt = await db.TrainingPrograms
+                                .FirstOrDefaultAsync(x =>
+                                   (x.code_program ?? "").ToLower().Trim() == (ma_ctdt ?? "").ToLower() &&
+                                    ((x.name_program ?? "") ?? "").ToLower().Trim() == (ten_ctdt ?? "").ToLower());
+
+                            if (check_ctdt == null)
+                            {
+                                check_ctdt = new TrainingProgram
+                                {
+                                    id_faculty = string.IsNullOrEmpty(ten_don_vi) ? null : checkDonVi.id_faculty,
+                                    code_program = string.IsNullOrWhiteSpace(ma_ctdt) ? null : ma_ctdt.ToUpper(),
+                                    name_program = ten_ctdt,
+                                    time_cre = unixTimestamp,
+                                    time_up = unixTimestamp
+                                };
+                                db.TrainingPrograms.Add(check_ctdt);
+                            }
+                            else
+                            {
+                                check_ctdt.time_up = unixTimestamp;
+                            }
+
+                            await db.SaveChangesAsync();
+                        }
+
+                        return Ok(new { message = "Import dữ liệu thành công", success = true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
+            }
         }
     }
 }

@@ -334,7 +334,6 @@ D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.build.j
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.development.json
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQ.7B345E24.Up2Date
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\ProjectQLDCCT.dll
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net8.0\refint\ProjectQLDCCT.dll

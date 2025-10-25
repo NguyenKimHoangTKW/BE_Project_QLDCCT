@@ -51,11 +51,7 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.time_up
                 });
 
-            var result = await DataTableHelper.GetDataTableAsync(query, request,
-                x => x.fullname_civilSer,
-                x => x.email,
-                x => x.code_civilSer
-            );
+            var result = await DataTableHelper.GetDataTableAsync(query, request);
             return Ok(result);
         }
         [HttpPost]

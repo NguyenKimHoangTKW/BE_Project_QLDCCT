@@ -11,5 +11,7 @@ namespace ProjectQLDCCT.Models.DTOs
         public string? name_faculty { get; set; }
 
         public int? id_year { get; set; }
+       
+        public int? id_users { get; set; }
     }
 }

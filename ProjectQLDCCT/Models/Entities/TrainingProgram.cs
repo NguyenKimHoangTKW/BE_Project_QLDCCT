@@ -28,7 +28,13 @@ public partial class TrainingProgram
     public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 
     [InverseProperty("id_programNavigation")]
-    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+    public virtual ICollection<CoreCourseMatrix> CoreCourseMatrices { get; set; } = new List<CoreCourseMatrix>();
+
+    [InverseProperty("id_programNavigation")]
+    public virtual ICollection<CourseByKey> CourseByKeys { get; set; } = new List<CourseByKey>();
+
+    [InverseProperty("id_programNavigation")]
+    public virtual ICollection<UserByFaculProgram> UserByFaculPrograms { get; set; } = new List<UserByFaculProgram>();
 
     [ForeignKey("id_faculty")]
     [InverseProperty("TrainingPrograms")]
