@@ -300,9 +300,7 @@ public partial class QLDCContext : DbContext
 
             entity.HasOne(d => d.id_dataBindingNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_DataBinding");
 
-            entity.HasOne(d => d.id_templateNavigation).WithMany(p => p.SyllabusTemplateSections)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__SyllabusT__id_te__6A30C649");
+            entity.HasOne(d => d.id_templateNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK__SyllabusT__id_te__6A30C649");
         });
 
         modelBuilder.Entity<TeacherBySubject>(entity =>

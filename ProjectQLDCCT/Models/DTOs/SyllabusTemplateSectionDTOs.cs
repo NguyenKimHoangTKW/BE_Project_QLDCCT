@@ -8,9 +8,9 @@ namespace ProjectQLDCCT.Models.DTOs
 
         public int id_template { get; set; }
 
-        public string section_code { get; set; } = null!;
+        public string? section_code { get; set; }
 
-        public string section_name { get; set; } = null!;
+        public string? section_name { get; set; }
 
         public int? is_required { get; set; }
 

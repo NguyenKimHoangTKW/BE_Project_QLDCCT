@@ -2118,6 +2118,92 @@
         }
       }
     },
+    "/api/donvi/syllabustemplate/load-selected-template": {
+      "get": {
+        "tags": [
+          "TemplateSyllabusDVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/syllabustemplate/load-option-template-section": {
+      "get": {
+        "tags": [
+          "TemplateSyllabusDVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/syllabustemplate/create-template-section": {
+      "post": {
+        "tags": [
+          "TemplateSyllabusDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusTemplateSectionDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusTemplateSectionDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusTemplateSectionDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/syllabustemplate/loads-template-section": {
+      "post": {
+        "tags": [
+          "TemplateSyllabusDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusTemplateSectionDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusTemplateSectionDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusTemplateSectionDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/program/loads-select-don-vi-by-year": {
       "get": {
         "tags": [
@@ -2763,6 +2849,48 @@
           },
           "searchText": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SyllabusTemplateSectionDTOs": {
+        "type": "object",
+        "properties": {
+          "id_template_section": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id_template": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "section_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "section_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_required": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "order_index": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_contentType": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_dataBinding": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

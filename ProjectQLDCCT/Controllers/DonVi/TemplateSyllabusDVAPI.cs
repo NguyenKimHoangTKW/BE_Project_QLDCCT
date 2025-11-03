@@ -175,16 +175,14 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 .Select(x => new
                 {
                     x.id,
-                    x.code,
-                    x.name
+                    name = x.code + " - " + x.name
                 })
                 .ToListAsync();
             var ListDataBinding = await db.DataBindings
                 .Select(x => new
                 {
                     x.id,
-                    x.code,
-                    x.name
+                    name = x.code + " - " + x.name
                 })
                 .ToListAsync();
             return Ok(new
@@ -228,11 +226,91 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 id_contentType = items.id_contentType,
                 id_dataBinding = items.id_dataBinding
             };
-
             db.SyllabusTemplateSections.Add(newRecord);
             await db.SaveChangesAsync();
             return Ok(new { message = "Tạo mới Tiêu đề mẫu đề cương thành công", success = true });
         }
+        [HttpPost]
+        [Route("loads-template-section")]
+        public async Task<IActionResult> LoadTemplateSection([FromBody] SyllabusTemplateSectionDTOs items)
+        {
+            if (items.id_template == 0)
+                return Ok(new { message = "Không tìm thấy thông tin mẫu đề cương", success = false });
 
+            var loadItems = await db.SyllabusTemplateSections
+                .Where(x => x.id_template == items.id_template)
+                .OrderBy(x => x.order_index)
+                .Select(x => new
+                {
+                    x.id_template_section,
+                    x.section_code,
+                    x.section_name,
+                    x.order_index,
+                    is_required = x.is_required == 0 ? "Không bắt buộc" : "Bắt buộc",
+                    contentType = x.id_contentTypeNavigation.code + " - " + x.id_contentTypeNavigation.name,
+                    dataBinding = x.id_dataBindingNavigation.code + " - " + x.id_dataBindingNavigation.name,
+                })
+                .ToListAsync();
+
+            if (loadItems.Count == 0)
+                return Ok(new { message = "Không có dữ liệu mẫu tiêu đề trong mẫu đề cương này", success = false });
+
+            return Ok(new { data = loadItems, message = "Load biểu mẫu thành công", success = true });
+        }
+        [HttpPost]
+        [Route("info-template-section")]
+        public async Task<IActionResult> LoadInfoSectionTemplate([FromBody] SyllabusTemplateSectionDTOs items)
+        {
+            var checkSectionTemplate = await db.SyllabusTemplateSections
+                .Where(x => x.id_template_section == items.id_template_section)
+                .Select(x => new
+                {
+                    x.id_template,
+                    x.section_code,
+                    x.section_name,
+                    x.is_required,
+                    x.order_index,
+                    x.id_dataBinding,
+                    x.id_contentType
+                })
+                .FirstOrDefaultAsync();
+            if (checkSectionTemplate == null)
+                return Ok(new { message = "Không tìm thấy Câu hỏi tiêu đề", success = false });
+            return Ok(new { data = checkSectionTemplate, success = true });
+        }
+        [HttpPost]
+        [Route("update-template-section")]
+        public async Task<IActionResult> EditTemplateSection([FromBody] SyllabusTemplateSectionDTOs items)
+        {
+            if (string.IsNullOrWhiteSpace(items.section_code))
+                return Ok(new { message = "Không được bỏ trống trường Số thứ tự mục chính", success = false });
+
+            if (string.IsNullOrWhiteSpace(items.section_name))
+                return Ok(new { message = "Không được bỏ trống trường Tên tiêu đề", success = false });
+            var checkSectionTemplate = await db.SyllabusTemplateSections.Where(x => x.id_template_section == items.id_template_section).FirstOrDefaultAsync();
+            if (checkSectionTemplate == null)
+                return Ok(new { message = "Không tìm thấy Câu hỏi tiêu đề", success = false });
+            checkSectionTemplate.section_name = items.section_name.Trim();
+            checkSectionTemplate.section_code = items.section_code.Trim();
+            checkSectionTemplate.is_required = items.is_required;
+            checkSectionTemplate.id_contentType = items.id_contentType;
+            checkSectionTemplate.id_dataBinding = items.id_dataBinding;
+
+            var list = await db.SyllabusTemplateSections
+                .Where(x => x.id_template == checkSectionTemplate.id_template)
+                .OrderBy(x => x.order_index)
+                .ToListAsync();
+
+            list.Remove(checkSectionTemplate);
+
+            int newIndex = Math.Max(1, Math.Min((int)items.order_index, list.Count + 1));
+            list.Insert(newIndex - 1, checkSectionTemplate);
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].order_index = i + 1;
+            }
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Cập nhật dữ liệu thành công và đã sắp xếp lại thứ tự hiển thị", success = true });
+        }
     }
 }

@@ -1152,6 +1152,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
+    "Method": "CreateSyllabusTemplateSection",
+    "RelativePath": "api/donvi/syllabustemplate/create-template-section",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusTemplateSectionDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
     "Method": "InfoTemplateSyllabus",
     "RelativePath": "api/donvi/syllabustemplate/info-mau-de-cuong",
     "HttpMethod": "POST",
@@ -1177,6 +1193,42 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.TemplateSyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
+    "Method": "LoadOption",
+    "RelativePath": "api/donvi/syllabustemplate/load-option-template-section",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
+    "Method": "LoadSelectedTemplate",
+    "RelativePath": "api/donvi/syllabustemplate/load-selected-template",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
+    "Method": "LoadTemplateSection",
+    "RelativePath": "api/donvi/syllabustemplate/loads-template-section",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusTemplateSectionDTOs",
         "IsRequired": true
       }
     ],

@@ -1,18 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\templatesyllabusdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\backend\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\templatesyllabusdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\templatesyllabusdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\models\\dtos\\syllabustemplatesectiondtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\syllabustemplatesectiondtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\backend\\be_project_qldcct\\projectqldcct\\models\\entities\\syllabustemplatesection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\entities\\syllabustemplatesection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\models\\entities\\syllabustemplatesection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\entities\\syllabustemplatesection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\backend\\be_project_qldcct\\projectqldcct\\models\\dtos\\syllabustemplatesectiondtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\syllabustemplatesectiondtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,39 +26,37 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "SyllabusTemplateSection.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\Entities\\SyllabusTemplateSection.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\Entities\\SyllabusTemplateSection.cs",
               "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\Entities\\SyllabusTemplateSection.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\Entities\\SyllabusTemplateSection.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\Entities\\SyllabusTemplateSection.cs",
               "RelativeToolTip": "ProjectQLDCCT\\Models\\Entities\\SyllabusTemplateSection.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-02T09:33:21.247Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-02T09:33:21.247Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "SyllabusTemplateSectionDTOs.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\SyllabusTemplateSectionDTOs.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\SyllabusTemplateSectionDTOs.cs",
               "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\DTOs\\SyllabusTemplateSectionDTOs.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\SyllabusTemplateSectionDTOs.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\SyllabusTemplateSectionDTOs.cs",
               "RelativeToolTip": "ProjectQLDCCT\\Models\\DTOs\\SyllabusTemplateSectionDTOs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-02T09:33:10.569Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-02T09:33:10.569Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "TemplateSyllabusDVAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\TemplateSyllabusDVAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\TemplateSyllabusDVAPI.cs",
               "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\TemplateSyllabusDVAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\TemplateSyllabusDVAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BackEnd\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\TemplateSyllabusDVAPI.cs",
               "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\TemplateSyllabusDVAPI.cs",
-              "ViewState": "AgIAAKoAAAAAAAAAAAAYwMAAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAACABAAAAAAAAAAAYwAwBAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-02T08:39:38.85Z",
               "EditorCaption": ""

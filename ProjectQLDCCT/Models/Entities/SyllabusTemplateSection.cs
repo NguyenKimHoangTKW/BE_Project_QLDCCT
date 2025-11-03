@@ -12,13 +12,13 @@ public partial class SyllabusTemplateSection
     [Key]
     public int id_template_section { get; set; }
 
-    public int id_template { get; set; }
+    public int? id_template { get; set; }
 
     [StringLength(50)]
-    public string section_code { get; set; } = null!;
+    public string? section_code { get; set; }
 
     [StringLength(200)]
-    public string section_name { get; set; } = null!;
+    public string? section_name { get; set; }
 
     public int? is_required { get; set; }
 
@@ -41,5 +41,5 @@ public partial class SyllabusTemplateSection
 
     [ForeignKey("id_template")]
     [InverseProperty("SyllabusTemplateSections")]
-    public virtual SyllabusTemplate id_templateNavigation { get; set; } = null!;
+    public virtual SyllabusTemplate? id_templateNavigation { get; set; }
 }
