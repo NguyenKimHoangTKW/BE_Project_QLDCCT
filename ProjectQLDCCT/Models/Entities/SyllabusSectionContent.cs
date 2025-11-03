@@ -14,6 +14,8 @@ public partial class SyllabusSectionContent
 
     public int id_section { get; set; }
 
+    public string? content_value { get; set; }
+
     public string? content_text { get; set; }
 
     [ForeignKey("id_section")]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.ConditionalFormatting.Contracts;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
@@ -148,5 +149,90 @@ namespace ProjectQLDCCT.Controllers.DonVi
             var checkSyllabusSection = await db.SyllabusTemplateSections.Where(x => CheckSection.Contains(x.id_template)).ToListAsync();
             return Ok();
         }
+
+        // Create Template Section
+
+        [HttpGet]
+        [Route("load-selected-template")]
+        public async Task<IActionResult> LoadSelectedTemplate()
+        {
+            var GetFaculty = await GetUserPermissionFaculties();
+            var loadListTemplateByFaculty = await db.SyllabusTemplates
+                .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .Select(x => new
+                {
+                    x.id_template,
+                    x.template_name
+                })
+                .ToListAsync();
+            return Ok(loadListTemplateByFaculty);
+        }
+        [HttpGet]
+        [Route("load-option-template-section")]
+        public async Task<IActionResult> LoadOption()
+        {
+            var ListContentType = await db.ContentTypes
+                .Select(x => new
+                {
+                    x.id,
+                    x.code,
+                    x.name
+                })
+                .ToListAsync();
+            var ListDataBinding = await db.DataBindings
+                .Select(x => new
+                {
+                    x.id,
+                    x.code,
+                    x.name
+                })
+                .ToListAsync();
+            return Ok(new
+            {
+                contentType = ListContentType,
+                dataBinding = ListDataBinding
+            });
+        }
+        [HttpPost]
+        [Route("create-template-section")]
+        public async Task<IActionResult> CreateSyllabusTemplateSection([FromBody] SyllabusTemplateSectionDTOs items)
+        {
+            if (string.IsNullOrWhiteSpace(items.section_code))
+                return Ok(new { message = "Không được bỏ trống trường Số thứ tự mục chính", success = false });
+
+            if (string.IsNullOrWhiteSpace(items.section_name))
+                return Ok(new { message = "Không được bỏ trống trường Tên tiêu đề", success = false });
+
+            bool existOrder = await db.SyllabusTemplateSections
+                .AnyAsync(x => x.id_template == items.id_template && x.order_index == items.order_index);
+            if (existOrder)
+                return Ok(new { message = "Bị trùng thứ tự hiển thị, vui lòng kiểm tra lại", success = false });
+
+            bool existCode = await db.SyllabusTemplateSections
+                .AnyAsync(x => x.id_template == items.id_template &&
+                               x.section_code.ToLower().Trim() == items.section_code.ToLower().Trim());
+            if (existCode)
+                return Ok(new { message = "Bị trùng Số thứ tự mục chính, vui lòng kiểm tra lại", success = false });
+            bool existName = await db.SyllabusTemplateSections
+                .AnyAsync(x => x.id_template == items.id_template &&
+                               x.section_name.ToLower().Trim() == items.section_name.ToLower().Trim());
+            if (existName)
+                return Ok(new { message = "Bị trùng Tên tiêu đề, vui lòng kiểm tra lại", success = false });
+            var newRecord = new SyllabusTemplateSection
+            {
+                id_template = items.id_template,
+                section_name = items.section_name.Trim(),
+                section_code = items.section_code.Trim(),
+                is_required = items.is_required,
+                order_index = items.order_index,
+                id_contentType = items.id_contentType,
+                id_dataBinding = items.id_dataBinding
+            };
+
+            db.SyllabusTemplateSections.Add(newRecord);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Tạo mới Tiêu đề mẫu đề cương thành công", success = true });
+        }
+
     }
 }

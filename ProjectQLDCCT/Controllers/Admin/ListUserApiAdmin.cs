@@ -120,7 +120,6 @@ namespace ProjectQLDCCT.Controllers.Admin
         public async Task<IActionResult> LoadListDonVi([FromBody] FacultyDTOs items)
         {
             var ListDonVi = await db.Faculties
-                .Where(x => x.id_year == items.id_year)
                 .Select(x => new
                 {
                     x.id_faculty,

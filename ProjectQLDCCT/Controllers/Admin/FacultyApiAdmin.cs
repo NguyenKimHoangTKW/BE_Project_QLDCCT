@@ -28,32 +28,11 @@ namespace ProjectQLDCCT.Controllers.Admin
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             _hubContext = hubContext;
         }
-        [HttpGet]
-        [Route("loadsnambydonvi")]
-        public async Task<IActionResult> LoadOptionFaculty()
-        {
-            var GetItems = await db.Years
-                .Select(x => new
-                {
-                    value = x.id_year,
-                    text = x.name_year
-                })
-                .ToListAsync();
-            if (GetItems.Count > 0)
-            {
-                return Ok(new { data = GetItems, success = true });
-            }
-            else
-            {
-                return Ok(new { message = "Không có dữ liệu", success = false });
-            }
-        }
         [HttpPost]
         [Route("loadsdonvibynam/{id}")]
         public async Task<IActionResult> LoadData(int id, [FromBody] DataTableRequest request)
         {
             var query = db.Faculties
-                .Where(x => x.id_year == id)
                 .Select(x => new
                 {
                     x.id_faculty,
@@ -61,7 +40,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.name_faculty,
                     x.time_cre,
                     x.time_up,
-                    x.id_yearNavigation.name_year
                 });
             if (!string.IsNullOrEmpty(request.SearchText))
             {
@@ -89,7 +67,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                 name_faculty = items.name_faculty,
                 time_cre = unixTimestamp,
                 time_up = unixTimestamp,
-                id_year = items.id_year
             };
             db.Faculties.Add(new_record);
             await db.SaveChangesAsync();
@@ -176,18 +153,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                             if (string.IsNullOrEmpty(ten_nam_hoc))
                                 continue;
 
-                            var check_nam_hoc = await db.Years
-                                .FirstOrDefaultAsync(x => x.name_year.ToLower().Trim() == ten_nam_hoc.ToLower());
-
-                            if (check_nam_hoc == null)
-                            {
-                                return Ok(new
-                                {
-                                    message = $"Năm học {ten_nam_hoc} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại.",
-                                    success = false
-                                });
-                            }
-
                             var check_khoa = await db.Faculties
                                 .FirstOrDefaultAsync(x =>
                                     x.code_faciulty.ToLower().Trim() == ma_khoa.ToLower() &&
@@ -199,7 +164,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                                 {
                                     code_faciulty = string.IsNullOrWhiteSpace(ma_khoa) ? null : ma_khoa.ToUpper(),
                                     name_faculty = ten_khoa,
-                                    id_year = check_nam_hoc.id_year,
                                     time_cre = unixTimestamp,
                                     time_up = unixTimestamp
                                 };

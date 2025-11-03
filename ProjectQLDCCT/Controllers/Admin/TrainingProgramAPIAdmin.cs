@@ -22,25 +22,12 @@ namespace ProjectQLDCCT.Controllers.Admin
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
+
         [HttpGet]
-        [Route("loads-select-nam")]
-        public async Task<IActionResult> LoadNamHoc()
-        {
-            var GetItems = await db.Years
-                .Select(x => new
-                {
-                    value_year = x.id_year,
-                    name_year = x.name_year,
-                })
-                .ToListAsync();
-            return Ok(GetItems);
-        }
-        [HttpGet]
-        [Route("loads-select-don-vi-by-year/{value_year}")]
-        public async Task<IActionResult> LoadDonViByCTDT(int value_year)
+        [Route("loads-select-don-vi-by-year")]
+        public async Task<IActionResult> LoadDonViByCTDT()
         {
             var GetDV = await db.Faculties
-                .Where(x => x.id_year == value_year)
                 .Select(x => new
                 {
                     value = x.id_faculty,
@@ -192,25 +179,9 @@ namespace ProjectQLDCCT.Controllers.Admin
                             var ten_don_vi = worksheet.Cells[row, 2].Text?.Trim();
                             var ma_ctdt = worksheet.Cells[row, 3].Text?.Trim();
                             var ten_ctdt = worksheet.Cells[row, 4].Text?.Trim();
-                            var ten_nam_hoc = worksheet.Cells[row, 5].Text?.Trim();
-                            if (string.IsNullOrEmpty(ten_nam_hoc))
-                                continue;
-
-                            var check_nam_hoc = await db.Years
-                                .FirstOrDefaultAsync(x => x.name_year.ToLower().Trim() == ten_nam_hoc.ToLower());
-
-                            if (check_nam_hoc == null)
-                            {
-                                return Ok(new
-                                {
-                                    message = $"Năm học {ten_nam_hoc} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại ở dòng {row}.",
-                                    success = false
-                                });
-                            }
                             var checkDonVi = await db.Faculties
                                     .FirstOrDefaultAsync(x =>
-                                        (x.name_faculty ?? "").ToLower().Trim() == ten_don_vi.ToLower().Trim() &&
-                                        x.id_year == check_nam_hoc.id_year);
+                                        (x.name_faculty ?? "").ToLower().Trim() == ten_don_vi.ToLower().Trim());
                             if (string.IsNullOrEmpty(ten_don_vi))
                                 continue;
 

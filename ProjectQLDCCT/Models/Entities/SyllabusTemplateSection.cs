@@ -24,28 +24,22 @@ public partial class SyllabusTemplateSection
 
     public int? order_index { get; set; }
 
-    public int? is_CLO { get; set; }
+    public int? id_contentType { get; set; }
 
-    public int? is_CO { get; set; }
-
-    public int? is_CoreMatrix { get; set; }
+    public int? id_dataBinding { get; set; }
 
     [InverseProperty("id_template_sectionNavigation")]
     public virtual ICollection<SyllabusSection> SyllabusSections { get; set; } = new List<SyllabusSection>();
 
+    [ForeignKey("id_contentType")]
+    [InverseProperty("SyllabusTemplateSections")]
+    public virtual ContentType? id_contentTypeNavigation { get; set; }
+
+    [ForeignKey("id_dataBinding")]
+    [InverseProperty("SyllabusTemplateSections")]
+    public virtual DataBinding? id_dataBindingNavigation { get; set; }
+
     [ForeignKey("id_template")]
     [InverseProperty("SyllabusTemplateSections")]
     public virtual SyllabusTemplate id_templateNavigation { get; set; } = null!;
-
-    [ForeignKey("is_CLO")]
-    [InverseProperty("SyllabusTemplateSections")]
-    public virtual CourseLearningOutcome? is_CLONavigation { get; set; }
-
-    [ForeignKey("is_CO")]
-    [InverseProperty("SyllabusTemplateSections")]
-    public virtual Course_Objective? is_CONavigation { get; set; }
-
-    [ForeignKey("is_CoreMatrix")]
-    [InverseProperty("SyllabusTemplateSections")]
-    public virtual CoreCourseMatrix? is_CoreMatrixNavigation { get; set; }
 }

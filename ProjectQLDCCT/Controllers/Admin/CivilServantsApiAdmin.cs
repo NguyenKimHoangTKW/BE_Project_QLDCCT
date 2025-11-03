@@ -20,25 +20,11 @@ namespace ProjectQLDCCT.Controllers.Admin
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
-        [HttpGet]
-        [Route("load-option-civilservants")]
-        public async Task<IActionResult> LoadOption()
-        {
-            var GetYear = await db.Years
-                .Select(x => new
-                {
-                    value = x.id_year,
-                    text = x.name_year
-                })
-                .ToListAsync();
-            return Ok(GetYear);
-        }
         [HttpPost]
         [Route("{id}")]
         public async Task<IActionResult> GetCivilServants(int id, [FromBody] DataTableRequest request)
         {
             var query = db.CivilServants
-                .Where(x => x.id_year == id)
                 .Select(x => new
                 {
                     x.id_civilSer,
@@ -46,7 +32,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.fullname_civilSer,
                     x.email,
                     x.birthday,
-                    name_year = x.id_yearNavigation.name_year,
                     x.time_cre,
                     x.time_up
                 });
@@ -69,7 +54,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                 fullname_civilSer = items.fullname_civilSer,
                 email = items.email,
                 birthday = items.birthday,
-                id_year = items.value_year,
                 time_cre = unixTimestamp,
                 time_up = unixTimestamp
             };
@@ -90,7 +74,6 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.fullname_civilSer,
                     x.email,
                     x.birthday,
-                    x.id_year
                 })
                 .FirstOrDefaultAsync();
             return Ok(GetItems);

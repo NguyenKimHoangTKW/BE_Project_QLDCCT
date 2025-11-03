@@ -16,11 +16,17 @@ public partial class QLDCContext : DbContext
     {
     }
 
-    public virtual DbSet<ChildrenRelationshipRatingScale> ChildrenRelationshipRatingScales { get; set; }
+    public virtual DbSet<CLO_CO_Mapping> CLO_CO_Mappings { get; set; }
+
+    public virtual DbSet<CLO_PI_Mapping> CLO_PI_Mappings { get; set; }
+
+    public virtual DbSet<CLO_PLO_Mapping> CLO_PLO_Mappings { get; set; }
 
     public virtual DbSet<CivilServant> CivilServants { get; set; }
 
     public virtual DbSet<Class> Classes { get; set; }
+
+    public virtual DbSet<ContentType> ContentTypes { get; set; }
 
     public virtual DbSet<CoreCourseMatrix> CoreCourseMatrices { get; set; }
 
@@ -30,11 +36,15 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<CourseLearningOutcome> CourseLearningOutcomes { get; set; }
 
-    public virtual DbSet<Course_Objective> Course_Objectives { get; set; }
+    public virtual DbSet<CourseObjective> CourseObjectives { get; set; }
+
+    public virtual DbSet<DataBinding> DataBindings { get; set; }
 
     public virtual DbSet<Faculty> Faculties { get; set; }
 
     public virtual DbSet<FunctionUser> FunctionUsers { get; set; }
+
+    public virtual DbSet<GroupCourse> GroupCourses { get; set; }
 
     public virtual DbSet<Group_Course> Group_Courses { get; set; }
 
@@ -44,11 +54,13 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<KeyYearSemester> KeyYearSemesters { get; set; }
 
+    public virtual DbSet<LevelContribution> LevelContributions { get; set; }
+
     public virtual DbSet<LogOperation> LogOperations { get; set; }
 
-    public virtual DbSet<RatingScaleMatrix> RatingScaleMatrices { get; set; }
+    public virtual DbSet<PerformanceIndicator> PerformanceIndicators { get; set; }
 
-    public virtual DbSet<RelationshipRatingScale> RelationshipRatingScales { get; set; }
+    public virtual DbSet<ProgramLearningOutcome> ProgramLearningOutcomes { get; set; }
 
     public virtual DbSet<Semester> Semesters { get; set; }
 
@@ -76,24 +88,52 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<UserByFaculProgram> UserByFaculPrograms { get; set; }
 
-    public virtual DbSet<Year> Years { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=dbQLDC;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ChildrenRelationshipRatingScale>(entity =>
+        modelBuilder.Entity<CLO_CO_Mapping>(entity =>
         {
-            entity.HasOne(d => d.id_parentRRSNavigation).WithMany(p => p.ChildrenRelationshipRatingScales).HasConstraintName("FK_ChildrenRelationshipRatingScale_RelationshipRatingScale");
+            entity.HasOne(d => d.id_CLONavigation).WithMany(p => p.CLO_CO_Mappings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CLO_CO_Mapping_CourseLearningOutcomes");
+
+            entity.HasOne(d => d.id_CONavigation).WithMany(p => p.CLO_CO_Mappings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CLO_CO_Mapping_CourseObjectives");
+
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.CLO_CO_Mappings).HasConstraintName("FK_CLO_CO_Mapping_TrainingProgram");
+        });
+
+        modelBuilder.Entity<CLO_PI_Mapping>(entity =>
+        {
+            entity.HasOne(d => d.Id_CLONavigation).WithMany(p => p.CLO_PI_Mappings).HasConstraintName("FK_CLO_PI_Mapping_CourseLearningOutcomes");
+
+            entity.HasOne(d => d.Id_levelNavigation).WithMany(p => p.CLO_PI_Mappings).HasConstraintName("FK_CLO_PI_Mapping_LevelContribution");
+
+            entity.HasOne(d => d.id_PINavigation).WithMany(p => p.CLO_PI_Mappings).HasConstraintName("FK_CLO_PI_Mapping_PerformanceIndicator");
+        });
+
+        modelBuilder.Entity<CLO_PLO_Mapping>(entity =>
+        {
+            entity.HasOne(d => d.Id_LevelNavigation).WithMany(p => p.CLO_PLO_Mappings).HasConstraintName("FK_CLO_PLO_Mapping_LevelContribution");
+
+            entity.HasOne(d => d.id_CLONavigation).WithMany(p => p.CLO_PLO_Mappings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CLO_PLO_Mapping_CourseLearningOutcomes");
+
+            entity.HasOne(d => d.id_CoreCourseMatrixNavigation).WithMany(p => p.CLO_PLO_Mappings)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CLO_PLO_Mapping_CoreCourseMatrix");
+
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.CLO_PLO_Mappings).HasConstraintName("FK_CLO_PLO_Mapping_TrainingProgram");
         });
 
         modelBuilder.Entity<CivilServant>(entity =>
         {
             entity.ToTable(tb => tb.HasTrigger("trg_delete_CivilServants"));
-
-            entity.HasOne(d => d.id_yearNavigation).WithMany(p => p.CivilServants).HasConstraintName("FK_CivilServants_Year");
         });
 
         modelBuilder.Entity<Class>(entity =>
@@ -107,7 +147,7 @@ public partial class QLDCContext : DbContext
         {
             entity.ToTable("CoreCourseMatrix", tb => tb.HasTrigger("trg_delete_CoreCourseMatrix"));
 
-            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.CoreCourseMatrices).HasConstraintName("FK_CoreCourseMatrix_TrainingProgram");
+            entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.CoreCourseMatrices).HasConstraintName("FK_CoreCourseMatrix_Faculty");
         });
 
         modelBuilder.Entity<Course>(entity =>
@@ -132,16 +172,33 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_semesterNavigation).WithMany(p => p.CourseByKeys).HasConstraintName("FK_CourseByKey_Semester");
         });
 
+        modelBuilder.Entity<CourseLearningOutcome>(entity =>
+        {
+            entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.CourseLearningOutcomes).HasConstraintName("FK_CourseLearningOutcomes_Faculty");
+
+            entity.HasOne(d => d.program).WithMany(p => p.CourseLearningOutcomes).HasConstraintName("FK_CourseLearningOutcomes_TrainingProgram");
+        });
+
+        modelBuilder.Entity<CourseObjective>(entity =>
+        {
+            entity.HasKey(e => e.id).HasName("PK_Course Objectives");
+
+            entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.CourseObjectives).HasConstraintName("FK_CourseObjectives_Faculty");
+        });
+
         modelBuilder.Entity<Faculty>(entity =>
         {
             entity.ToTable("Faculty", tb => tb.HasTrigger("trg_delete_Faculty"));
-
-            entity.HasOne(d => d.id_yearNavigation).WithMany(p => p.Faculties).HasConstraintName("FK_Faculty_Year");
         });
 
         modelBuilder.Entity<FunctionUser>(entity =>
         {
             entity.HasOne(d => d.id_type_usersNavigation).WithMany(p => p.FunctionUsers).HasConstraintName("FK_FunctionUsers_TypeUsers");
+        });
+
+        modelBuilder.Entity<GroupCourse>(entity =>
+        {
+            entity.HasKey(e => e.id).HasName("PK__GroupCou__3213E83FC2C5D75F");
         });
 
         modelBuilder.Entity<Group_Course>(entity =>
@@ -163,18 +220,9 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.KeyYearSemesters).HasConstraintName("FK_KeyYearSemester_Faculty");
         });
 
-        modelBuilder.Entity<RatingScaleMatrix>(entity =>
+        modelBuilder.Entity<PerformanceIndicator>(entity =>
         {
-            entity.Property(e => e.description).IsFixedLength();
-
-            entity.HasOne(d => d.id_core_course_matrixNavigation).WithMany(p => p.RatingScaleMatrices).HasConstraintName("FK_RatingScaleMatrix_CoreCourseMatrix");
-        });
-
-        modelBuilder.Entity<RelationshipRatingScale>(entity =>
-        {
-            entity.ToTable("RelationshipRatingScale", tb => tb.HasTrigger("trg_delete_RelationshipRatingScale"));
-
-            entity.HasOne(d => d.id_core_rating_scale_matrixNavigation).WithMany(p => p.RelationshipRatingScales).HasConstraintName("FK_RelationshipRatingScale_CoreCourseMatrix");
+            entity.HasOne(d => d.Id_PLONavigation).WithMany(p => p.PerformanceIndicators).HasConstraintName("FK_PerformanceIndicator_ProgramLearningOutcome");
         });
 
         modelBuilder.Entity<Semester>(entity =>
@@ -248,15 +296,13 @@ public partial class QLDCContext : DbContext
 
             entity.Property(e => e.is_required).HasDefaultValue(1);
 
+            entity.HasOne(d => d.id_contentTypeNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_ContentType");
+
+            entity.HasOne(d => d.id_dataBindingNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_DataBinding");
+
             entity.HasOne(d => d.id_templateNavigation).WithMany(p => p.SyllabusTemplateSections)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__SyllabusT__id_te__6A30C649");
-
-            entity.HasOne(d => d.is_CLONavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_CourseLearningOutcomes");
-
-            entity.HasOne(d => d.is_CONavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_Course Objectives");
-
-            entity.HasOne(d => d.is_CoreMatrixNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_CoreCourseMatrix");
         });
 
         modelBuilder.Entity<TeacherBySubject>(entity =>
@@ -294,11 +340,6 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_programNavigation).WithMany(p => p.UserByFaculPrograms).HasConstraintName("FK_UserByFaculProgram_TrainingProgram");
 
             entity.HasOne(d => d.id_usersNavigation).WithMany(p => p.UserByFaculPrograms).HasConstraintName("FK_UserByFaculProgram_Users");
-        });
-
-        modelBuilder.Entity<Year>(entity =>
-        {
-            entity.ToTable("Year", tb => tb.HasTrigger("trg_delete_Year"));
         });
 
         OnModelCreatingPartial(modelBuilder);

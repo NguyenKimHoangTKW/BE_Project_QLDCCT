@@ -17,6 +17,8 @@ public partial class Course_Objective
 
     public string? describe_CO { get; set; }
 
+    public string? typeOfCapacity { get; set; }
+
     public int? time_cre { get; set; }
 
     public int? time_up { get; set; }

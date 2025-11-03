@@ -22,21 +22,15 @@ public partial class CoreCourseMatrix
 
     public int? time_up { get; set; }
 
-    public int? id_program { get; set; }
+    public int? id_faculty { get; set; }
 
     [StringLength(50)]
     public string? version { get; set; }
 
-    [InverseProperty("id_core_course_matrixNavigation")]
-    public virtual ICollection<RatingScaleMatrix> RatingScaleMatrices { get; set; } = new List<RatingScaleMatrix>();
+    [InverseProperty("id_CoreCourseMatrixNavigation")]
+    public virtual ICollection<CLO_PLO_Mapping> CLO_PLO_Mappings { get; set; } = new List<CLO_PLO_Mapping>();
 
-    [InverseProperty("id_core_rating_scale_matrixNavigation")]
-    public virtual ICollection<RelationshipRatingScale> RelationshipRatingScales { get; set; } = new List<RelationshipRatingScale>();
-
-    [InverseProperty("is_CoreMatrixNavigation")]
-    public virtual ICollection<SyllabusTemplateSection> SyllabusTemplateSections { get; set; } = new List<SyllabusTemplateSection>();
-
-    [ForeignKey("id_program")]
+    [ForeignKey("id_faculty")]
     [InverseProperty("CoreCourseMatrices")]
-    public virtual TrainingProgram? id_programNavigation { get; set; }
+    public virtual Faculty? id_facultyNavigation { get; set; }
 }

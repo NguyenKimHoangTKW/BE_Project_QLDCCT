@@ -22,7 +22,14 @@ public partial class Faculty
 
     public int? time_up { get; set; }
 
-    public int? id_year { get; set; }
+    [InverseProperty("id_facultyNavigation")]
+    public virtual ICollection<CoreCourseMatrix> CoreCourseMatrices { get; set; } = new List<CoreCourseMatrix>();
+
+    [InverseProperty("id_facultyNavigation")]
+    public virtual ICollection<CourseLearningOutcome> CourseLearningOutcomes { get; set; } = new List<CourseLearningOutcome>();
+
+    [InverseProperty("id_facultyNavigation")]
+    public virtual ICollection<CourseObjective> CourseObjectives { get; set; } = new List<CourseObjective>();
 
     [InverseProperty("id_faccultyNavigation")]
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
@@ -41,8 +48,4 @@ public partial class Faculty
 
     [InverseProperty("id_facultyNavigation")]
     public virtual ICollection<UserByFaculProgram> UserByFaculPrograms { get; set; } = new List<UserByFaculProgram>();
-
-    [ForeignKey("id_year")]
-    [InverseProperty("Faculties")]
-    public virtual Year? id_yearNavigation { get; set; }
 }

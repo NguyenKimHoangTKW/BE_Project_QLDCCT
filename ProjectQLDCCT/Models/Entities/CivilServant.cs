@@ -22,16 +22,10 @@ public partial class CivilServant
 
     public DateOnly? birthday { get; set; }
 
-    public int? id_year { get; set; }
-
     public int? time_cre { get; set; }
 
     public int? time_up { get; set; }
 
     [InverseProperty("id_civilSerNavigation")]
     public virtual ICollection<Syllabus> Syllabi { get; set; } = new List<Syllabus>();
-
-    [ForeignKey("id_year")]
-    [InverseProperty("CivilServants")]
-    public virtual Year? id_yearNavigation { get; set; }
 }

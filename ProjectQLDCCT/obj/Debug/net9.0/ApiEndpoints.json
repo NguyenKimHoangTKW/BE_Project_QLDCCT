@@ -54,16 +54,6 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
-    "Method": "LoadOption",
-    "RelativePath": "api/admin/civilservants/load-option-civilservants",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
     "Method": "LoadInfo",
     "RelativePath": "api/admin/civilservants/load-thong-tin/{id}",
     "HttpMethod": "GET",
@@ -134,16 +124,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
-    "Method": "LoadOptionFaculty",
-    "RelativePath": "api/admin/faculty/loadsnambydonvi",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -346,23 +326,7 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
     "Method": "LoadDonViByCTDT",
-    "RelativePath": "api/admin/program/loads-select-don-vi-by-year/{value_year}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "value_year",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
-    "Method": "LoadNamHoc",
-    "RelativePath": "api/admin/program/loads-select-nam",
+    "RelativePath": "api/admin/program/loads-select-don-vi-by-year",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -545,101 +509,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "Create",
-    "RelativePath": "api/admin/year",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "items",
-        "Type": "ProjectQLDCCT.Models.DTOs.YearsDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "GetById",
-    "RelativePath": "api/admin/year/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "Update",
-    "RelativePath": "api/admin/year/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "items",
-        "Type": "ProjectQLDCCT.Models.DTOs.YearsDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "Delete",
-    "RelativePath": "api/admin/year/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "GetAll",
-    "RelativePath": "api/admin/year/lay-du-lieu-nam-hoc",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.YearController",
-    "Method": "LoadSelectedYear",
-    "RelativePath": "api/admin/year/loads-selected-year",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CTDTPermissionAPI",
     "Method": "LoadListCTDTByPermission",
     "RelativePath": "api/ctdt/permission/loads-ctdt-by-permission",
@@ -647,6 +516,166 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "UpdateCLO",
+    "RelativePath": "api/donvi/course-learning-outcome/cap-nhat-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "InfoCLO",
+    "RelativePath": "api/donvi/course-learning-outcome/info-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "LoadCLO",
+    "RelativePath": "api/donvi/course-learning-outcome/load-du-lieu-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/donvi/course-learning-outcome/them-moi-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "DeleteCLO",
+    "RelativePath": "api/donvi/course-learning-outcome/xoa-du-lieu-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "InfoCO",
+    "RelativePath": "api/donvi/course-objectives/info-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "LoadData",
+    "RelativePath": "api/donvi/course-objectives/load-du-lieu-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "ThemMoiCO",
+    "RelativePath": "api/donvi/course-objectives/them-moi-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "UpdateCO",
+    "RelativePath": "api/donvi/course-objectives/update-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "DeleteCO",
+    "RelativePath": "api/donvi/course-objectives/xoa-du-lieu-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -853,6 +882,176 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "UpdatePIThuocPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/cap-nhat-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "InfoPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/info-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "LoadCTDTThuocDV",
+    "RelativePath": "api/donvi/program-learning-outcome/load-ctdt-thuoc-dv",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "LoadPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/load-danh-sach-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "LoadPITrongPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/load-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/donvi/program-learning-outcome/them-moi-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "ThemMoiPIThuocPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/them-moi-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "InfoPIThuocPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/thong-tin-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "UpdatePLO",
+    "RelativePath": "api/donvi/program-learning-outcome/update-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "DeletePLO",
+    "RelativePath": "api/donvi/program-learning-outcome/xoa-du-lieu-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "DeletePIThuocPLO",
+    "RelativePath": "api/donvi/program-learning-outcome/xoa-du-lieu-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

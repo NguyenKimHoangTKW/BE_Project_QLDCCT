@@ -16,10 +16,30 @@ public partial class CourseLearningOutcome
 
     public string? describe_CLO { get; set; }
 
+    public int? id_faculty { get; set; }
+
+    public int? program_id { get; set; }
+
+    public string? bloom_level { get; set; }
+
     public int? time_cre { get; set; }
 
     public int? time_up { get; set; }
 
-    [InverseProperty("is_CLONavigation")]
-    public virtual ICollection<SyllabusTemplateSection> SyllabusTemplateSections { get; set; } = new List<SyllabusTemplateSection>();
+    [InverseProperty("id_CLONavigation")]
+    public virtual ICollection<CLO_CO_Mapping> CLO_CO_Mappings { get; set; } = new List<CLO_CO_Mapping>();
+
+    [InverseProperty("Id_CLONavigation")]
+    public virtual ICollection<CLO_PI_Mapping> CLO_PI_Mappings { get; set; } = new List<CLO_PI_Mapping>();
+
+    [InverseProperty("id_CLONavigation")]
+    public virtual ICollection<CLO_PLO_Mapping> CLO_PLO_Mappings { get; set; } = new List<CLO_PLO_Mapping>();
+
+    [ForeignKey("id_faculty")]
+    [InverseProperty("CourseLearningOutcomes")]
+    public virtual Faculty? id_facultyNavigation { get; set; }
+
+    [ForeignKey("program_id")]
+    [InverseProperty("CourseLearningOutcomes")]
+    public virtual TrainingProgram? program { get; set; }
 }

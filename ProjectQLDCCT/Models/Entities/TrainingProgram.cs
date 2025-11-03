@@ -25,13 +25,19 @@ public partial class TrainingProgram
     public int? time_up { get; set; }
 
     [InverseProperty("id_programNavigation")]
+    public virtual ICollection<CLO_CO_Mapping> CLO_CO_Mappings { get; set; } = new List<CLO_CO_Mapping>();
+
+    [InverseProperty("id_programNavigation")]
+    public virtual ICollection<CLO_PLO_Mapping> CLO_PLO_Mappings { get; set; } = new List<CLO_PLO_Mapping>();
+
+    [InverseProperty("id_programNavigation")]
     public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 
     [InverseProperty("id_programNavigation")]
-    public virtual ICollection<CoreCourseMatrix> CoreCourseMatrices { get; set; } = new List<CoreCourseMatrix>();
-
-    [InverseProperty("id_programNavigation")]
     public virtual ICollection<CourseByKey> CourseByKeys { get; set; } = new List<CourseByKey>();
+
+    [InverseProperty("program")]
+    public virtual ICollection<CourseLearningOutcome> CourseLearningOutcomes { get; set; } = new List<CourseLearningOutcome>();
 
     [InverseProperty("id_programNavigation")]
     public virtual ICollection<UserByFaculProgram> UserByFaculPrograms { get; set; } = new List<UserByFaculProgram>();
