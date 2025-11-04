@@ -1252,6 +1252,16 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
+    "Method": "LoadsCTDTByDV",
+    "RelativePath": "api/donvi/syllabustemplate/loads-selected-program",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
     "Method": "LoadTemplateSection",
     "RelativePath": "api/donvi/syllabustemplate/loads-template-section",
     "HttpMethod": "POST",
@@ -1341,6 +1351,42 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.TemplateSyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewEvaluateAPI",
+    "Method": "LoadsPreviewCLO",
+    "RelativePath": "api/evaluate/preview-course-learning-outcomes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewEvaluateAPI",
+    "Method": "LoadsPreviewCO",
+    "RelativePath": "api/evaluate/preview-course-objectives",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewEvaluateAPI",
+    "Method": "LoadsPreviewPLO",
+    "RelativePath": "api/evaluate/preview-program-learning-outcome",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
         "IsRequired": true
       }
     ],

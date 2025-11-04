@@ -1963,6 +1963,61 @@
         }
       }
     },
+    "/api/evaluate/preview-course-objectives": {
+      "get": {
+        "tags": [
+          "PreviewEvaluateAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/evaluate/preview-course-learning-outcomes": {
+      "get": {
+        "tags": [
+          "PreviewEvaluateAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/evaluate/preview-program-learning-outcome": {
+      "post": {
+        "tags": [
+          "PreviewEvaluateAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/syllabustemplate/load-mau-de-cuong": {
       "post": {
         "tags": [
@@ -2359,6 +2414,18 @@
         }
       }
     },
+    "/api/donvi/syllabustemplate/loads-selected-program": {
+      "get": {
+        "tags": [
+          "TemplateSyllabusDVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/program/loads-select-don-vi-by-year": {
       "get": {
         "tags": [
@@ -2668,7 +2735,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "id_faculty": {
+          "id_program": {
             "type": "integer",
             "format": "int32",
             "nullable": true

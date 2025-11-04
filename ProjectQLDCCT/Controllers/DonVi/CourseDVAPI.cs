@@ -21,38 +21,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
-        private async Task<List<int>> GetUserPermissionFaculties()
-        {
-            var token = HttpContext.Request.Cookies["jwt"];
-            if (string.IsNullOrWhiteSpace(token))
-                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
 
-            var handler = new JwtSecurityTokenHandler();
-            JwtSecurityToken jwtToken;
-
-            try
-            {
-                jwtToken = handler.ReadJwtToken(token);
-            }
-            catch
-            {
-                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
-            }
-
-            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
-            if (string.IsNullOrEmpty(userIdClaim))
-                throw new UnauthorizedAccessException("Token không chứa id_users.");
-
-            if (!int.TryParse(userIdClaim, out int userId))
-                throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
-
-            var loadPermission = await db.UserByFaculPrograms
-                .Where(x => x.id_users == userId && x.id_faculty != null)
-                .Select(x => x.id_facultyNavigation.id_faculty)
-                .ToListAsync();
-
-            return loadPermission;
-        }
 
         [HttpGet]
         [Route("load-select-chuc-nang-course")]
@@ -84,10 +53,9 @@ namespace ProjectQLDCCT.Controllers.CTDT
         public async Task<IActionResult> LoadCourse([FromBody] CourseDTOs items)
         {
 
-            var permissionFacultyIds = await GetUserPermissionFaculties();
             var query = db.Courses
                 .AsNoTracking()
-                .Where(x => permissionFacultyIds.Contains(x.id_facculty ?? 0));
+                .Where(x => items.id_program == x.id_program);
 
             if (items.id_gr_course > 0)
             {
@@ -135,7 +103,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("them-moi-mon-hoc")]
         public async Task<IActionResult> ThemMoiMonHoc([FromBody] CourseDTOs items)
         {
-            var loadPermission = await GetUserPermissionFaculties();
             if (string.IsNullOrEmpty(items.code_course))
             {
                 return Ok(new { message = "Không được bỏ trống trường Mã môn học", success = false });
@@ -144,7 +111,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 return Ok(new { message = "Không được bỏ trống trường Tên môn học", success = false });
             }
-            var CheckMonHoc = await db.Courses.Where(x => loadPermission.Contains(x.id_facculty ?? 0) &&
+            var CheckMonHoc = await db.Courses.Where(x => items.id_program == x.id_program &&
             x.code_course.ToLower().Trim() == items.code_course.ToLower().Trim() &&
             x.name_course.ToLower().Trim() == items.name_course.ToLower().Trim())
             .FirstOrDefaultAsync();
@@ -154,7 +121,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
             }
             var new_record = new Course
             {
-                id_facculty = loadPermission.FirstOrDefault(),
+                id_program = items.id_program,
                 code_course = items.code_course,
                 name_course = items.name_course,
                 id_gr_course = items.id_gr_course,
@@ -178,7 +145,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 .Select(x => new
                 {
                     x.id_course,
-                    x.id_facculty,
+                    x.id_program,
                     x.code_course,
                     x.name_course,
                     x.id_gr_course,
@@ -245,7 +212,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [HttpPost("upload-excel-danh-sach-mon-hoc")]
         public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
         {
-            var loadPermission = await GetUserPermissionFaculties();
             if (file == null || file.Length == 0)
                 return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
 
@@ -291,7 +257,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
                             }
                             var check_mh = await db.Courses
                                 .FirstOrDefaultAsync(x =>
-                                    x.id_facculty == loadPermission.FirstOrDefault() &&
                                     x.code_course.ToLower().Trim() == ma_mh.ToLower() &&
                                     x.code_course.ToLower().Trim() == ma_mh.ToLower());
 
@@ -301,7 +266,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
                                 {
                                     code_course = string.IsNullOrWhiteSpace(ma_mh) ? null : ma_mh.ToUpper(),
                                     name_course = ten_mh,
-                                    id_facculty = loadPermission.FirstOrDefault(),
                                     id_gr_course = string.IsNullOrWhiteSpace(nhom_mh) ? null : CheckNhomMH.id_gr_course,
                                     id_isCourse = string.IsNullOrWhiteSpace(ThuocHocPhan) ? null : CheckIsHocPhan.id,
                                     credits = int.Parse(tinchi),

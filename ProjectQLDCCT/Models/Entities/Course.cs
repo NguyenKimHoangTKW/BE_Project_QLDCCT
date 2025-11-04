@@ -12,7 +12,7 @@ public partial class Course
     [Key]
     public int id_course { get; set; }
 
-    public int? id_facculty { get; set; }
+    public int? id_program { get; set; }
 
     [StringLength(50)]
     public string? code_course { get; set; }
@@ -43,10 +43,6 @@ public partial class Course
     [InverseProperty("id_courseNavigation")]
     public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
 
-    [ForeignKey("id_facculty")]
-    [InverseProperty("Courses")]
-    public virtual Faculty? id_faccultyNavigation { get; set; }
-
     [ForeignKey("id_gr_course")]
     [InverseProperty("Courses")]
     public virtual Group_Course? id_gr_courseNavigation { get; set; }
@@ -54,4 +50,8 @@ public partial class Course
     [ForeignKey("id_isCourse")]
     [InverseProperty("Courses")]
     public virtual IsCourse? id_isCourseNavigation { get; set; }
+
+    [ForeignKey("id_program")]
+    [InverseProperty("Courses")]
+    public virtual TrainingProgram? id_programNavigation { get; set; }
 }

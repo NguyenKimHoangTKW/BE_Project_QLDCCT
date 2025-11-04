@@ -159,11 +159,11 @@ public partial class QLDCContext : DbContext
         {
             entity.ToTable("Course", tb => tb.HasTrigger("trg_delete_Course"));
 
-            entity.HasOne(d => d.id_faccultyNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Faculty");
-
             entity.HasOne(d => d.id_gr_courseNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Group_Course");
 
             entity.HasOne(d => d.id_isCourseNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_IsCourse");
+
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_TrainingProgram");
         });
 
         modelBuilder.Entity<CourseByKey>(entity =>

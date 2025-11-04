@@ -7,7 +7,7 @@ namespace ProjectQLDCCT.Models.DTOs
 
         public int id_course { get; set; }
 
-        public int? id_faculty { get; set; }
+        public int? id_program { get; set; }
 
         public string? code_course { get; set; }
 

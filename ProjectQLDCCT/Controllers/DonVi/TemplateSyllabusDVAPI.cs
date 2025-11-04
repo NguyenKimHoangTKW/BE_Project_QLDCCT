@@ -355,5 +355,20 @@ namespace ProjectQLDCCT.Controllers.DonVi
 
             return Ok(new { data = checkTemplate, success = true });
         }
+        [HttpGet]
+        [Route("loads-selected-program")]
+        public async Task<IActionResult> LoadsCTDTByDV()
+        {
+            var GetFaculty = await GetUserPermissionFaculties();
+            var GetListCTDT = await db.TrainingPrograms
+                .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .Select(x => new
+                {
+                    x.id_program,
+                    x.name_program
+                })
+                .ToListAsync();
+            return Ok(GetListCTDT);
+        }
     }
 }
