@@ -143,6 +143,11 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Classes).HasConstraintName("FK_Class_TrainingProgram");
         });
 
+        modelBuilder.Entity<ContentType>(entity =>
+        {
+            entity.ToTable("ContentType", tb => tb.HasTrigger("trg_delete_ContentType"));
+        });
+
         modelBuilder.Entity<CoreCourseMatrix>(entity =>
         {
             entity.ToTable("CoreCourseMatrix", tb => tb.HasTrigger("trg_delete_CoreCourseMatrix"));
@@ -174,6 +179,8 @@ public partial class QLDCContext : DbContext
 
         modelBuilder.Entity<CourseLearningOutcome>(entity =>
         {
+            entity.ToTable(tb => tb.HasTrigger("trg_delete_CourseLearningOutcomes"));
+
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.CourseLearningOutcomes).HasConstraintName("FK_CourseLearningOutcomes_Faculty");
 
             entity.HasOne(d => d.program).WithMany(p => p.CourseLearningOutcomes).HasConstraintName("FK_CourseLearningOutcomes_TrainingProgram");
@@ -183,7 +190,14 @@ public partial class QLDCContext : DbContext
         {
             entity.HasKey(e => e.id).HasName("PK_Course Objectives");
 
+            entity.ToTable(tb => tb.HasTrigger("trg_delete_CourseObjectives"));
+
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.CourseObjectives).HasConstraintName("FK_CourseObjectives_Faculty");
+        });
+
+        modelBuilder.Entity<DataBinding>(entity =>
+        {
+            entity.ToTable("DataBinding", tb => tb.HasTrigger("trg_delete_DataBinding"));
         });
 
         modelBuilder.Entity<Faculty>(entity =>
@@ -206,6 +220,11 @@ public partial class QLDCContext : DbContext
             entity.ToTable("Group_Course", tb => tb.HasTrigger("trg_delete_Group_Course"));
         });
 
+        modelBuilder.Entity<IsCourse>(entity =>
+        {
+            entity.ToTable("IsCourse", tb => tb.HasTrigger("trg_delete_IsCourse"));
+        });
+
         modelBuilder.Entity<JWTSession>(entity =>
         {
             entity.HasOne(d => d.id_userNavigation).WithMany(p => p.JWTSessions).HasConstraintName("FK_JWTSessions_Users");
@@ -220,9 +239,21 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.KeyYearSemesters).HasConstraintName("FK_KeyYearSemester_Faculty");
         });
 
+        modelBuilder.Entity<LevelContribution>(entity =>
+        {
+            entity.ToTable("LevelContribution", tb => tb.HasTrigger("trg_delete_LevelContribution"));
+        });
+
         modelBuilder.Entity<PerformanceIndicator>(entity =>
         {
+            entity.ToTable("PerformanceIndicator", tb => tb.HasTrigger("trg_delete_PerformanceIndicator"));
+
             entity.HasOne(d => d.Id_PLONavigation).WithMany(p => p.PerformanceIndicators).HasConstraintName("FK_PerformanceIndicator_ProgramLearningOutcome");
+        });
+
+        modelBuilder.Entity<ProgramLearningOutcome>(entity =>
+        {
+            entity.ToTable("ProgramLearningOutcome", tb => tb.HasTrigger("trg_delete_ProgramLearningOutcome"));
         });
 
         modelBuilder.Entity<Semester>(entity =>
@@ -294,7 +325,7 @@ public partial class QLDCContext : DbContext
 
             entity.ToTable("SyllabusTemplateSection", tb => tb.HasTrigger("trg_delete_SyllabusTemplateSection"));
 
-            entity.Property(e => e.is_required).HasDefaultValue(1);
+            entity.Property(e => e.allow_input).HasDefaultValue(1);
 
             entity.HasOne(d => d.id_contentTypeNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_ContentType");
 

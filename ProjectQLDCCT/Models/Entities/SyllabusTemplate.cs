@@ -15,6 +15,8 @@ public partial class SyllabusTemplate
     [StringLength(200)]
     public string template_name { get; set; } = null!;
 
+    public string? template_json { get; set; }
+
     public int? is_default { get; set; }
 
     public int? time_cre { get; set; }

@@ -69,7 +69,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 {
                     x.id_template,
                     x.template_name,
-                    is_default = x.is_default == 1 ? "Mở mẫu đề cương" : "Đóng mẫu đề cương",
+                    allow_input = x.is_default == 1 ? "Cho phép nhập liệu" : "Không cho phép nhập liệu",
                     x.time_up,
                     x.time_cre
                 })
@@ -221,7 +221,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 id_template = items.id_template,
                 section_name = items.section_name.Trim(),
                 section_code = items.section_code.Trim(),
-                is_required = items.is_required,
+                allow_input = items.allow_input,
                 order_index = items.order_index,
                 id_contentType = items.id_contentType,
                 id_dataBinding = items.id_dataBinding
@@ -246,7 +246,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                     x.section_code,
                     x.section_name,
                     x.order_index,
-                    is_required = x.is_required == 0 ? "Không bắt buộc" : "Bắt buộc",
+                    allow_input = x.allow_input == 0 ? "Không cho phép nhập liệu" : "Cho phép nhập liệu",
                     contentType = x.id_contentTypeNavigation.code + " - " + x.id_contentTypeNavigation.name,
                     dataBinding = x.id_dataBindingNavigation.code + " - " + x.id_dataBindingNavigation.name,
                 })
@@ -265,10 +265,11 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 .Where(x => x.id_template_section == items.id_template_section)
                 .Select(x => new
                 {
+                    x.id_template_section,
                     x.id_template,
                     x.section_code,
                     x.section_name,
-                    x.is_required,
+                    x.allow_input,
                     x.order_index,
                     x.id_dataBinding,
                     x.id_contentType
@@ -292,9 +293,9 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 return Ok(new { message = "Không tìm thấy Câu hỏi tiêu đề", success = false });
             checkSectionTemplate.section_name = items.section_name.Trim();
             checkSectionTemplate.section_code = items.section_code.Trim();
-            checkSectionTemplate.is_required = items.is_required;
-            checkSectionTemplate.id_contentType = items.id_contentType;
-            checkSectionTemplate.id_dataBinding = items.id_dataBinding;
+            checkSectionTemplate.allow_input = items.allow_input;
+            checkSectionTemplate.id_contentType = items.id_contentType == 0 ? null : items.id_contentType;
+            checkSectionTemplate.id_dataBinding = items.id_dataBinding == 0 ? null : items.id_dataBinding;
 
             var list = await db.SyllabusTemplateSections
                 .Where(x => x.id_template == checkSectionTemplate.id_template)
@@ -311,6 +312,48 @@ namespace ProjectQLDCCT.Controllers.DonVi
             }
             await db.SaveChangesAsync();
             return Ok(new { message = "Cập nhật dữ liệu thành công và đã sắp xếp lại thứ tự hiển thị", success = true });
+        }
+        [HttpPost]
+        [Route("delete-template-section")]
+        public async Task<IActionResult> DeleteTemplateSection([FromBody] SyllabusTemplateSectionDTOs items)
+        {
+            var checkSectionTemplate = await db.SyllabusTemplateSections.Where(x => x.id_template_section == items.id_template_section).FirstOrDefaultAsync();
+            if (checkSectionTemplate == null)
+                return Ok(new { message = "Không tìm thấy Câu hỏi tiêu đề", success = false });
+            db.SyllabusTemplateSections.Remove(checkSectionTemplate);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Xóa dữ liệu thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("save-template")]
+        public async Task<IActionResult> SaveTemplate([FromBody] TemplateSyllabusDTOs items)
+        {
+            var checkTemplate = await db.SyllabusTemplates.Where(x => x.id_template == items.id_template).FirstOrDefaultAsync();
+            if (checkTemplate == null)
+                return Ok(new { message = "Không tìm thấy thông tin biểu mẫu", success = false });
+            checkTemplate.template_json = items.template_json;
+            checkTemplate.time_up = unixTimestamp;
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Lưu dữ liệu biểu mẫu thành công", success = true });
+        }
+        [HttpPost]
+        [Route("preview-template")]
+        public async Task<IActionResult> PreviewTemplate([FromBody] TemplateSyllabusDTOs items)
+        {
+            var checkTemplate = await db.SyllabusTemplates
+                .Where(x => x.id_template == items.id_template)
+                .Select(x => new
+                {
+                    x.id_template,
+                    x.template_name,
+                    x.template_json
+                })
+                .FirstOrDefaultAsync();
+            if (checkTemplate == null)
+                return Ok(new { message = "Không tìm thấy thông tin biểu mẫu", success = false });
+
+            return Ok(new { data = checkTemplate, success = true });
         }
     }
 }

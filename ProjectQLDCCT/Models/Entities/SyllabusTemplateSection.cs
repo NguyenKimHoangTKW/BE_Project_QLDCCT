@@ -20,7 +20,7 @@ public partial class SyllabusTemplateSection
     [StringLength(200)]
     public string? section_name { get; set; }
 
-    public int? is_required { get; set; }
+    public int? allow_input { get; set; }
 
     public int? order_index { get; set; }
 
