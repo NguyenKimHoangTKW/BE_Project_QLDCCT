@@ -31,6 +31,9 @@ public partial class TrainingProgram
     public virtual ICollection<CLO_PLO_Mapping> CLO_PLO_Mappings { get; set; } = new List<CLO_PLO_Mapping>();
 
     [InverseProperty("id_programNavigation")]
+    public virtual ICollection<CivilServant> CivilServants { get; set; } = new List<CivilServant>();
+
+    [InverseProperty("id_programNavigation")]
     public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 
     [InverseProperty("id_programNavigation")]

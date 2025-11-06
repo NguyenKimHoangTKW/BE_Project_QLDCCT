@@ -28,6 +28,9 @@ public partial class PerformanceIndicator
     [InverseProperty("id_PINavigation")]
     public virtual ICollection<CLO_PI_Mapping> CLO_PI_Mappings { get; set; } = new List<CLO_PI_Mapping>();
 
+    [InverseProperty("Id_PINavigation")]
+    public virtual ICollection<ContributionMatrix> ContributionMatrices { get; set; } = new List<ContributionMatrix>();
+
     [ForeignKey("Id_PLO")]
     [InverseProperty("PerformanceIndicators")]
     public virtual ProgramLearningOutcome? Id_PLONavigation { get; set; }

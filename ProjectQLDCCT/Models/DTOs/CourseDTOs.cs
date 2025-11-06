@@ -20,10 +20,10 @@ namespace ProjectQLDCCT.Models.DTOs
         public int? credits { get; set; }
         public int? id_isCourse { get; set; }
         public int? totalTheory { get; set; }
+        public int? id_key_year_semester { get; set; }
 
         public int? totalPractice { get; set; }
 
-        public int? id_key_year_semester { get; set; }
 
         public int? is_obligatory { get; set; }
 

@@ -35,6 +35,9 @@ public partial class Faculty
     public virtual ICollection<KeyYearSemester> KeyYearSemesters { get; set; } = new List<KeyYearSemester>();
 
     [InverseProperty("id_facultyNavigation")]
+    public virtual ICollection<LevelContribution> LevelContributions { get; set; } = new List<LevelContribution>();
+
+    [InverseProperty("id_facultyNavigation")]
     public virtual ICollection<Semester> Semesters { get; set; } = new List<Semester>();
 
     [InverseProperty("id_facultyNavigation")]

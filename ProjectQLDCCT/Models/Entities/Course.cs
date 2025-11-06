@@ -34,6 +34,13 @@ public partial class Course
 
     public int? id_isCourse { get; set; }
 
+    public int? id_key_year_semester { get; set; }
+
+    public int? id_semester { get; set; }
+
+    [InverseProperty("id_courseNavigation")]
+    public virtual ICollection<ContributionMatrix> ContributionMatrices { get; set; } = new List<ContributionMatrix>();
+
     [InverseProperty("id_courseNavigation")]
     public virtual ICollection<CourseByKey> CourseByKeys { get; set; } = new List<CourseByKey>();
 
@@ -51,7 +58,15 @@ public partial class Course
     [InverseProperty("Courses")]
     public virtual IsCourse? id_isCourseNavigation { get; set; }
 
+    [ForeignKey("id_key_year_semester")]
+    [InverseProperty("Courses")]
+    public virtual KeyYearSemester? id_key_year_semesterNavigation { get; set; }
+
     [ForeignKey("id_program")]
     [InverseProperty("Courses")]
     public virtual TrainingProgram? id_programNavigation { get; set; }
+
+    [ForeignKey("id_semester")]
+    [InverseProperty("Courses")]
+    public virtual Semester? id_semesterNavigation { get; set; }
 }

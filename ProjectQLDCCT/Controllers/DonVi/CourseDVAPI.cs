@@ -22,12 +22,58 @@ namespace ProjectQLDCCT.Controllers.CTDT
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
 
+        private async Task<List<int>> GetUserPermissionFaculties()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
 
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new UnauthorizedAccessException("Token không chứa id_users.");
+
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
+
+            var loadPermission = await db.UserByFaculPrograms
+                .Where(x => x.id_users == userId && x.id_faculty != null)
+                .Select(x => x.id_facultyNavigation.id_faculty)
+                .ToListAsync();
+
+            return loadPermission;
+        }
+        [HttpGet]
+        [Route("loads-ctdt-by-dv")]
+        public async Task<IActionResult> LoadsCTDTByDV()
+        {
+            var GetFaculty = await GetUserPermissionFaculties();
+            var ListCTDT = await db.TrainingPrograms
+                .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .Select(x => new
+                {
+                    x.id_program,
+                    x.name_program
+                })
+                .ToListAsync();
+            return Ok(ListCTDT);
+        }
         [HttpGet]
         [Route("load-select-chuc-nang-course")]
         public async Task<IActionResult> LoadOptionSelectedUpdate()
         {
-
+            var GetFaculty = await GetUserPermissionFaculties();
             var LoadListGroupHocPhan = await db.Group_Courses
                 .Select(x => new
                 {
@@ -42,10 +88,28 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     text = x.name,
                 })
                 .ToListAsync();
+            var LoadIsSemester = await db.Semesters
+                .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .Select(x => new
+                {
+                    value = x.id_semester,
+                    text = x.code_semester + " - " + x.name_semester
+                })
+                .ToListAsync();
+            var LoadKeyYearSemester = await db.KeyYearSemesters
+                .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .Select(x => new
+                {
+                    value = x.id_key_year_semester,
+                    text = x.code_key_year_semester + " - " + x.name_key_year_semester
+                })
+                .ToListAsync();
             return Ok(new
             {
                 nhom_hoc_phan = LoadListGroupHocPhan,
-                is_hoc_phan = LoadIsHocPhan
+                is_hoc_phan = LoadIsHocPhan,
+                Semester = LoadIsSemester,
+                KeyYearSemester = LoadKeyYearSemester,
             });
         }
         [HttpPost]
@@ -66,7 +130,18 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 query = query.Where(x => x.id_isCourse == items.id_isCourse);
             }
-
+            if (items.id_program > 0)
+            {
+                query = query.Where(x => x.id_program == items.id_program);
+            }
+            if (items.id_key_year_semester > 0)
+            {
+                query = query.Where(x => x.id_key_year_semester == items.id_key_year_semester);
+            }
+            if (items.id_semester > 0)
+            {
+                query = query.Where(x => x.id_semester == items.id_semester);
+            }
             var totalRecords = await query.CountAsync();
 
             var data = await query
@@ -82,9 +157,12 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     x.credits,
                     x.totalTheory,
                     x.totalPractice,
+                    x.id_programNavigation.name_program,
                     x.time_cre,
                     x.time_up,
-                    name = x.id_isCourseNavigation.name
+                    name = x.id_isCourseNavigation.name,
+                    name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
+                    name_key_year_semester = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester
                 })
                 .ToListAsync();
 
@@ -92,7 +170,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 success = true,
                 data,
-                currentPage =items.Page,
+                currentPage = items.Page,
                 items.PageSize,
                 totalRecords,
                 totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
@@ -127,6 +205,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 id_gr_course = items.id_gr_course,
                 credits = items.credits,
                 totalPractice = items.totalPractice,
+                id_semester = items.id_semester,
+                id_key_year_semester = items.id_key_year_semester,
                 totalTheory = items.totalTheory,
                 time_cre = unixTimestamp,
                 time_up = unixTimestamp,
@@ -151,6 +231,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     x.id_gr_course,
                     x.credits,
                     x.totalPractice,
+                    x.id_key_year_semester,
+                    x.id_semester,
                     x.totalTheory,
                     x.id_isCourse
                 })
@@ -186,6 +268,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
             checkCourse.totalPractice = items.totalPractice;
             checkCourse.id_gr_course = items.id_gr_course;
             checkCourse.id_isCourse = items.id_isCourse;
+            checkCourse.id_semester = items.id_semester;
+            checkCourse.id_key_year_semester = items.id_key_year_semester;
             checkCourse.time_up = unixTimestamp;
             await db.SaveChangesAsync();
             return Ok(new { message = "Cập nhật dữ liệu thành công", success = true });

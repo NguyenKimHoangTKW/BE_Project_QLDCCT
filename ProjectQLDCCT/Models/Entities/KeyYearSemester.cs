@@ -27,6 +27,9 @@ public partial class KeyYearSemester
     [InverseProperty("id_key_semesterNavigation")]
     public virtual ICollection<CourseByKey> CourseByKeys { get; set; } = new List<CourseByKey>();
 
+    [InverseProperty("id_key_year_semesterNavigation")]
+    public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
+
     [ForeignKey("id_faculty")]
     [InverseProperty("KeyYearSemesters")]
     public virtual Faculty? id_facultyNavigation { get; set; }

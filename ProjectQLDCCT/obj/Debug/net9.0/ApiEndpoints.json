@@ -519,6 +519,138 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "GetPermissionCBVC",
+    "RelativePath": "api/donvi/civil-servants/get-permission-cbvc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "InfoCO",
+    "RelativePath": "api/donvi/civil-servants/info-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "LoadCTDTByFaculty",
+    "RelativePath": "api/donvi/civil-servants/loads-ctdt-by-don-vi",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "LoadCBVC",
+    "RelativePath": "api/donvi/civil-servants/loads-danh-sach-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "LoadTypePermission",
+    "RelativePath": "api/donvi/civil-servants/loads-type-permission",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "SaveQuyen",
+    "RelativePath": "api/donvi/civil-servants/save-permission-cbvc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "ThemMoiCO",
+    "RelativePath": "api/donvi/civil-servants/them-moi-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "UpdateCO",
+    "RelativePath": "api/donvi/civil-servants/update-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "DeleteCO",
+    "RelativePath": "api/donvi/civil-servants/xoa-du-lieu-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
     "Method": "UpdateCLO",
     "RelativePath": "api/donvi/course-learning-outcome/cap-nhat-chuan-dau-ra-hoc-phan",
@@ -722,6 +854,16 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "Method": "LoadsCTDTByDV",
+    "RelativePath": "api/donvi/course/loads-ctdt-by-dv",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
     "Method": "LoadCourse",
     "RelativePath": "api/donvi/course/loads-danh-sach-mon-hoc-thuoc-don-vi",
     "HttpMethod": "POST",
@@ -859,6 +1001,80 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.KeySemesterDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.LevelContributionDVAPI",
+    "Method": "DeleteLevelContribution",
+    "RelativePath": "api/donvi/level-contribution/delete-muc-do-dong-gop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LevelContributionDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.LevelContributionDVAPI",
+    "Method": "InfoLevelContribution",
+    "RelativePath": "api/donvi/level-contribution/info-muc-do-dong-gop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LevelContributionDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.LevelContributionDVAPI",
+    "Method": "LoadDuLieuLC",
+    "RelativePath": "api/donvi/level-contribution/loads-muc-do-dong-gop",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.LevelContributionDVAPI",
+    "Method": "CreateLevelContribution",
+    "RelativePath": "api/donvi/level-contribution/them-moi-muc-do-dong-gop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LevelContributionDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.LevelContributionDVAPI",
+    "Method": "UpdateLevelContribution",
+    "RelativePath": "api/donvi/level-contribution/update-muc-do-dong-gop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LevelContributionDTOs",
         "IsRequired": true
       }
     ],

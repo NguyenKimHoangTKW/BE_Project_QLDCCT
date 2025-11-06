@@ -28,6 +28,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<ContentType> ContentTypes { get; set; }
 
+    public virtual DbSet<ContributionMatrix> ContributionMatrices { get; set; }
+
     public virtual DbSet<CoreCourseMatrix> CoreCourseMatrices { get; set; }
 
     public virtual DbSet<Course> Courses { get; set; }
@@ -134,6 +136,8 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<CivilServant>(entity =>
         {
             entity.ToTable(tb => tb.HasTrigger("trg_delete_CivilServants"));
+
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.CivilServants).HasConstraintName("FK_CivilServants_TrainingProgram");
         });
 
         modelBuilder.Entity<Class>(entity =>
@@ -146,6 +150,15 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<ContentType>(entity =>
         {
             entity.ToTable("ContentType", tb => tb.HasTrigger("trg_delete_ContentType"));
+        });
+
+        modelBuilder.Entity<ContributionMatrix>(entity =>
+        {
+            entity.HasOne(d => d.Id_PINavigation).WithMany(p => p.ContributionMatrices).HasConstraintName("FK_ContributionMatrix_PerformanceIndicator");
+
+            entity.HasOne(d => d.id_courseNavigation).WithMany(p => p.ContributionMatrices).HasConstraintName("FK_ContributionMatrix_Course");
+
+            entity.HasOne(d => d.id_levelcontributonNavigation).WithMany(p => p.ContributionMatrices).HasConstraintName("FK_ContributionMatrix_LevelContribution");
         });
 
         modelBuilder.Entity<CoreCourseMatrix>(entity =>
@@ -163,7 +176,11 @@ public partial class QLDCContext : DbContext
 
             entity.HasOne(d => d.id_isCourseNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_IsCourse");
 
+            entity.HasOne(d => d.id_key_year_semesterNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_KeyYearSemester");
+
             entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_TrainingProgram");
+
+            entity.HasOne(d => d.id_semesterNavigation).WithMany(p => p.Courses).HasConstraintName("FK_Course_Semester");
         });
 
         modelBuilder.Entity<CourseByKey>(entity =>
@@ -242,6 +259,8 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<LevelContribution>(entity =>
         {
             entity.ToTable("LevelContribution", tb => tb.HasTrigger("trg_delete_LevelContribution"));
+
+            entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.LevelContributions).HasConstraintName("FK_LevelContribution_Faculty");
         });
 
         modelBuilder.Entity<PerformanceIndicator>(entity =>
