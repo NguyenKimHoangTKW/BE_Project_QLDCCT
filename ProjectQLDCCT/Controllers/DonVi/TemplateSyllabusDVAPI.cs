@@ -370,5 +370,66 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 .ToListAsync();
             return Ok(GetListCTDT);
         }
+
+        [HttpGet]
+        [Route("loads-plo-hoc-phan")]
+        public async Task<IActionResult> LoadPloHP()
+        {
+            var checkCourse = await db.Courses
+                .Where(x => x.id_course == 84)
+                .FirstOrDefaultAsync();
+
+            if (checkCourse == null)
+                return NotFound(new { success = false, message = "Không tìm thấy học phần" });
+
+            var listPlo = await db.ProgramLearningOutcomes
+                .Where(x => x.Id_Program == checkCourse.id_program)
+                .Select(x => new { x.Id_Plo, x.code })
+                .ToListAsync();
+
+            var mappedPloIds = await db.ContributionMatrices
+                .Where(cm => cm.Id_PINavigation.Id_PLONavigation.Id_Program == checkCourse.id_program)
+                .Select(cm => cm.Id_PINavigation.Id_PLO)
+                .Distinct()
+                .ToListAsync();
+
+            var totalPloMapped = mappedPloIds.Count;
+
+            var listData = new List<object>();
+
+            foreach (var plo in listPlo)
+            {
+                if (!mappedPloIds.Contains(plo.Id_Plo)) continue; 
+
+                var piList = await db.ContributionMatrices
+                    .Where(cm => cm.Id_PINavigation.Id_PLO == plo.Id_Plo)
+                    .Select(cm => new
+                    {
+                        pi_code = cm.Id_PINavigation.code,
+                        level_code = cm.id_levelcontributonNavigation.Code,
+                        des_level = cm.id_levelcontributonNavigation.Description
+                    })
+                    .ToListAsync();
+
+                var piDistinct = piList
+                    .GroupBy(x => x.pi_code)
+                    .Select(g => g.First())
+                    .ToList();
+
+                if (piDistinct.Count > 0)
+                {
+                    listData.Add(new
+                    {
+                        plo_code = plo.code,
+                        count_pi = piDistinct.Count,   
+                        pi_list = piDistinct
+                    });
+                }
+            }
+
+            return Ok(new { success = true, count_plo = totalPloMapped, data = listData });
+        }
+
+
     }
 }

@@ -2960,6 +2960,18 @@
         }
       }
     },
+    "/api/donvi/syllabustemplate/loads-plo-hoc-phan": {
+      "get": {
+        "tags": [
+          "TemplateSyllabusDVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/program/loads-select-don-vi-by-year": {
       "get": {
         "tags": [

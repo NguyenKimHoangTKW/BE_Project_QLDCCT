@@ -1542,6 +1542,16 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
+    "Method": "LoadPloHP",
+    "RelativePath": "api/donvi/syllabustemplate/loads-plo-hoc-phan",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TemplateSyllabusDVAPI",
     "Method": "LoadsCTDTByDV",
     "RelativePath": "api/donvi/syllabustemplate/loads-selected-program",
     "HttpMethod": "GET",
