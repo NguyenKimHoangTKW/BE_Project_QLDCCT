@@ -562,6 +562,151 @@
         }
       }
     },
+    "/api/donvi/contribution-matrix/loads-option-cm": {
+      "get": {
+        "tags": [
+          "ContributionMatrixDVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/contribution-matrix/loads-chuan-dau-ra-hoc-phan": {
+      "post": {
+        "tags": [
+          "ContributionMatrixDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/contribution-matrix/loads-ma-tran-dong-gop": {
+      "post": {
+        "tags": [
+          "ContributionMatrixDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/contribution-matrix/get-matrix": {
+      "post": {
+        "tags": [
+          "ContributionMatrixDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContributionMatrixDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContributionMatrixDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContributionMatrixDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/contribution-matrix/save-matrix": {
+      "post": {
+        "tags": [
+          "ContributionMatrixDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContributionMatrixDTOs"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContributionMatrixDTOs"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContributionMatrixDTOs"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course-objectives/load-du-lieu-muc-tieu-hoc-phan": {
       "post": {
         "tags": [
@@ -3148,6 +3293,42 @@
               "type": "integer",
               "format": "int32"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContributionMatrixDTOs": {
+        "type": "object",
+        "properties": {
+          "id_CM": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_course": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_PI": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_program": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_key_year_semester": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_levelcontributon": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

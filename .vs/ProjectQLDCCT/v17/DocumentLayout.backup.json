@@ -1,14 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\levelcontributiondvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\levelcontributiondvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\contributionmatrixdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\contributionmatrixdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\civilservantsdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\civilservantsdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\models\\dtos\\contributionmatrixdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\contributionmatrixdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\shared\\previewevaluateapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\shared\\previewevaluateapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 464,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CivilServantsDVAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAJAAAAAAAAAA==",
+              "Title": "ContributionMatrixDTOs.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\ContributionMatrixDTOs.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\DTOs\\ContributionMatrixDTOs.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\ContributionMatrixDTOs.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Models\\DTOs\\ContributionMatrixDTOs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-05T17:01:02.048Z",
+              "WhenOpened": "2025-11-06T07:58:48.458Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PreviewEvaluateAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAwwHEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T02:36:42.786Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "LevelContributionDVAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\LevelContributionDVAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\LevelContributionDVAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\LevelContributionDVAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\LevelContributionDVAPI.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAIwGgAAAAZAAAAAAAAAA==",
+              "Title": "ContributionMatrixDVAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\ContributionMatrixDVAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\ContributionMatrixDVAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\ContributionMatrixDVAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\ContributionMatrixDVAPI.cs",
+              "ViewState": "AgIAAMsAAAAAAAAAAAAgwNoAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-05T17:00:33.408Z",
+              "WhenOpened": "2025-11-06T02:34:35.73Z",
               "EditorCaption": ""
             }
           ]

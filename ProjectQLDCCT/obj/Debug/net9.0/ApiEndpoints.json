@@ -651,6 +651,80 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ContributionMatrixDVAPI",
+    "Method": "GetMatrix",
+    "RelativePath": "api/donvi/contribution-matrix/get-matrix",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ProjectQLDCCT.Models.DTOs.ContributionMatrixDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ContributionMatrixDVAPI",
+    "Method": "loadsPLoPi",
+    "RelativePath": "api/donvi/contribution-matrix/loads-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ContributionMatrixDVAPI",
+    "Method": "LoadHocPhan",
+    "RelativePath": "api/donvi/contribution-matrix/loads-ma-tran-dong-gop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ContributionMatrixDVAPI",
+    "Method": "LoadCTDTByDV",
+    "RelativePath": "api/donvi/contribution-matrix/loads-option-cm",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ContributionMatrixDVAPI",
+    "Method": "SaveMatrix",
+    "RelativePath": "api/donvi/contribution-matrix/save-matrix",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "System.Collections.Generic.List\u00601[[ProjectQLDCCT.Models.DTOs.ContributionMatrixDTOs, ProjectQLDCCT, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
     "Method": "UpdateCLO",
     "RelativePath": "api/donvi/course-learning-outcome/cap-nhat-chuan-dau-ra-hoc-phan",

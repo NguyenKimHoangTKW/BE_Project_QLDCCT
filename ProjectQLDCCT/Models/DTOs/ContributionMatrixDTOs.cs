@@ -7,6 +7,8 @@
         public int? id_course { get; set; }
 
         public int? Id_PI { get; set; }
+        public int? id_program {  get; set; }
+        public int? id_key_year_semester { get; set; }
 
         public int? id_levelcontributon { get; set; }
     }
