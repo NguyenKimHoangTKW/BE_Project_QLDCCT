@@ -509,6 +509,214 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
+    "Method": "InfoCO",
+    "RelativePath": "api/ctdt/civil-servants/info-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
+    "Method": "LoadCBVC",
+    "RelativePath": "api/ctdt/civil-servants/loads-danh-sach-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
+    "Method": "ThemMoiCO",
+    "RelativePath": "api/ctdt/civil-servants/them-moi-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
+    "Method": "UpdateCO",
+    "RelativePath": "api/ctdt/civil-servants/update-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
+    "Method": "DeleteCO",
+    "RelativePath": "api/ctdt/civil-servants/xoa-du-lieu-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "UpdateMonHoc",
+    "RelativePath": "api/ctdt/course/cap-nhat-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "InfoMonHoc",
+    "RelativePath": "api/ctdt/course/info-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "LoadOptionSelectedUpdate",
+    "RelativePath": "api/ctdt/course/load-select-chuc-nang-course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "LoadCourse",
+    "RelativePath": "api/ctdt/course/loads-danh-sach-mon-hoc-thuoc-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "LoadHocPhan",
+    "RelativePath": "api/ctdt/course/loads-mon-hoc-dang-hoc-ky",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "ThemMoiMonHoc",
+    "RelativePath": "api/ctdt/course/them-moi-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/ctdt/course/upload-excel-danh-sach-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "DeleteMonHoc",
+    "RelativePath": "api/ctdt/course/xoa-du-lieu-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CTDTPermissionAPI",
     "Method": "LoadListCTDTByPermission",
     "RelativePath": "api/ctdt/permission/loads-ctdt-by-permission",

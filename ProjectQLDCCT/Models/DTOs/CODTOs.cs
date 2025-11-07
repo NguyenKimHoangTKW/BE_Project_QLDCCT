@@ -5,7 +5,7 @@ namespace ProjectQLDCCT.Models.DTOs
     public class CODTOs
     {
         public int id { get; set; }
-
+        public int? id_program { get; set; }
         public string? name_CO { get; set; }
 
         public string? describe_CO { get; set; }
