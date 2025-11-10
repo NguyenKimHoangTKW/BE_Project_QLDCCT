@@ -1266,6 +1266,99 @@
         }
       }
     },
+    "/api/ctdt/course/save-phan-quyen-viet-de-cuong-cbvc": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ctdt/course/loads-giang-vien-de-cuong-by-mon-hoc": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ctdt/course/delete-permission-gv-ra-de-cuong": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherBySubjectDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherBySubjectDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeacherBySubjectDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course/loads-ctdt-by-dv": {
       "get": {
         "tags": [
@@ -3708,6 +3801,11 @@
             "type": "integer",
             "format": "int32"
           },
+          "id_course": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "ctdt_per": {
             "type": "array",
             "items": {
@@ -4157,6 +4255,27 @@
             "nullable": true
           },
           "id_dataBinding": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeacherBySubjectDTOs": {
+        "type": "object",
+        "properties": {
+          "id_teacherbysubject": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_user": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_course": {
             "type": "integer",
             "format": "int32",
             "nullable": true

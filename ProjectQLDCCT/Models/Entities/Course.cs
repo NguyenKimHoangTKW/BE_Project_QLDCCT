@@ -45,9 +45,6 @@ public partial class Course
     public virtual ICollection<CourseByKey> CourseByKeys { get; set; } = new List<CourseByKey>();
 
     [InverseProperty("id_courseNavigation")]
-    public virtual ICollection<Syllabus> Syllabi { get; set; } = new List<Syllabus>();
-
-    [InverseProperty("id_courseNavigation")]
     public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
 
     [ForeignKey("id_gr_course")]

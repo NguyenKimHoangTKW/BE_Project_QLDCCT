@@ -291,9 +291,7 @@ public partial class QLDCContext : DbContext
         {
             entity.ToTable("Syllabus", tb => tb.HasTrigger("trg_delete_Syllabus"));
 
-            entity.HasOne(d => d.id_civilSerNavigation).WithMany(p => p.Syllabi).HasConstraintName("FK_Syllabus_CivilServants");
-
-            entity.HasOne(d => d.id_courseNavigation).WithMany(p => p.Syllabi).HasConstraintName("FK_Syllabus_Course");
+            entity.HasOne(d => d.id_teacherbysubjectNavigation).WithMany(p => p.Syllabi).HasConstraintName("FK_Syllabus_TeacherBySubject");
         });
 
         modelBuilder.Entity<SyllabusApproval>(entity =>

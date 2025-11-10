@@ -28,9 +28,6 @@ public partial class CivilServant
 
     public int? time_up { get; set; }
 
-    [InverseProperty("id_civilSerNavigation")]
-    public virtual ICollection<Syllabus> Syllabi { get; set; } = new List<Syllabus>();
-
     [ForeignKey("id_program")]
     [InverseProperty("CivilServants")]
     public virtual TrainingProgram? id_programNavigation { get; set; }

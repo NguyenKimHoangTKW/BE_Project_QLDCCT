@@ -21,6 +21,37 @@ namespace ProjectQLDCCT.Controllers.CTDT
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
+        private async Task<List<int>> GetUserPermissionProgram()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new UnauthorizedAccessException("Token không chứa id_users.");
+
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
+
+            var loadPermission = await db.UserByFaculPrograms
+                .Where(x => x.id_users == userId && x.id_program != null)
+                .Select(x => (int)x.id_program)
+                .ToListAsync();
+            return loadPermission;
+        }
         [HttpPost]
         [Route("load-select-chuc-nang-course")]
         public async Task<IActionResult> LoadOptionSelectedUpdate([FromBody] CODTOs items)
@@ -97,7 +128,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 query = query.Where(x => x.id_semester == items.id_semester);
             }
             var totalRecords = await query.CountAsync();
-
             var data = await query
                 .OrderByDescending(x => x.id_course)
                 .Skip((items.Page - 1) * items.PageSize)
@@ -111,12 +141,13 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     x.credits,
                     x.totalTheory,
                     x.totalPractice,
-                    x.id_programNavigation.name_program,
+                    name_program = x.id_programNavigation.name_program,
                     x.time_cre,
                     x.time_up,
                     name = x.id_isCourseNavigation.name,
                     name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
-                    name_key_year_semester = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester
+                    name_key_year_semester = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester,
+                    count_syllabus = x.TeacherBySubjects.Count()
                 })
                 .ToListAsync();
 
@@ -299,11 +330,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("xoa-du-lieu-mon-hoc")]
         public async Task<IActionResult> DeleteMonHoc([FromBody] CourseDTOs items)
         {
-            var checkSyllabus = await db.Syllabi.FirstOrDefaultAsync(x => x.id_course == items.id_course);
-            if (checkSyllabus != null)
-            {
-                return Ok(new { message = "Môn học này đang tồn tại Đề cương, không thể xóa", success = false });
-            }
             var CheckCourse = await db.Courses.FirstOrDefaultAsync(x => x.id_course == items.id_course);
             if (CheckCourse == null)
             {
@@ -397,6 +423,111 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
             }
+        }
+
+        [HttpPost]
+        [Route("save-phan-quyen-viet-de-cuong-cbvc")]
+        public async Task<IActionResult> SavePhanQuyenVietDeCuong([FromBody] CivilServantsDTOs items)
+        {
+            var GetProgram = await GetUserPermissionProgram();
+            var checkCivil = await db.CivilServants
+                .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer && GetProgram.Contains(x.id_program ?? 0));
+            if (checkCivil == null)
+                return Ok(new { message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại", success = false });
+
+            var checkUser = await db.Users
+                .FirstOrDefaultAsync(x => x.email == checkCivil.email);
+
+            if (checkUser == null)
+            {
+                var newUser = new User
+                {
+                    email = checkCivil.email,
+                    time_cre = unixTimestamp,
+                    time_up = unixTimestamp,
+                    id_type_users = 4,
+                    status = 1
+                };
+                db.Users.Add(newUser);
+                await db.SaveChangesAsync();
+                checkUser = newUser;
+            }
+            else
+            {
+                checkUser.id_type_users = 4;
+                checkUser.status = 1;
+                checkUser.time_up = unixTimestamp;
+                await db.SaveChangesAsync();
+            }
+
+            var existCourse = await db.TeacherBySubjects
+                .FirstOrDefaultAsync(x => x.id_user == checkUser.id_users && x.id_course == items.id_course);
+
+            if (existCourse != null)
+                return Ok(new { message = "Giảng viên này đã được phân quyền vào đề cương môn học này", success = false });
+
+            var newRecord = new TeacherBySubject
+            {
+                id_user = checkUser.id_users,
+                id_course = items.id_course
+            };
+            db.TeacherBySubjects.Add(newRecord);
+            await db.SaveChangesAsync();
+
+            return Ok(new { message = "Phân quyền giảng viên viết đề cương thành công", success = true });
+        }
+        [HttpPost]
+        [Route("loads-giang-vien-de-cuong-by-mon-hoc")]
+        public async Task<IActionResult> LoadsGiangVienDeCuongByMonHoc([FromBody] CourseDTOs items)
+        {
+
+            var listGV = await (from tbs in db.TeacherBySubjects
+                                join u in db.Users on tbs.id_user equals u.id_users
+                                join cs in db.CivilServants on u.email equals cs.email into csu
+                                from civil in csu.DefaultIfEmpty()
+                                where tbs.id_course == items.id_course
+                                select new
+                                {
+                                    tbs.id_teacherbysubject,
+                                    u.id_users,
+                                    u.email,
+                                    u.id_type_users,
+                                    u.status,
+                                    civil.id_civilSer,
+                                    civil.code_civilSer,
+                                    civil.fullname_civilSer,
+                                    civil.birthday,
+                                    civil.id_programNavigation.name_program,
+                                    civil.id_program,
+                                    civil.time_cre,
+                                    civil.time_up
+                                })
+                           .OrderByDescending(x => x.id_teacherbysubject)
+                           .ToListAsync();
+
+            return Ok(new
+            {
+                data = listGV,
+                success = true
+            });
+        }
+        [HttpPost]
+        [Route("delete-permission-gv-ra-de-cuong")]
+        public async Task<IActionResult> DeletePermissionCourse([FromBody] TeacherBySubjectDTOs items)
+        {
+            var CheckSyllabus = await db.Syllabi.Where(x => x.id_teacherbysubject == items.id_teacherbysubject).FirstOrDefaultAsync();
+            if (CheckSyllabus != null)
+            {
+                return Ok(new { message = "Giảng viên này đang tồn tại trong đề cương chi tiết, không thể xóa", success = false });
+            }
+            var CheckTeacher = await db.TeacherBySubjects.Where(x => x.id_teacherbysubject == items.id_teacherbysubject).FirstOrDefaultAsync();
+            if (CheckTeacher == null)
+            {
+                return Ok(new { message = "Không tìm thấy thông tin giảng viên trong đề cương", success = false });
+            }
+            db.TeacherBySubjects.Remove(CheckTeacher);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
     }
 }

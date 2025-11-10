@@ -606,6 +606,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "DeletePermissionCourse",
+    "RelativePath": "api/ctdt/course/delete-permission-gv-ra-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TeacherBySubjectDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "InfoMonHoc",
     "RelativePath": "api/ctdt/course/info-mon-hoc",
     "HttpMethod": "POST",
@@ -654,6 +670,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "LoadsGiangVienDeCuongByMonHoc",
+    "RelativePath": "api/ctdt/course/loads-giang-vien-de-cuong-by-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "LoadHocPhan",
     "RelativePath": "api/ctdt/course/loads-mon-hoc-dang-hoc-ky",
     "HttpMethod": "POST",
@@ -663,6 +695,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "SavePhanQuyenVietDeCuong",
+    "RelativePath": "api/ctdt/course/save-phan-quyen-viet-de-cuong-cbvc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
         "IsRequired": true
       }
     ],

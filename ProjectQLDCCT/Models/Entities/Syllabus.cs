@@ -12,9 +12,7 @@ public partial class Syllabus
     [Key]
     public int id_syllabus { get; set; }
 
-    public int? id_course { get; set; }
-
-    public int? id_civilSer { get; set; }
+    public int? id_teacherbysubject { get; set; }
 
     [StringLength(50)]
     public string? status { get; set; }
@@ -31,11 +29,7 @@ public partial class Syllabus
     [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<SyllabusSection> SyllabusSections { get; set; } = new List<SyllabusSection>();
 
-    [ForeignKey("id_civilSer")]
+    [ForeignKey("id_teacherbysubject")]
     [InverseProperty("Syllabi")]
-    public virtual CivilServant? id_civilSerNavigation { get; set; }
-
-    [ForeignKey("id_course")]
-    [InverseProperty("Syllabi")]
-    public virtual Course? id_courseNavigation { get; set; }
+    public virtual TeacherBySubject? id_teacherbysubjectNavigation { get; set; }
 }

@@ -24,31 +24,40 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("loads-danh-sach-can-bo-vien-chuc")]
         public async Task<IActionResult> LoadCBVC([FromBody] CivilServantsDTOs items)
         {
-            var totalRecords = await db.CivilServants
-                .Where(x => items.id_program == x.id_program)
-                .CountAsync();
-            var query = db.CivilServants
-                .Where(x => items.id_program == x.id_program).AsQueryable();
-            var GetItems = await query
-                .OrderByDescending(x => x.id_civilSer)
+            var excludeIds = new int?[] { 2, 3 };
+
+            var query = from cs in db.CivilServants
+                        join u in db.Users on cs.email equals u.email into csu
+                        from user in csu.DefaultIfEmpty()
+                        where cs.id_program == items.id_program
+                              && (
+                                  user == null
+                                  || !excludeIds.Contains(user.id_type_users)
+                              )
+                        orderby cs.id_civilSer descending
+                        select new
+                        {
+                            cs.id_civilSer,
+                            cs.code_civilSer,
+                            cs.fullname_civilSer,
+                            cs.email,
+                            cs.birthday,
+                            ProgramName = cs.id_programNavigation.name_program,
+                            cs.time_up,
+                            cs.time_cre
+                        };
+
+            var totalRecords = await query.CountAsync();
+
+            var data = await query
                 .Skip((items.Page - 1) * items.PageSize)
                 .Take(items.PageSize)
-                .Select(x => new
-                {
-                    x.id_civilSer,
-                    x.code_civilSer,
-                    x.fullname_civilSer,
-                    x.email,
-                    x.birthday,
-                    x.id_programNavigation.name_program,
-                    x.time_up,
-                    x.time_cre
-                })
                 .ToListAsync();
+
             return Ok(new
             {
                 success = true,
-                data = GetItems,
+                data,
                 currentPage = items.Page,
                 items.PageSize,
                 totalRecords,
@@ -151,5 +160,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
+
+        
     }
 }

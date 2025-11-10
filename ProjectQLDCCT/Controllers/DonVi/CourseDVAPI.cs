@@ -278,11 +278,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("xoa-du-lieu-mon-hoc")]
         public async Task<IActionResult> DeleteMonHoc([FromBody] CourseDTOs items)
         {
-            var checkSyllabus = await db.Syllabi.FirstOrDefaultAsync(x => x.id_course == items.id_course);
-            if (checkSyllabus != null)
-            {
-                return Ok(new { message = "Môn học này đang tồn tại Đề cương, không thể xóa", success = false });
-            }
             var CheckCourse = await db.Courses.FirstOrDefaultAsync(x => x.id_course == items.id_course);
             if (CheckCourse == null)
             {
