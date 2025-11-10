@@ -1,34 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\coursedvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\coursedvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\models\\dtos\\civilservantsdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\civilservantsdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\civilservantsdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\civilservantsdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\models\\dtos\\teacherbysubjectdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\teacherbysubjectdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\models\\entities\\teacherbysubject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\entities\\teacherbysubject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,97 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 464,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CourseDVAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\CourseDVAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\CourseDVAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\CourseDVAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\CourseDVAPI.cs",
-              "ViewState": "AgIAAPQAAAAAAAAAAAAvwBcBAAAJAAAAAAAAAA==",
+              "Title": "CourseCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T18:28:16.764Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "TeacherBySubject.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\Entities\\TeacherBySubject.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\Entities\\TeacherBySubject.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\Entities\\TeacherBySubject.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Models\\Entities\\TeacherBySubject.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T18:22:31.827Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "TeacherBySubjectDTOs.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\TeacherBySubjectDTOs.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\DTOs\\TeacherBySubjectDTOs.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\TeacherBySubjectDTOs.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Models\\DTOs\\TeacherBySubjectDTOs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T18:22:26.379Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CivilServantsDVAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\CivilServantsDVAPI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T17:49:27.388Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CivilServantsDTOs.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\CivilServantsDTOs.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\DTOs\\CivilServantsDTOs.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\CivilServantsDTOs.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Models\\DTOs\\CivilServantsDTOs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T17:15:55.54Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CivilServantsCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "ViewState": "AgIAAJQAAAAAAAAAAAAAAKMAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T16:37:34.047Z",
+              "WhenOpened": "2025-11-10T02:46:05.526Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CourseCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "ViewState": "AgIAAF8AAAAAAAAAAAAQwJMAAAA9AAAAAAAAAA==",
+              "Title": "CivilServantsCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAuwCEAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-09T16:37:33.332Z",
+              "WhenOpened": "2025-11-10T02:45:18.859Z",
               "EditorCaption": ""
             }
           ]

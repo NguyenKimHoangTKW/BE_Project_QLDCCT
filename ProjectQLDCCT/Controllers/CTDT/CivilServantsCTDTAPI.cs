@@ -26,30 +26,31 @@ namespace ProjectQLDCCT.Controllers.CTDT
         {
             var excludeIds = new int?[] { 2, 3 };
 
-            var query = from cs in db.CivilServants
-                        join u in db.Users on cs.email equals u.email into csu
-                        from user in csu.DefaultIfEmpty()
-                        where cs.id_program == items.id_program
-                              && (
-                                  user == null
-                                  || !excludeIds.Contains(user.id_type_users)
-                              )
-                        orderby cs.id_civilSer descending
-                        select new
-                        {
-                            cs.id_civilSer,
-                            cs.code_civilSer,
-                            cs.fullname_civilSer,
-                            cs.email,
-                            cs.birthday,
-                            ProgramName = cs.id_programNavigation.name_program,
-                            cs.time_up,
-                            cs.time_cre
-                        };
+            var baseQuery = db.CivilServants
+                .Where(cs => cs.id_program == items.id_program &&
+                             !db.Users.Any(u => u.email == cs.email && excludeIds.Contains(u.id_type_users)))
+                .Select(cs => new
+                {
+                    cs.id_civilSer,
+                    cs.code_civilSer,
+                    cs.fullname_civilSer,
+                    cs.email,
+                    cs.birthday,
+                    ProgramName = cs.id_programNavigation.name_program,
+                    cs.time_up,
+                    cs.time_cre,
+                    count_teacher_subjects = db.TeacherBySubjects.Count(tbs =>
+                        tbs.id_user ==
+                        db.Users
+                            .Where(u => u.email == cs.email && !excludeIds.Contains(u.id_type_users))
+                            .Select(u => u.id_users)
+                            .FirstOrDefault())
+                });
 
-            var totalRecords = await query.CountAsync();
+            var totalRecords = await baseQuery.CountAsync();
 
-            var data = await query
+            var data = await baseQuery
+                .OrderByDescending(x => x.id_civilSer)
                 .Skip((items.Page - 1) * items.PageSize)
                 .Take(items.PageSize)
                 .ToListAsync();
@@ -63,7 +64,9 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 totalRecords,
                 totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
             });
+
         }
+
         [HttpPost]
         [Route("them-moi-can-bo-vien-chuc")]
         public async Task<IActionResult> ThemMoiCO([FromBody] CivilServantsDTOs items)
@@ -161,6 +164,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
 
-        
+
     }
 }

@@ -213,7 +213,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
                         name_isCourse = x.id_isCourseNavigation.name,
                         x.totalPractice,
                         x.totalTheory,
-                        x.credits
+                        x.credits,
+                        count_syllabus = x.TeacherBySubjects.Count()
                     })
                     .ToListAsync();
                 if (loadCourse.Count > 0)
