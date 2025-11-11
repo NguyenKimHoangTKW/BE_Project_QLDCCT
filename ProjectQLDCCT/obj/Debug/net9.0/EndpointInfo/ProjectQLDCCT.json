@@ -1390,6 +1390,37 @@
         }
       }
     },
+    "/api/ctdt/course/set-up-time-open-course-by-key": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenSyllabusWindowsCourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenSyllabusWindowsCourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenSyllabusWindowsCourseDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course/loads-ctdt-by-dv": {
       "get": {
         "tags": [
@@ -4112,6 +4143,56 @@
           "status": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenSyllabusWindowsCourseDTOs": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_course": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "open_time": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "close_time": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_by": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_keyYearSemester": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_program": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "is_open": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false

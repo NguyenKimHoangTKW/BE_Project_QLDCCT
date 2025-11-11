@@ -60,6 +60,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<LogOperation> LogOperations { get; set; }
 
+    public virtual DbSet<OpenSyllabusWindowsCourse> OpenSyllabusWindowsCourses { get; set; }
+
     public virtual DbSet<PerformanceIndicator> PerformanceIndicators { get; set; }
 
     public virtual DbSet<ProgramLearningOutcome> ProgramLearningOutcomes { get; set; }
@@ -261,6 +263,13 @@ public partial class QLDCContext : DbContext
             entity.ToTable("LevelContribution", tb => tb.HasTrigger("trg_delete_LevelContribution"));
 
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.LevelContributions).HasConstraintName("FK_LevelContribution_Faculty");
+        });
+
+        modelBuilder.Entity<OpenSyllabusWindowsCourse>(entity =>
+        {
+            entity.HasOne(d => d.created_byNavigation).WithMany(p => p.OpenSyllabusWindowsCourses).HasConstraintName("FK_OpenSyllabusWindowsCourse_Users");
+
+            entity.HasOne(d => d.id_courseNavigation).WithMany(p => p.OpenSyllabusWindowsCourses).HasConstraintName("FK_OpenSyllabusWindowsCourse_Course");
         });
 
         modelBuilder.Entity<PerformanceIndicator>(entity =>

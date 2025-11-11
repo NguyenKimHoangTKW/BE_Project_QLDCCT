@@ -734,6 +734,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "SetUpTimeOpen",
+    "RelativePath": "api/ctdt/course/set-up-time-open-course-by-key",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.OpenSyllabusWindowsCourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "ThemMoiMonHoc",
     "RelativePath": "api/ctdt/course/them-moi-mon-hoc",
     "HttpMethod": "POST",

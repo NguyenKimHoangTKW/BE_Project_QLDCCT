@@ -6,6 +6,7 @@ using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace ProjectQLDCCT.Controllers.CTDT
 {
@@ -530,5 +531,85 @@ namespace ProjectQLDCCT.Controllers.CTDT
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
+
+        [HttpPost]
+        [Route("set-up-time-open-course-by-key")]
+        public async Task<IActionResult> SetUpTimeOpen([FromBody] OpenSyllabusWindowsCourseDTOs items)
+        {
+            if (items.id_keyYearSemester == 0)
+            {
+                return Ok(new { message = "Bạn chưa chọn khóa học để mở đề cương, vui lòng chọn để tiếp tục", succcess = false });
+            }
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                return Unauthorized(new { message = "Thiếu cookie JWT hoặc chưa đăng nhập." });
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                return Unauthorized(new { message = "Token không hợp lệ hoặc bị sửa đổi." });
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+                return Unauthorized(new { message = "Token không chứa hoặc không hợp lệ id_users." });
+
+            var listCourses = await db.Courses
+                .Where(x => x.id_key_year_semester == items.id_keyYearSemester)
+                .ToListAsync();
+
+            if (!listCourses.Any())
+                return Ok(new { message = "Không có danh sách môn học trong khóa học này", success = false });
+
+            var courseIds = listCourses.Select(c => c.id_course).ToList();
+
+            var existWindows = await db.OpenSyllabusWindowsCourses
+                .Where(x => courseIds.Contains(x.id_course ?? 0))
+                .ToListAsync();
+
+            var newRecords = new List<OpenSyllabusWindowsCourse>();
+            bool isOpen =
+                (items.open_time == null || items.open_time <= unixTimestamp) &&
+                (items.close_time == null || unixTimestamp <= items.close_time);
+            int isOpenFlag = isOpen ? 1 : 0;
+            foreach (var course in listCourses)
+            {
+                var exist = existWindows.FirstOrDefault(x => x.id_course == course.id_course);
+                if (exist != null)
+                {
+                    exist.open_time = items.open_time;
+                    exist.close_time = items.close_time;
+                    exist.reason = items.reason;
+                    exist.created_by = userId;
+                    exist.is_open =isOpenFlag;
+                }
+                else
+                {
+                    newRecords.Add(new OpenSyllabusWindowsCourse
+                    {
+                        id_course = course.id_course,
+                        open_time = items.open_time,
+                        close_time = items.close_time,
+                        reason = items.reason,
+                        created_by = userId,
+                        is_open = isOpenFlag
+
+                    });
+                }
+            }
+
+            if (newRecords.Any())
+                db.OpenSyllabusWindowsCourses.AddRange(newRecords);
+
+            await db.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Cập nhật thời gian mở đề cương cho toàn bộ môn học thành công!" });
+        }
+
     }
 }

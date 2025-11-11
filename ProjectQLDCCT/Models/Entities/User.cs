@@ -30,6 +30,9 @@ public partial class User
     [InverseProperty("id_userNavigation")]
     public virtual ICollection<JWTSession> JWTSessions { get; set; } = new List<JWTSession>();
 
+    [InverseProperty("created_byNavigation")]
+    public virtual ICollection<OpenSyllabusWindowsCourse> OpenSyllabusWindowsCourses { get; set; } = new List<OpenSyllabusWindowsCourse>();
+
     [InverseProperty("id_userNavigation")]
     public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
 
