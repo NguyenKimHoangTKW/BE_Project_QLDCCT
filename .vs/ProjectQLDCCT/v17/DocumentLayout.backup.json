@@ -1,13 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\login\\loginapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\login\\loginapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,32 +22,51 @@
       "DocumentGroups": [
         {
           "DockedWidth": 464,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CourseCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "LoginApi.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Login\\LoginApi.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Login\\LoginApi.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Login\\LoginApi.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Login\\LoginApi.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAowHUAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T02:46:05.526Z",
+              "WhenOpened": "2025-11-10T16:50:46.466Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CivilServantsCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
               "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
               "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAuwCEAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAJgAAAAAAAAAAAAYwL8AAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-10T02:45:18.859Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 464,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CourseCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
+              "ViewState": "AgIAANEBAAAAAAAAAAAqwOkBAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T16:20:38.872Z",
               "EditorCaption": ""
             }
           ]

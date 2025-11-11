@@ -542,6 +542,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
+    "Method": "LoadList",
+    "RelativePath": "api/ctdt/civil-servants/loads-list-de-cuong-by-gv",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
     "Method": "ThemMoiCO",
     "RelativePath": "api/ctdt/civil-servants/them-moi-can-bo-vien-chuc",
     "HttpMethod": "POST",

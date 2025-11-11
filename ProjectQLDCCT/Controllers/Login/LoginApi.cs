@@ -70,7 +70,8 @@ namespace ProjectQLDCCT.Controllers.Login
                 Subject = new ClaimsIdentity(new[]
                 {
                 new Claim("id_users", user.id_users.ToString()),
-                new Claim("email", user.email ?? "")
+                new Claim("email", user.email ?? ""),
+                new Claim("id_type_users",user.id_type_users.ToString())
             }),
                 Expires = DateTime.UtcNow.AddMinutes(expiresMinutes),
                 Issuer = issuer,
@@ -115,6 +116,7 @@ namespace ProjectQLDCCT.Controllers.Login
             {
                 success = true,
                 message = "Đăng nhập thành công",
+                token = jwt,
                 user = new
                 {
                     user.id_users,

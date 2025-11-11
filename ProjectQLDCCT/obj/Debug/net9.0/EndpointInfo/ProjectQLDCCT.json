@@ -321,6 +321,37 @@
         }
       }
     },
+    "/api/ctdt/civil-servants/loads-list-de-cuong-by-gv": {
+      "post": {
+        "tags": [
+          "CivilServantsCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/civil-servants/loads-type-permission": {
       "get": {
         "tags": [

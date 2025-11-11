@@ -164,6 +164,45 @@ namespace ProjectQLDCCT.Controllers.CTDT
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
 
+        [HttpPost]
+        [Route("loads-list-de-cuong-by-gv")]
+        public async Task<IActionResult> LoadList([FromBody] CivilServantsDTOs items)
+        {
+            var checkCivilSer = await db.CivilServants
+                .FirstOrDefaultAsync(x => x.id_civilSer == items.id_civilSer);
 
+            if (checkCivilSer == null)
+                return Ok(new { message = "Không tìm thấy thông tin Cán bộ viên chức", success = false });
+
+            var listCourse = await (
+                from tbs in db.TeacherBySubjects
+                join u in db.Users on tbs.id_user equals u.id_users
+                join cs in db.CivilServants on u.email equals cs.email
+                join c in db.Courses on tbs.id_course equals c.id_course
+                where u.email == checkCivilSer.email
+                select new
+                {
+                    tbs.id_teacherbysubject,
+                    c.id_course,
+                    c.code_course,
+                    c.name_course,
+                    GroupCourse = c.id_gr_courseNavigation.name_gr_course,
+                    Semester = c.id_semesterNavigation.code_semester + " - " + c.id_semesterNavigation.name_semester,
+                    KeyYearSemester = c.id_key_year_semesterNavigation.code_key_year_semester + " - " + c.id_key_year_semesterNavigation.name_key_year_semester,
+                    c.credits,
+                    c.totalTheory,
+                    c.totalPractice,
+                    isCourse = c.id_isCourseNavigation.name,
+                }
+            )
+            .OrderByDescending(x => x.id_teacherbysubject)
+            .ToListAsync();
+
+            return Ok(new
+            {
+                success = true,
+                data = listCourse
+            });
+        }
     }
 }
