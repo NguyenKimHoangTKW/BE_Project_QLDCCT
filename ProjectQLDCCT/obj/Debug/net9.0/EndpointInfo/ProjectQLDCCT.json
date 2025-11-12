@@ -3732,6 +3732,18 @@
           }
         }
       }
+    },
+    "/api/dvdc/write-course/loads-danh-sach-de-cuong-can-soan": {
+      "get": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

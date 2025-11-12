@@ -56,24 +56,38 @@ namespace ProjectQLDCCT.Controllers.GVDC
         {
             var List = await GetUserPermissionCourse();
             var ListCourse = await db.TeacherBySubjects
-                .Where(x => List.Contains(x.id_course ?? 0))
-                .Select(x => new
-                {
-                    x.id_courseNavigation.code_course,
-                    x.id_courseNavigation.name_course,
-                    x.id_courseNavigation.id_gr_courseNavigation.name_gr_course,
-                    x.id_courseNavigation.credits,
-                    x.id_courseNavigation.totalTheory,
-                    x.id_courseNavigation.totalPractice,
-                    x.id_courseNavigation.id_isCourseNavigation.name,
-                    x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
-                    x.id_courseNavigation.id_semesterNavigation.name_semester,
-                    x.id_courseNavigation.id_course,
-                })
-                .ToListAsync();
+                 .Where(x => List.Contains(x.id_course ?? 0))
+                 .Select(x => new
+                 {
+                     x.id_courseNavigation.code_course,
+                     x.id_courseNavigation.name_course,
+                     name_gr_course = x.id_courseNavigation.id_gr_courseNavigation.name_gr_course,
+                     x.id_courseNavigation.credits,
+                     x.id_courseNavigation.totalTheory,
+                     x.id_courseNavigation.totalPractice,
+                     x.id_courseNavigation.id_isCourseNavigation.name,
+                     name_isCourse = x.id_courseNavigation.id_isCourseNavigation.name,
+                     name_key_year_semester = x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
+                     name_semester = x.id_courseNavigation.id_semesterNavigation.name_semester,
+                     name_program = x.id_courseNavigation.id_programNavigation.name_program,
+                     x.id_courseNavigation.id_course,
+                     time_open = db.OpenSyllabusWindowsCourses
+                         .Where(g => g.id_course == x.id_course)
+                         .Select(g => g.open_time)
+                         .FirstOrDefault(),
+                     time_close = db.OpenSyllabusWindowsCourses
+                         .Where(g => g.id_course == x.id_course)
+                         .Select(g => g.close_time)
+                         .FirstOrDefault(),
+                    is_open = db.OpenSyllabusWindowsCourses
+                         .Where(g => g.id_course == x.id_course)
+                         .Select(g => g.is_open)
+                         .FirstOrDefault()
+                 })
+                 .ToListAsync();
             if (ListCourse.Count > 0)
             {
-                return Ok(new { data = ListCourse, success = true });
+                return Ok(new { data = ListCourse, message = "Tải dữ liệu thành công", success = true });
             }
             else
             {

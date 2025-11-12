@@ -1945,6 +1945,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "LoadCourseByPermission",
+    "RelativePath": "api/dvdc/write-course/loads-danh-sach-de-cuong-can-soan",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewEvaluateAPI",
     "Method": "LoadsPreviewCLO",
     "RelativePath": "api/evaluate/preview-course-learning-outcomes",
