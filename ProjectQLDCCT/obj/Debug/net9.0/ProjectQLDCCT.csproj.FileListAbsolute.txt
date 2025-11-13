@@ -530,5 +530,4 @@ D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\refint\Proje
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\ProjectQLDCCT.pdb
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\ProjectQLDCCT.genruntimeconfig.cache
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\ref\ProjectQLDCCT.dll
-D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

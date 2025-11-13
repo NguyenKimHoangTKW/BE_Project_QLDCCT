@@ -6,10 +6,11 @@ using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography.Xml;
 
 namespace ProjectQLDCCT.Controllers.GVDC
 {
-    [Route("api/dvdc/write-course")]
+    [Route("api/gvdc/write-course")]
     [ApiController]
     public class WriteCourseGVDCAPI : ControllerBase
     {
@@ -107,6 +108,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 .Where(x => x.id_teacherbysubjectNavigation.id_course == items.id_course)
                 .Select(x => new
                 {
+                    x.id_syllabus,
                     value = x.id_teacherbysubject,
                     code_status = x.id_status,
                     status = x.id_statusNavigation.name,
@@ -192,6 +194,20 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 success = true,
                 version = nextVersion
             });
+        }
+        [HttpPost]
+        [Route("load-mapping-clo-by-de-cuong")]
+        public async Task<IActionResult> LoadMappingCLOBySyllabus([FromBody] MappingCLOBySyllabusDTOs items)
+        {
+            var CheckClo = await db.MappingCLOBySyllabi
+                .Where(x => items.id_syllabus == x.id_syllabus)
+                .Select(x => new
+                {
+                    x.map_clo,
+                    x.description
+                })
+                .ToListAsync();
+            return Ok(CheckClo);
         }
     }
 }

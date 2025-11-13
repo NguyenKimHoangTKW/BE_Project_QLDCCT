@@ -1945,48 +1945,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
-    "Method": "ListCourseByID",
-    "RelativePath": "api/dvdc/write-course/danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "items",
-        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
-    "Method": "LoadCourseByPermission",
-    "RelativePath": "api/dvdc/write-course/loads-danh-sach-de-cuong-can-soan",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
-    "Method": "TaoMoiMauDeCuong",
-    "RelativePath": "api/dvdc/write-course/tao-moi-mau-de-cuong-cho-mon-hoc",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "items",
-        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewEvaluateAPI",
     "Method": "LoadsPreviewCLO",
     "RelativePath": "api/evaluate/preview-course-learning-outcomes",
@@ -2017,6 +1975,48 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "ListCourseByID",
+    "RelativePath": "api/gvdc/write-course/danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "LoadCourseByPermission",
+    "RelativePath": "api/gvdc/write-course/loads-danh-sach-de-cuong-can-soan",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "TaoMoiMauDeCuong",
+    "RelativePath": "api/gvdc/write-course/tao-moi-mau-de-cuong-cho-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
         "IsRequired": true
       }
     ],
@@ -2065,6 +2065,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "loadLevelContribution",
+    "RelativePath": "api/gvdc/write-template-syllabus/preview-level-contribution",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LevelContributionDTOs",
         "IsRequired": true
       }
     ],

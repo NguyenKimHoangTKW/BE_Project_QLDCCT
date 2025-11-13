@@ -3733,7 +3733,7 @@
         }
       }
     },
-    "/api/dvdc/write-course/loads-danh-sach-de-cuong-can-soan": {
+    "/api/gvdc/write-course/loads-danh-sach-de-cuong-can-soan": {
       "get": {
         "tags": [
           "WriteCourseGVDCAPI"
@@ -3745,7 +3745,7 @@
         }
       }
     },
-    "/api/dvdc/write-course/danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc": {
+    "/api/gvdc/write-course/danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc": {
       "post": {
         "tags": [
           "WriteCourseGVDCAPI"
@@ -3776,7 +3776,7 @@
         }
       }
     },
-    "/api/dvdc/write-course/tao-moi-mau-de-cuong-cho-mon-hoc": {
+    "/api/gvdc/write-course/tao-moi-mau-de-cuong-cho-mon-hoc": {
       "post": {
         "tags": [
           "WriteCourseGVDCAPI"
@@ -3920,6 +3920,37 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/PLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/preview-level-contribution": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LevelContributionDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LevelContributionDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LevelContributionDTOs"
               }
             }
           }
@@ -4330,6 +4361,11 @@
           },
           "description": {
             "type": "string",
+            "nullable": true
+          },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

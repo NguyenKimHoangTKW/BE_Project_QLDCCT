@@ -22,7 +22,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("preview-template")]
         public async Task<IActionResult> PreviewTemplate([FromBody] SyllabusDTOs items)
         {
-            
+
             var checkTemplate = await db.Syllabi
                 .Where(x => x.id_syllabus == items.id_syllabus)
                 .Select(x => new
@@ -33,7 +33,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
             if (checkTemplate == null)
                 return Ok(new { message = "Không tìm thấy thông tin biểu mẫu", success = false });
 
-            return Ok(new { data = checkTemplate, success = true });
+            return Ok(new { data = checkTemplate, success = true, message = "Tải mẫu đề cương thành công" });
         }
         [HttpPost]
         [Route("preview-course-objectives")]
@@ -109,7 +109,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
             }
             return Ok(listData);
         }
-
+        [HttpPost]
+        [Route("preview-level-contribution")]
+        public async Task<IActionResult> loadLevelContribution([FromBody] LevelContributionDTOs items)
+        {
+            var checkFac = await db.Syllabi
+             .Where(x => x.id_syllabus == items.id_syllabus)
+             .Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_programNavigation.id_faculty)
+             .FirstOrDefaultAsync();
+            var LoadData = await db.LevelContributions
+                .Where(x => x.id_faculty == checkFac)
+                .Select(x => new
+                {
+                    x.Code,
+                    x.Description
+                })
+                .ToListAsync();
+            return Ok(LoadData);
+        }
         [HttpPost]
         [Route("loads-plo-hoc-phan")]
         public async Task<IActionResult> LoadPloHP([FromBody] SyllabusDTOs items)

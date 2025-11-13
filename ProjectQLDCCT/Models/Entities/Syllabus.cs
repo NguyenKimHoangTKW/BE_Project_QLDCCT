@@ -28,6 +28,9 @@ public partial class Syllabus
     public string? syllabus_json { get; set; }
 
     [InverseProperty("id_syllabusNavigation")]
+    public virtual ICollection<MappingCLOBySyllabus> MappingCLOBySyllabi { get; set; } = new List<MappingCLOBySyllabus>();
+
+    [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<SyllabusApproval> SyllabusApprovals { get; set; } = new List<SyllabusApproval>();
 
     [InverseProperty("id_syllabusNavigation")]

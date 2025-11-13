@@ -62,6 +62,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<LogStatus> LogStatuses { get; set; }
 
+    public virtual DbSet<MappingCLOBySyllabus> MappingCLOBySyllabi { get; set; }
+
     public virtual DbSet<OpenSyllabusWindowsCourse> OpenSyllabusWindowsCourses { get; set; }
 
     public virtual DbSet<PerformanceIndicator> PerformanceIndicators { get; set; }
@@ -270,6 +272,11 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<LogStatus>(entity =>
         {
             entity.Property(e => e.id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<MappingCLOBySyllabus>(entity =>
+        {
+            entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.MappingCLOBySyllabi).HasConstraintName("FK_MappingCLOBySyllabus_Syllabus");
         });
 
         modelBuilder.Entity<OpenSyllabusWindowsCourse>(entity =>
