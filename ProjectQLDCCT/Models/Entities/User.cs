@@ -33,6 +33,9 @@ public partial class User
     [InverseProperty("created_byNavigation")]
     public virtual ICollection<OpenSyllabusWindowsCourse> OpenSyllabusWindowsCourses { get; set; } = new List<OpenSyllabusWindowsCourse>();
 
+    [InverseProperty("create_byNavigation")]
+    public virtual ICollection<Syllabus> Syllabi { get; set; } = new List<Syllabus>();
+
     [InverseProperty("id_userNavigation")]
     public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
 

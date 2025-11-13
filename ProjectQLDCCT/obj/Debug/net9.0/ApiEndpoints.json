@@ -1946,12 +1946,44 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "ListCourseByID",
+    "RelativePath": "api/dvdc/write-course/danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "LoadCourseByPermission",
     "RelativePath": "api/dvdc/write-course/loads-danh-sach-de-cuong-can-soan",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "TaoMoiMauDeCuong",
+    "RelativePath": "api/dvdc/write-course/tao-moi-mau-de-cuong-cho-mon-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -1985,6 +2017,86 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadPloHP",
+    "RelativePath": "api/gvdc/write-template-syllabus/loads-plo-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadsPreviewCLO",
+    "RelativePath": "api/gvdc/write-template-syllabus/preview-course-learning-outcomes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadsPreviewCO",
+    "RelativePath": "api/gvdc/write-template-syllabus/preview-course-objectives",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadsPreviewPLO",
+    "RelativePath": "api/gvdc/write-template-syllabus/preview-program-learning-outcome",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "PreviewTemplate",
+    "RelativePath": "api/gvdc/write-template-syllabus/preview-template",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
         "IsRequired": true
       }
     ],

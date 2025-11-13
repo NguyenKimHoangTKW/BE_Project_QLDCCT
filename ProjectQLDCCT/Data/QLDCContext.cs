@@ -60,6 +60,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<LogOperation> LogOperations { get; set; }
 
+    public virtual DbSet<LogStatus> LogStatuses { get; set; }
+
     public virtual DbSet<OpenSyllabusWindowsCourse> OpenSyllabusWindowsCourses { get; set; }
 
     public virtual DbSet<PerformanceIndicator> PerformanceIndicators { get; set; }
@@ -265,6 +267,11 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.LevelContributions).HasConstraintName("FK_LevelContribution_Faculty");
         });
 
+        modelBuilder.Entity<LogStatus>(entity =>
+        {
+            entity.Property(e => e.id).ValueGeneratedNever();
+        });
+
         modelBuilder.Entity<OpenSyllabusWindowsCourse>(entity =>
         {
             entity.HasOne(d => d.created_byNavigation).WithMany(p => p.OpenSyllabusWindowsCourses).HasConstraintName("FK_OpenSyllabusWindowsCourse_Users");
@@ -299,6 +306,10 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<Syllabus>(entity =>
         {
             entity.ToTable("Syllabus", tb => tb.HasTrigger("trg_delete_Syllabus"));
+
+            entity.HasOne(d => d.create_byNavigation).WithMany(p => p.Syllabi).HasConstraintName("FK_Syllabus_Users");
+
+            entity.HasOne(d => d.id_statusNavigation).WithMany(p => p.Syllabi).HasConstraintName("FK_Syllabus_LogStatus");
 
             entity.HasOne(d => d.id_teacherbysubjectNavigation).WithMany(p => p.Syllabi).HasConstraintName("FK_Syllabus_TeacherBySubject");
         });
