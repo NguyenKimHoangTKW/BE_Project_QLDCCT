@@ -19,6 +19,9 @@ public partial class MappingCLOBySyllabus
 
     public int? id_syllabus { get; set; }
 
+    [InverseProperty("id_CLoMappingNavigation")]
+    public virtual ICollection<MappingCLObyPI> MappingCLObyPIs { get; set; } = new List<MappingCLObyPI>();
+
     [ForeignKey("id_syllabus")]
     [InverseProperty("MappingCLOBySyllabi")]
     public virtual Syllabus? id_syllabusNavigation { get; set; }

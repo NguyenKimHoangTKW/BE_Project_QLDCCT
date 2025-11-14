@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
+using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 
 namespace ProjectQLDCCT.Controllers.GVDC
@@ -121,11 +122,133 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 .Where(x => x.id_faculty == checkFac)
                 .Select(x => new
                 {
+                    x.id,
                     x.Code,
                     x.Description
                 })
                 .ToListAsync();
             return Ok(LoadData);
+        }
+        [HttpPost]
+        [Route("load-mapping-clo-by-de-cuong")]
+        public async Task<IActionResult> LoadMappingCLOBySyllabus([FromBody] MappingCLOBySyllabusDTOs items)
+        {
+            var CheckClo = await db.MappingCLOBySyllabi
+                .Where(x => items.id_syllabus == x.id_syllabus)
+                .Select(x => new
+                {
+                    x.id,
+                    x.map_clo,
+                    x.description
+                })
+                .ToListAsync();
+            return Ok(CheckClo);
+        }
+        [HttpPost]
+        [Route("save-mapping-clo")]
+        public async Task<IActionResult> SaveMappingCLO([FromBody] MappingCLOBySyllabusDTOs items)
+        {
+
+            var exist = await db.MappingCLOBySyllabi
+                   .FirstOrDefaultAsync(x => x.id == items.id);
+            if (exist == null)
+            {
+                if (string.IsNullOrEmpty(items.description))
+                    return Ok(new { message = "Nội dung của CLO không được bỏ trống", success = false });
+                var checkMapping = await db.MappingCLOBySyllabi
+                .Where(x => x.id_syllabus == items.id_syllabus && x.map_clo == items.map_clo)
+                .FirstOrDefaultAsync();
+                if (checkMapping != null)
+                    return Ok(new { message = "Bị trùng CLO, vui lòng kiểm tra lại", success = false });
+                var newData = new MappingCLOBySyllabus
+                {
+                    id_syllabus = items.id_syllabus,
+                    map_clo = items.map_clo,
+                    description = items.description
+                };
+
+                db.MappingCLOBySyllabi.Add(newData);
+            }
+            else
+            {
+                exist.map_clo = items.map_clo;
+                exist.description = items.description;
+            }
+            await db.SaveChangesAsync();
+            return Ok(new { success = true });
+        }
+        [HttpPost]
+        [Route("delete-mapping-clo")]
+        public async Task<IActionResult> DeleteMappingCLO([FromBody] MappingCLOBySyllabusDTOs items)
+        {
+            if (items.id == null)
+                return Ok(new { message = "Thiếu id_mapping", success = false });
+
+            var exist = await db.MappingCLOBySyllabi
+                .FirstOrDefaultAsync(x => x.id == items.id);
+
+            db.MappingCLOBySyllabi.Remove(exist);
+            await db.SaveChangesAsync();
+
+            return Ok(new { success = true });
+        }
+
+        [HttpPost]
+        [Route("save-mapping-clo-pi")]
+        public async Task<IActionResult> SaveMappingCLOPI([FromBody] List<MappingCLObyPIDTOs> items)
+        {
+            foreach (var item in items)
+            {
+                var exist = await db.MappingCLObyPIs
+                    .FirstOrDefaultAsync(x =>
+                        x.id_CLoMapping == item.id_CLoMapping &&
+                        x.Id_PI == item.Id_PI);
+
+                if (item.Id_Level == 0)
+                {
+                    if (exist != null)
+                    {
+                        db.MappingCLObyPIs.Remove(exist);
+                    }
+
+                    continue; 
+                }
+                if (exist != null)
+                {
+                    exist.Id_Level = item.Id_Level;
+                }
+                else
+                {
+                    db.MappingCLObyPIs.Add(new MappingCLObyPI
+                    {
+                        id_CLoMapping = item.id_CLoMapping,
+                        Id_PI = item.Id_PI,
+                        Id_Level = item.Id_Level
+                    });
+                }
+            }
+            await db.SaveChangesAsync();
+            return Ok(new { success = true, message = "Saved!" });
+        }
+
+        [HttpPost]
+        [Route("get-mapping-clo-pi")]
+        public async Task<IActionResult> GetMappingCLOPI([FromBody] MappingCLOBySyllabusDTOs items)
+        {
+            var result = await (
+                from clo in db.MappingCLOBySyllabi
+                join map in db.MappingCLObyPIs
+                    on clo.id equals map.id_CLoMapping
+                where clo.id_syllabus == items.id_syllabus
+                select new
+                {
+                    id_CLoMapping = map.id_CLoMapping,
+                    Id_PI = map.Id_PI,
+                    Id_Level = map.Id_Level
+                }
+            ).ToListAsync();
+
+            return Ok(result);
         }
         [HttpPost]
         [Route("loads-plo-hoc-phan")]
@@ -165,6 +288,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     .Where(cm => cm.Id_PINavigation.Id_PLO == plo.Id_Plo)
                     .Select(cm => new
                     {
+                        id_PI = cm.Id_PI,
                         pi_code = cm.Id_PINavigation.code,
                         level_code = cm.id_levelcontributonNavigation.Code,
                         des_level = cm.id_levelcontributonNavigation.Description

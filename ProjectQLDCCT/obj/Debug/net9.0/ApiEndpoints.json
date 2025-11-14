@@ -2024,6 +2024,54 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "DeleteMappingCLO",
+    "RelativePath": "api/gvdc/write-template-syllabus/delete-mapping-clo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.MappingCLOBySyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "GetMappingCLOPI",
+    "RelativePath": "api/gvdc/write-template-syllabus/get-mapping-clo-pi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.MappingCLOBySyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadMappingCLOBySyllabus",
+    "RelativePath": "api/gvdc/write-template-syllabus/load-mapping-clo-by-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.MappingCLOBySyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
     "Method": "LoadPloHP",
     "RelativePath": "api/gvdc/write-template-syllabus/loads-plo-hoc-phan",
     "HttpMethod": "POST",
@@ -2113,6 +2161,38 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SaveMappingCLO",
+    "RelativePath": "api/gvdc/write-template-syllabus/save-mapping-clo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.MappingCLOBySyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SaveMappingCLOPI",
+    "RelativePath": "api/gvdc/write-template-syllabus/save-mapping-clo-pi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "System.Collections.Generic.List\u00601[[ProjectQLDCCT.Models.DTOs.MappingCLObyPIDTOs, ProjectQLDCCT, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
       }
     ],

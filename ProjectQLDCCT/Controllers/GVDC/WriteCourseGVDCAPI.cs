@@ -195,19 +195,5 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 version = nextVersion
             });
         }
-        [HttpPost]
-        [Route("load-mapping-clo-by-de-cuong")]
-        public async Task<IActionResult> LoadMappingCLOBySyllabus([FromBody] MappingCLOBySyllabusDTOs items)
-        {
-            var CheckClo = await db.MappingCLOBySyllabi
-                .Where(x => items.id_syllabus == x.id_syllabus)
-                .Select(x => new
-                {
-                    x.map_clo,
-                    x.description
-                })
-                .ToListAsync();
-            return Ok(CheckClo);
-        }
     }
 }

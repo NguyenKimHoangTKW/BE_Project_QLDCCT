@@ -34,4 +34,7 @@ public partial class PerformanceIndicator
     [ForeignKey("Id_PLO")]
     [InverseProperty("PerformanceIndicators")]
     public virtual ProgramLearningOutcome? Id_PLONavigation { get; set; }
+
+    [InverseProperty("Id_PINavigation")]
+    public virtual ICollection<MappingCLObyPI> MappingCLObyPIs { get; set; } = new List<MappingCLObyPI>();
 }

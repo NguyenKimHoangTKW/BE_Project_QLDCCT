@@ -32,6 +32,9 @@ public partial class LevelContribution
     [InverseProperty("id_levelcontributonNavigation")]
     public virtual ICollection<ContributionMatrix> ContributionMatrices { get; set; } = new List<ContributionMatrix>();
 
+    [InverseProperty("Id_LevelNavigation")]
+    public virtual ICollection<MappingCLObyPI> MappingCLObyPIs { get; set; } = new List<MappingCLObyPI>();
+
     [ForeignKey("id_faculty")]
     [InverseProperty("LevelContributions")]
     public virtual Faculty? id_facultyNavigation { get; set; }
