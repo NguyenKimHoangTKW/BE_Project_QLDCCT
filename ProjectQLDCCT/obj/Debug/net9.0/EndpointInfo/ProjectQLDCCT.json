@@ -4608,6 +4608,11 @@
             "format": "int32",
             "nullable": true
           },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "id_CLoMapping": {
             "type": "integer",
             "format": "int32",
@@ -4621,6 +4626,10 @@
           "id_PI": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "code_Level": {
+            "type": "string",
             "nullable": true
           }
         },

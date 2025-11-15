@@ -197,13 +197,32 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("save-mapping-clo-pi")]
         public async Task<IActionResult> SaveMappingCLOPI([FromBody] List<MappingCLObyPIDTOs> items)
         {
+            int idSyllabus = (int)items.First().id_syllabus;
+
+            var idCourse = await db.Syllabi
+                .Where(x => x.id_syllabus == idSyllabus)
+                .Select(x => x.id_teacherbysubjectNavigation.id_course)
+                .FirstOrDefaultAsync();
+
             foreach (var item in items)
             {
+              
+
                 var exist = await db.MappingCLObyPIs
                     .FirstOrDefaultAsync(x =>
                         x.id_CLoMapping == item.id_CLoMapping &&
                         x.Id_PI == item.Id_PI);
-
+                var isValid = await db.ContributionMatrices
+                  .Where(x => x.id_levelcontributonNavigation.Code == item.code_Level && x.Id_PI == item.Id_PI)
+                  .AnyAsync();
+                if (!isValid)
+                {
+                    return Ok(new
+                    {
+                        message = $"Mức độ đóng góp {item.Id_Level} của PI {item.Id_PI} không khớp so với bảng tham chiếu.",
+                        success = false
+                    });
+                }
                 if (item.Id_Level == 0)
                 {
                     if (exist != null)
@@ -211,7 +230,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                         db.MappingCLObyPIs.Remove(exist);
                     }
 
-                    continue; 
+                    continue;
                 }
                 if (exist != null)
                 {
