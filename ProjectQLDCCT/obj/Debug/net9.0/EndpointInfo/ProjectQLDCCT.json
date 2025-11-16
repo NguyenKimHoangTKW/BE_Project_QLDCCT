@@ -4156,6 +4156,68 @@
           }
         }
       }
+    },
+    "/api/gvdc/write-template-syllabus/save-final": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveFinalSyllabusDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveFinalSyllabusDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveFinalSyllabusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/export-word-html": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HtmlToDocxRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HtmlToDocxRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/HtmlToDocxRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4476,6 +4538,16 @@
         },
         "additionalProperties": false
       },
+      "HtmlToDocxRequest": {
+        "type": "object",
+        "properties": {
+          "html": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "KeySemesterDTOs": {
         "type": "object",
         "properties": {
@@ -4762,6 +4834,23 @@
         },
         "additionalProperties": false
       },
+      "SaveFinalSyllabusDTO": {
+        "type": "object",
+        "properties": {
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateSectionDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SavePermissionDTOs": {
         "type": "object",
         "properties": {
@@ -4917,6 +5006,40 @@
           "id_course": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TemplateSectionDTO": {
+        "type": "object",
+        "properties": {
+          "id_template_section": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "section_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "section_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "allow_input": {
+            "type": "string",
+            "nullable": true
+          },
+          "contentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataBinding": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
             "nullable": true
           }
         },

@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using HtmlToOpenXml;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
@@ -23,19 +28,30 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("preview-template")]
         public async Task<IActionResult> PreviewTemplate([FromBody] SyllabusDTOs items)
         {
-
             var checkTemplate = await db.Syllabi
                 .Where(x => x.id_syllabus == items.id_syllabus)
                 .Select(x => new
                 {
-                    x.syllabus_json
+                    x.syllabus_json,
+                    status = x.id_status == 4 
                 })
                 .FirstOrDefaultAsync();
-            if (checkTemplate == null)
-                return Ok(new { message = "Không tìm thấy thông tin biểu mẫu", success = false });
 
-            return Ok(new { data = checkTemplate, success = true, message = "Tải mẫu đề cương thành công" });
+            if (checkTemplate == null)
+                return Ok(new
+                {
+                    message = "Không tìm thấy thông tin biểu mẫu",
+                    success = false
+                });
+
+            return Ok(new
+            {
+                data = checkTemplate,
+                success = true,
+                message = "Tải mẫu đề cương thành công"
+            });
         }
+
         [HttpPost]
         [Route("preview-course-objectives")]
         public async Task<IActionResult> LoadsPreviewCO([FromBody] SyllabusDTOs items)
@@ -199,39 +215,74 @@ namespace ProjectQLDCCT.Controllers.GVDC
         {
             int idSyllabus = (int)items.First().id_syllabus;
 
-            var idCourse = await db.Syllabi
-                .Where(x => x.id_syllabus == idSyllabus)
-                .Select(x => x.id_teacherbysubjectNavigation.id_course)
-                .FirstOrDefaultAsync();
+            var idCourse = await (
+                from s in db.Syllabi
+                join t in db.TeacherBySubjects on s.id_teacherbysubject equals t.id_teacherbysubject
+                where s.id_syllabus == idSyllabus
+                select t.id_course
+            ).FirstOrDefaultAsync();
+            if (idCourse == 0)
+            {
+                return Ok(new
+                {
+                    success = false,
+                    message = "Không xác định được id_course từ syllabus. Vui lòng kiểm tra dữ liệu."
+                });
+            }
 
             foreach (var item in items)
             {
-              
-
                 var exist = await db.MappingCLObyPIs
                     .FirstOrDefaultAsync(x =>
                         x.id_CLoMapping == item.id_CLoMapping &&
                         x.Id_PI == item.Id_PI);
-                var isValid = await db.ContributionMatrices
-                  .Where(x => x.id_levelcontributonNavigation.Code == item.code_Level && x.Id_PI == item.Id_PI)
-                  .AnyAsync();
-                if (!isValid)
+
+                if (item.Id_Level > 0)
                 {
-                    return Ok(new
+                    var validCodes = await db.ContributionMatrices
+                        .Where(x => x.Id_PI == item.Id_PI && x.id_course == idCourse)
+                        .Select(x => x.id_levelcontributonNavigation.Code)
+                        .ToListAsync();
+
+                    string selected = item.code_Level.Trim();
+                    bool isMultiSelect = selected.Contains(",");
+
+                    bool isValid = validCodes.Any(code =>
                     {
-                        message = $"Mức độ đóng góp {item.Id_Level} của PI {item.Id_PI} không khớp so với bảng tham chiếu.",
-                        success = false
+                        var normalized = code.Replace(" ", "");
+                        var normalizedSelected = selected.Replace(" ", "");
+
+                        if (isMultiSelect)
+                        {
+                            return string.Equals(normalized, normalizedSelected, StringComparison.OrdinalIgnoreCase);
+                        }
+                        else
+                        {
+                            return normalized
+                                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                .Select(s => s.Trim())
+                                .Contains(selected, StringComparer.OrdinalIgnoreCase);
+                        }
                     });
+
+                    if (!isValid)
+                    {
+                        return Ok(new
+                        {
+                            success = false,
+                            message = $"Mức độ đóng góp '{item.code_Level}' của PI {item.Id_PI} không khớp với bảng tham chiếu."
+                        });
+                    }
                 }
+
                 if (item.Id_Level == 0)
                 {
                     if (exist != null)
-                    {
                         db.MappingCLObyPIs.Remove(exist);
-                    }
 
                     continue;
                 }
+
                 if (exist != null)
                 {
                     exist.Id_Level = item.Id_Level;
@@ -246,9 +297,12 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     });
                 }
             }
+
             await db.SaveChangesAsync();
             return Ok(new { success = true, message = "Saved!" });
         }
+
+
 
         [HttpPost]
         [Route("get-mapping-clo-pi")]
@@ -290,7 +344,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 .ToListAsync();
 
             var mappedPloIds = await db.ContributionMatrices
-                .Where(cm => cm.Id_PINavigation.Id_PLONavigation.Id_Program == checkCourse.id_program)
+                .Where(cm => cm.Id_PINavigation.Id_PLONavigation.Id_Program == checkCourse.id_program && cm.id_course == checkCou)
                 .Select(cm => cm.Id_PINavigation.Id_PLO)
                 .Distinct()
                 .ToListAsync();
@@ -304,7 +358,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 if (!mappedPloIds.Contains(plo.Id_Plo)) continue;
 
                 var piList = await db.ContributionMatrices
-                    .Where(cm => cm.Id_PINavigation.Id_PLO == plo.Id_Plo)
+                    .Where(cm => cm.Id_PINavigation.Id_PLO == plo.Id_Plo && cm.id_course == checkCou)
                     .Select(cm => new
                     {
                         id_PI = cm.Id_PI,
@@ -332,5 +386,63 @@ namespace ProjectQLDCCT.Controllers.GVDC
 
             return Ok(new { success = true, count_plo = totalPloMapped, data = listData });
         }
+        [HttpPost]
+        [Route("save-final")]
+        public async Task<IActionResult> SaveFinalSyllabus([FromBody] SaveFinalSyllabusDTO dto)
+        {
+            var syllabus = await db.Syllabi
+                .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus);
+
+            if (syllabus == null)
+                return Ok(new { success = false, message = "Không tìm thấy syllabus!" });
+
+            string json = JsonConvert.SerializeObject(dto.data);
+
+            syllabus.syllabus_json = json;
+            syllabus.time_up = unixTimestamp;
+            syllabus.id_status = 2;
+            await db.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                message = "Đã lưu thành công toàn bộ nội dung đề cương!"
+            });
+        }
+
+
+        [HttpPost("export-word-html")]
+        public IActionResult ExportWordFromHtml([FromBody] HtmlToDocxRequest req)
+        {
+            if (req == null || string.IsNullOrWhiteSpace(req.Html))
+                return BadRequest("HTML không hợp lệ");
+
+            using MemoryStream mem = new MemoryStream();
+            using (WordprocessingDocument wordDoc =
+                WordprocessingDocument.Create(mem, WordprocessingDocumentType.Document, true))
+            {
+                MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+                mainPart.Document = new Document(new Body());
+
+                var converter = new HtmlConverter(mainPart);
+                converter.ParseHtml(req.Html);
+
+                mainPart.Document.Save();
+            }
+
+            mem.Position = 0;
+
+            return File(
+                mem.ToArray(),
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "Syllabus.docx"
+            );
+        }
+
+        public class HtmlToDocxRequest
+        {
+            public string Html { get; set; }
+        }
+
     }
 }
