@@ -113,6 +113,18 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     code_status = x.id_status,
                     status = x.id_statusNavigation.name,
                     version = x.version,
+                    is_open = db.OpenSyllabusWindowsCourses
+                         .Where(g => g.id_course == items.id_course)
+                         .Select(g => g.is_open)
+                         .FirstOrDefault(),
+                    time_open = db.OpenSyllabusWindowsCourses
+                         .Where(g => g.id_course == items.id_course)
+                         .Select(g => g.open_time)
+                         .FirstOrDefault(),
+                    time_close = db.OpenSyllabusWindowsCourses
+                         .Where(g => g.id_course == items.id_course)
+                         .Select(g => g.close_time)
+                         .FirstOrDefault(),
                     civilServants = db.CivilServants
                         .Where(cs => cs.email == x.create_byNavigation.email)
                         .Select(cs => new
@@ -125,11 +137,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
                         .ToList()
                 })
                 .ToListAsync();
-
+            var ListData = new List<object>();
+            var window = db.OpenSyllabusWindowsCourses
+                 .Where(g => g.id_course == items.id_course)
+                 .Select(g => new
+                 {
+                     time_open = g.open_time,
+                     time_close = g.close_time
+                 })
+                 .FirstOrDefault();
+            var GetNameCourse = await db.Courses
+                .Where(x => x.id_course == items.id_course)
+                .Select(x => x.name_course)
+                .FirstOrDefaultAsync();
             if (listData.Any())
-                return Ok(new { data = listData, success = true });
+                return Ok(new { data = listData, name_course = GetNameCourse, success = true });
             else
-                return Ok(new { message = "Chưa có dữ liệu giảng viên viết đề cương", success = false });
+
+                return Ok(new { name_course = GetNameCourse, data = window, message = "Chưa có dữ liệu giảng viên viết đề cương", success = false });
         }
 
         [HttpPost]
@@ -157,8 +182,13 @@ namespace ProjectQLDCCT.Controllers.GVDC
 
             if (!int.TryParse(userIdClaim, out int userId))
                 throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
-
-
+            var CheckexistingFinalVersions = await db.Syllabi
+              .Where(x => x.id_teacherbysubject == items.id_teacherbysubject && x.create_by == userId && x.id_status == 4)
+              .ToListAsync();
+            if (CheckexistingFinalVersions.Any())
+            {
+                return Ok(new { message = "Bạn đó có đề cương đã hoàn thiện trong môn học này, không thể tạo thêm", success = false });
+            }
             var existingVersions = await db.Syllabi
                 .Where(x => x.id_teacherbysubject == items.id_teacherbysubject && x.create_by == userId)
                 .Select(x => x.version)
@@ -194,6 +224,27 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 success = true,
                 version = nextVersion
             });
+        }
+
+        [HttpPost]
+        [Route("inherit-template-syllabus")]
+        public async Task<IActionResult> inheritTempalte([FromBody] InheritTemplateSyllabusTemplateDTOs items)
+        {
+            var listData = await db.Syllabi
+                .Where(x => x.id_teacherbysubjectNavigation.id_course == items.id_course && x.id_status == 4)
+                .ToListAsync();
+            if (listData.Count <= 1)
+            {
+                return Ok(new { message = "Không có đề cương hoàn thiện để kế thừa, không thể sử dụng chức năng này", success = false });
+            }
+            var CheckTemplate_1 = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus1).FirstOrDefaultAsync();
+
+            var checkTemplate_2 = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus2).Select(x => x.syllabus_json).FirstOrDefaultAsync();
+
+            CheckTemplate_1.syllabus_json = checkTemplate_2;
+            CheckTemplate_1.time_up = unixTimestamp;
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Kế thừa mẫu đề cương thành công", success = true });
         }
     }
 }

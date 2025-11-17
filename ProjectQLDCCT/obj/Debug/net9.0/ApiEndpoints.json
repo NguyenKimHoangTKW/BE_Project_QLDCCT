@@ -1998,6 +1998,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "inheritTempalte",
+    "RelativePath": "api/gvdc/write-course/inherit-template-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.InheritTemplateSyllabusTemplateDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "LoadCourseByPermission",
     "RelativePath": "api/gvdc/write-course/loads-danh-sach-de-cuong-can-soan",
     "HttpMethod": "GET",

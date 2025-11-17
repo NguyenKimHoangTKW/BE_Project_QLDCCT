@@ -28,12 +28,20 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("preview-template")]
         public async Task<IActionResult> PreviewTemplate([FromBody] SyllabusDTOs items)
         {
+            var idCourse = await (
+                from s in db.Syllabi
+                join t in db.TeacherBySubjects on s.id_teacherbysubject equals t.id_teacherbysubject
+                where s.id_syllabus == items.id_syllabus
+                select t.id_course
+            ).FirstOrDefaultAsync();
             var checkTemplate = await db.Syllabi
                 .Where(x => x.id_syllabus == items.id_syllabus)
                 .Select(x => new
                 {
                     x.syllabus_json,
-                    status = x.id_status == 4 
+                    course = x.id_teacherbysubjectNavigation.id_courseNavigation.name_course,
+                    status = x.id_status == 4,
+                    is_open = db.OpenSyllabusWindowsCourses.Any(g => g.id_course == idCourse && g.is_open == 1)
                 })
                 .FirstOrDefaultAsync();
 
@@ -390,6 +398,19 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("save-final")]
         public async Task<IActionResult> SaveFinalSyllabus([FromBody] SaveFinalSyllabusDTO dto)
         {
+
+            var CheckMappingCLO = await db.MappingCLOBySyllabi
+                .Where(x => x.id_syllabus == dto.id_syllabus)
+                .Select(x => x.id)
+                .ToListAsync();
+            if (!CheckMappingCLO.Any())
+                return Ok(new { message = "Bạn chưa có dữ liệu ma trận CLO, không thể lưu", success = false });
+
+            var CheckMappingPI = await db.MappingCLObyPIs
+                .Where(x => CheckMappingCLO.Contains(x.id_CLoMapping ?? 0))
+                .ToListAsync();
+            if(!CheckMappingPI.Any())
+                return Ok(new { message = "Bạn chưa có dữ liệu ma trận PI thuộc PLO, không thể lưu", success = false });
             var syllabus = await db.Syllabi
                 .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus);
 

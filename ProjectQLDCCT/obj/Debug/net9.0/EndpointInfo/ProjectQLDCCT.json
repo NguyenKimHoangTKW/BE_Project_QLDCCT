@@ -3807,6 +3807,37 @@
         }
       }
     },
+    "/api/gvdc/write-course/inherit-template-syllabus": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InheritTemplateSyllabusTemplateDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InheritTemplateSyllabusTemplateDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InheritTemplateSyllabusTemplateDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/gvdc/write-template-syllabus/preview-template": {
       "post": {
         "tags": [
@@ -4543,6 +4574,27 @@
         "properties": {
           "html": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InheritTemplateSyllabusTemplateDTOs": {
+        "type": "object",
+        "properties": {
+          "id_syllabus1": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_syllabus2": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_course": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },
