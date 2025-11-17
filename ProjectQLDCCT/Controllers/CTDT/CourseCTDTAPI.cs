@@ -148,7 +148,10 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     name = x.id_isCourseNavigation.name,
                     name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
                     name_key_year_semester = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester,
-                    count_syllabus = x.TeacherBySubjects.Count()
+                    count_syllabus = x.TeacherBySubjects.Count(),
+                    time_open = db.OpenSyllabusWindowsCourses.Where(g => g.id_course == x.id_course).Select(g => g.open_time).FirstOrDefault(),
+                    time_close = db.OpenSyllabusWindowsCourses.Where(g => g.id_course == x.id_course).Select(g => g.close_time).FirstOrDefault(),
+                    is_syllabus = db.Syllabi.Any(g => g.id_teacherbysubjectNavigation.id_course == x.id_course && g.id_status == 4)
                 })
                 .ToListAsync();
 
@@ -215,7 +218,10 @@ namespace ProjectQLDCCT.Controllers.CTDT
                         x.totalPractice,
                         x.totalTheory,
                         x.credits,
-                        count_syllabus = x.TeacherBySubjects.Count()
+                        count_syllabus = x.TeacherBySubjects.Count(),
+                        time_open = db.OpenSyllabusWindowsCourses.Where(g => g.id_course == x.id_course).Select(g => g.open_time).FirstOrDefault(),
+                        time_close = db.OpenSyllabusWindowsCourses.Where(g => g.id_course == x.id_course).Select(g => g.close_time).FirstOrDefault(),
+                        is_syllabus = db.Syllabi.Any(g => g.id_teacherbysubjectNavigation.id_course == x.id_course && g.id_status == 4)
                     })
                     .ToListAsync();
                 if (loadCourse.Count > 0)
@@ -584,7 +590,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 {
                     exist.open_time = items.open_time;
                     exist.close_time = items.close_time;
-                    exist.reason = items.reason;
                     exist.created_by = userId;
                     exist.is_open =isOpenFlag;
                 }
@@ -595,10 +600,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
                         id_course = course.id_course,
                         open_time = items.open_time,
                         close_time = items.close_time,
-                        reason = items.reason,
                         created_by = userId,
                         is_open = isOpenFlag
-
                     });
                 }
             }
@@ -610,6 +613,5 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             return Ok(new { success = true, message = "Cập nhật thời gian mở đề cương cho toàn bộ môn học thành công!" });
         }
-
     }
 }
