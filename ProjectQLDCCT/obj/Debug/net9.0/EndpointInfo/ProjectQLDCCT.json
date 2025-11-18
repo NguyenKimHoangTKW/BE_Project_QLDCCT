@@ -1421,6 +1421,37 @@
         }
       }
     },
+    "/api/ctdt/course/load-list-de-cuong-da-hoan-thien": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course/loads-ctdt-by-dv": {
       "get": {
         "tags": [

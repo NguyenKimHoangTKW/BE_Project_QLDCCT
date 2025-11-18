@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -613,5 +614,65 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             return Ok(new { success = true, message = "Cập nhật thời gian mở đề cương cho toàn bộ môn học thành công!" });
         }
+
+        [HttpPost]
+        [Route("load-list-de-cuong-da-hoan-thien")]
+        public async Task<IActionResult> LoadListSyllabusFinal([FromBody] CourseDTOs items)
+        {
+            var syllabiInfo = await db.Syllabi
+                .Where(x => x.id_teacherbysubjectNavigation.id_course == items.id_course
+                            && x.id_status == 4)
+                .Select(x => new
+                {
+                    x.id_syllabus,
+                    x.version,
+                    x.time_cre,
+                    x.time_up,
+                    email = x.id_teacherbysubjectNavigation.id_userNavigation.email,
+                    code_course = x.id_teacherbysubjectNavigation.id_courseNavigation.code_course,
+                    name_course = x.id_teacherbysubjectNavigation.id_courseNavigation.name_course,
+                    status = x.id_statusNavigation.name
+                })
+                .ToListAsync();
+
+            if (!syllabiInfo.Any())
+            {
+                return Ok(new { message = "Chưa có đề cương nào đã hoàn thiện", success = false });
+            }
+
+            var emails = syllabiInfo.Select(x => x.email).Distinct().ToList();
+
+            var civilServants = await db.CivilServants
+                .Where(x => emails.Contains(x.email))
+                .Select(x => new
+                {
+                    x.code_civilSer,
+                    x.fullname_civilSer,
+                    x.email,
+                    name_program = x.id_programNavigation.name_program
+                })
+                .ToListAsync();
+
+            var finalList = (from s in syllabiInfo
+                             join c in civilServants on s.email equals c.email
+                             select new
+                             {
+                                 s.id_syllabus,
+                                 c.code_civilSer,
+                                 c.fullname_civilSer,
+                                 c.name_program,
+                                 c.email,
+                                 s.code_course,
+                                 s.name_course,
+                                 s.version,
+                                 s.time_cre,
+                                 s.time_up,
+                                 s.status
+                             }).ToList();
+
+            return Ok(new { data = finalList, message = "Tải dữ liệu thành công", success = true });
+        }
+
+
     }
 }

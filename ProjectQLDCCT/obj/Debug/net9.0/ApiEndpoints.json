@@ -654,6 +654,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "LoadListSyllabusFinal",
+    "RelativePath": "api/ctdt/course/load-list-de-cuong-da-hoan-thien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "LoadOptionSelectedUpdate",
     "RelativePath": "api/ctdt/course/load-select-chuc-nang-course",
     "HttpMethod": "POST",

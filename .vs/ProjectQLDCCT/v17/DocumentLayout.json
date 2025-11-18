@@ -1,18 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\civilservantsctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\shared\\previewtemplatesyllabusapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\shared\\previewtemplatesyllabusapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\coursectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\models\\dtos\\opensyllabuswindowscoursedtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\models\\dtos\\opensyllabuswindowscoursedtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\shared\\previewevaluateapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\shared\\previewevaluateapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 464,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CivilServantsCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CivilServantsCTDTAPI.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAAqAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "PreviewEvaluateAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Shared\\PreviewEvaluateAPI.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T17:22:45.937Z",
+              "WhenOpened": "2025-11-18T08:43:35.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PreviewTemplateSyllabusAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Shared\\PreviewTemplateSyllabusAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Shared\\PreviewTemplateSyllabusAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Shared\\PreviewTemplateSyllabusAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Shared\\PreviewTemplateSyllabusAPI.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAwwJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-18T08:43:34.834Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CourseCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\CourseCTDTAPI.cs",
-              "ViewState": "AgIAALwAAAAAAAAAAAAAAM0AAAAxAAAAAAAAAA==",
+              "Title": "WriteTemplateSyllabusGVDCAPI.cs",
+              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "ViewState": "AgIAAMQBAAAAAAAAAAAAANEBAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T15:36:56.856Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "OpenSyllabusWindowsCourseDTOs.cs",
-              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\OpenSyllabusWindowsCourseDTOs.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Models\\DTOs\\OpenSyllabusWindowsCourseDTOs.cs",
-              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Models\\DTOs\\OpenSyllabusWindowsCourseDTOs.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Models\\DTOs\\OpenSyllabusWindowsCourseDTOs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T15:41:54.995Z",
+              "WhenOpened": "2025-11-18T08:41:38.023Z",
               "EditorCaption": ""
             }
           ]
