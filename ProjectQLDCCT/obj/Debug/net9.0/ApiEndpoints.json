@@ -2062,6 +2062,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "DeleteSyllabusBy_1",
+    "RelativePath": "api/gvdc/write-course/delete-syllabus-1",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "inheritTempalte",
     "RelativePath": "api/gvdc/write-course/inherit-template-syllabus",
     "HttpMethod": "POST",
@@ -2090,6 +2106,22 @@
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "PreviewContentRefund",
     "RelativePath": "api/gvdc/write-course/preview-content-refund-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "RollBackSyllabus",
+    "RelativePath": "api/gvdc/write-course/rollback-syllabus",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ProjectQLDCCT.Controllers.GVDC
 {
@@ -23,6 +24,43 @@ namespace ProjectQLDCCT.Controllers.GVDC
             db = _db;
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        }
+        private async Task<string> GetUserPermissionNameCodeGV()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Token không chứa id_users hợp lệ.");
+
+            var email = await db.Users
+                .Where(x => x.id_users == userId)
+                .Select(x => x.email)
+                .FirstOrDefaultAsync();
+
+            if (email == null)
+                return "";
+
+            var loadPermission = await db.CivilServants
+                .Where(g => g.email == email)
+                .Select(g => g.code_civilSer + " - " + g.fullname_civilSer)
+                .FirstOrDefaultAsync();
+
+            return loadPermission ?? "";
         }
         [HttpPost]
         [Route("preview-template")]
@@ -398,7 +436,40 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("save-final")]
         public async Task<IActionResult> SaveFinalSyllabus([FromBody] SaveFinalSyllabusDTO dto)
         {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
 
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new UnauthorizedAccessException("Token không chứa id_users.");
+
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
+            var GetCourse = await db.Syllabi.Where(x => x.id_syllabus == dto.id_syllabus)
+                .Select(x => x.id_teacherbysubjectNavigation.id_course)
+                .FirstOrDefaultAsync();
+
+            var CheckTypeSyllabus = await db.Syllabi
+                .Where(x => x.id_teacherbysubjectNavigation.id_user == userId && x.id_teacherbysubjectNavigation.id_course == GetCourse && x.id_status > 1)
+                .ToListAsync();
+
+            if (CheckTypeSyllabus.Any())
+            {
+                return Ok(new { message = "Bạn đang có đề cương đang được xử lý, không thể nộp thêm đề cương", success = false });
+            }
             var CheckMappingCLO = await db.MappingCLOBySyllabi
                 .Where(x => x.id_syllabus == dto.id_syllabus)
                 .Select(x => x.id)
@@ -422,6 +493,14 @@ namespace ProjectQLDCCT.Controllers.GVDC
             syllabus.syllabus_json = json;
             syllabus.time_up = unixTimestamp;
             syllabus.id_status = 2;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = syllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa nộp đề cương chờ duyệt với phiên bản {syllabus.version}",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
             await db.SaveChangesAsync();
 
             return Ok(new
@@ -452,7 +531,6 @@ namespace ProjectQLDCCT.Controllers.GVDC
             }
 
             mem.Position = 0;
-
             return File(
                 mem.ToArray(),
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",

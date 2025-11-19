@@ -30,6 +30,9 @@ public partial class Syllabus
     public string? returned_content { get; set; }
 
     [InverseProperty("id_syllabusNavigation")]
+    public virtual ICollection<Log_Syllabus> Log_Syllabi { get; set; } = new List<Log_Syllabus>();
+
+    [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<MappingCLOBySyllabus> MappingCLOBySyllabi { get; set; } = new List<MappingCLOBySyllabus>();
 
     [InverseProperty("id_syllabusNavigation")]

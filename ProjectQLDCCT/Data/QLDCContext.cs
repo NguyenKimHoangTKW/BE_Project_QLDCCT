@@ -62,6 +62,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<LogStatus> LogStatuses { get; set; }
 
+    public virtual DbSet<Log_Syllabus> Log_Syllabi { get; set; }
+
     public virtual DbSet<MappingCLOBySyllabus> MappingCLOBySyllabi { get; set; }
 
     public virtual DbSet<MappingCLObyPI> MappingCLObyPIs { get; set; }
@@ -276,8 +278,15 @@ public partial class QLDCContext : DbContext
             entity.Property(e => e.id).ValueGeneratedNever();
         });
 
+        modelBuilder.Entity<Log_Syllabus>(entity =>
+        {
+            entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.Log_Syllabi).HasConstraintName("FK_Log_Syllabus_Syllabus");
+        });
+
         modelBuilder.Entity<MappingCLOBySyllabus>(entity =>
         {
+            entity.ToTable("MappingCLOBySyllabus", tb => tb.HasTrigger("trg_delete_MappingCLOBySyllabus"));
+
             entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.MappingCLOBySyllabi).HasConstraintName("FK_MappingCLOBySyllabus_Syllabus");
         });
 
@@ -391,6 +400,8 @@ public partial class QLDCContext : DbContext
 
         modelBuilder.Entity<TeacherBySubject>(entity =>
         {
+            entity.ToTable("TeacherBySubject", tb => tb.HasTrigger("trg_delete_TeacherBySubject"));
+
             entity.HasOne(d => d.id_courseNavigation).WithMany(p => p.TeacherBySubjects).HasConstraintName("FK_TeacherBySubject_Course");
 
             entity.HasOne(d => d.id_userNavigation).WithMany(p => p.TeacherBySubjects).HasConstraintName("FK_TeacherBySubject_Users");

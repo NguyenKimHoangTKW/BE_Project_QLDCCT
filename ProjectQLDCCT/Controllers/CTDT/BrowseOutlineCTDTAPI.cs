@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
+using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -51,7 +52,43 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 .ToListAsync();
             return loadPermission;
         }
+        private async Task<string> GetUserPermissionNameCodeGV()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
 
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Token không chứa id_users hợp lệ.");
+
+            var email = await db.Users
+                .Where(x => x.id_users == userId)
+                .Select(x => x.email)
+                .FirstOrDefaultAsync();
+
+            if (email == null)
+                return "";
+
+            var loadPermission = await db.CivilServants
+                .Where(g => g.email == email)
+                .Select(g => g.code_civilSer + " - " + g.fullname_civilSer)
+                .FirstOrDefaultAsync();
+
+            return loadPermission ?? "";
+        }
         [HttpPost]
         [Route("loads-de-cuong-can-duyet")]
         public async Task<IActionResult> LoadDanhSachDeCuongCanDuyet([FromBody] SyllabusDTOs items)
@@ -119,6 +156,14 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             CheckSyllabus.returned_content = items.returned_content;
             CheckSyllabus.id_status = 3;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = CheckSyllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa hoàn trả đề cương lại để chỉnh sửa lại",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
             await db.SaveChangesAsync();
             return Ok(new { message = "Hoàn trả đề cương thành công", success = true });
         }
@@ -132,6 +177,14 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             CheckSyllabus.id_status = 4;
             CheckSyllabus.returned_content = null;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = CheckSyllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa hoàn tất duyệt đề cương",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
             await db.SaveChangesAsync();
             return Ok(new { message = "Hoàn trả đề cương thành công", success = true });
         }
