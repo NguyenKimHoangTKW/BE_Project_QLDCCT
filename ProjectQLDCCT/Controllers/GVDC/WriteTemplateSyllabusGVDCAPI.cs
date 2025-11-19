@@ -460,10 +460,5 @@ namespace ProjectQLDCCT.Controllers.GVDC
             );
         }
 
-        public class HtmlToDocxRequest
-        {
-            public string Html { get; set; }
-        }
-
     }
 }

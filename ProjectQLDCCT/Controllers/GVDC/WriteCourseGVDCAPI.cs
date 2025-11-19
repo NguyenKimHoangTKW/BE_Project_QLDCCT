@@ -246,5 +246,18 @@ namespace ProjectQLDCCT.Controllers.GVDC
             await db.SaveChangesAsync();
             return Ok(new { message = "Kế thừa mẫu đề cương thành công", success = true });
         }
+        [HttpPost]
+        [Route("preview-content-refund-syllabus")]
+        public async Task<IActionResult> PreviewContentRefund([FromBody] SyllabusDTOs items)
+        {
+            var CheckContent = await db.Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .Select(x => x.returned_content)
+                .FirstOrDefaultAsync();
+            if(CheckContent == null)
+                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+
+            return Ok(new {data = CheckContent , success = true});
+        }
     }
 }

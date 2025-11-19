@@ -14,5 +14,8 @@ namespace ProjectQLDCCT.Models.DTOs
         public string? version { get; set; }
         public int? id_course { get; set; }
         public string? syllabus_json {  get; set; }
+
+        public int? id_program { get; set; }
+        public string? returned_content { get; set; }
     }
 }

@@ -95,6 +95,25 @@ namespace ProjectQLDCCT.Controllers.Shared
             return Ok(result);
         }
         [HttpPost]
+        [Route("preview-level-contribution")]
+        public async Task<IActionResult> loadLevelContribution([FromBody] LevelContributionDTOs items)
+        {
+            var checkFac = await db.Syllabi
+             .Where(x => x.id_syllabus == items.id_syllabus)
+             .Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_programNavigation.id_faculty)
+             .FirstOrDefaultAsync();
+            var LoadData = await db.LevelContributions
+                .Where(x => x.id_faculty == checkFac)
+                .Select(x => new
+                {
+                    x.id,
+                    x.Code,
+                    x.Description
+                })
+                .ToListAsync();
+            return Ok(LoadData);
+        }
+        [HttpPost]
         [Route("loads-plo-hoc-phan")]
         public async Task<IActionResult> LoadPloHP([FromBody] SyllabusDTOs items)
         {
@@ -184,11 +203,6 @@ namespace ProjectQLDCCT.Controllers.Shared
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "Syllabus.docx"
             );
-        }
-
-        public class HtmlToDocxRequest
-        {
-            public string Html { get; set; }
         }
     }
 }

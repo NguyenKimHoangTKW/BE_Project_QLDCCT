@@ -509,6 +509,54 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.BrowseOutlineCTDTAPI",
+    "Method": "BrowseSyllabus",
+    "RelativePath": "api/ctdt/browse-outline/approve-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.BrowseOutlineCTDTAPI",
+    "Method": "LoadDanhSachDeCuongCanDuyet",
+    "RelativePath": "api/ctdt/browse-outline/loads-de-cuong-can-duyet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.BrowseOutlineCTDTAPI",
+    "Method": "RefundSyllabus",
+    "RelativePath": "api/ctdt/browse-outline/refund-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CivilServantsCTDTAPI",
     "Method": "InfoCO",
     "RelativePath": "api/ctdt/civil-servants/info-can-bo-vien-chuc",
@@ -2040,6 +2088,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "PreviewContentRefund",
+    "RelativePath": "api/gvdc/write-course/preview-content-refund-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "TaoMoiMauDeCuong",
     "RelativePath": "api/gvdc/write-course/tao-moi-mau-de-cuong-cho-mon-hoc",
     "HttpMethod": "POST",
@@ -2080,7 +2144,7 @@
     "Parameters": [
       {
         "Name": "req",
-        "Type": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI\u002BHtmlToDocxRequest",
+        "Type": "ProjectQLDCCT.Models.DTOs.HtmlToDocxRequest",
         "IsRequired": true
       }
     ],
@@ -2286,6 +2350,102 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewTemplateSyllabusAPI",
+    "Method": "ExportWordFromHtml",
+    "RelativePath": "api/preview/export-word-html",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "ProjectQLDCCT.Models.DTOs.HtmlToDocxRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewTemplateSyllabusAPI",
+    "Method": "GetMappingCLOPI",
+    "RelativePath": "api/preview/get-mapping-clo-pi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.MappingCLOBySyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewTemplateSyllabusAPI",
+    "Method": "LoadMappingCLOBySyllabus",
+    "RelativePath": "api/preview/load-mapping-clo-by-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.MappingCLOBySyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewTemplateSyllabusAPI",
+    "Method": "LoadPloHP",
+    "RelativePath": "api/preview/loads-plo-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewTemplateSyllabusAPI",
+    "Method": "loadLevelContribution",
+    "RelativePath": "api/preview/preview-level-contribution",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LevelContributionDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Shared.PreviewTemplateSyllabusAPI",
+    "Method": "PreviewTemplate",
+    "RelativePath": "api/preview/preview-template",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]
