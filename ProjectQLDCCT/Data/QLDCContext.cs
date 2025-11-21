@@ -273,11 +273,6 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.LevelContributions).HasConstraintName("FK_LevelContribution_Faculty");
         });
 
-        modelBuilder.Entity<LogStatus>(entity =>
-        {
-            entity.Property(e => e.id).ValueGeneratedNever();
-        });
-
         modelBuilder.Entity<Log_Syllabus>(entity =>
         {
             entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.Log_Syllabi).HasConstraintName("FK_Log_Syllabus_Syllabus");

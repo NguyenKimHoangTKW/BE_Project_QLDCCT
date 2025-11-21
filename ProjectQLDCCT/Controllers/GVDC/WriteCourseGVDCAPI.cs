@@ -156,6 +156,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                    code_status = x.id_status,
                    status = x.id_statusNavigation.name,
                    version = x.version,
+                   is_open_edit_final = x.is_open_edit_final,
                    is_open = db.OpenSyllabusWindowsCourses
                         .Where(g => g.id_course == items.id_course)
                         .Select(g => g.is_open)
@@ -259,7 +260,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 time_cre = unixTimestamp,
                 time_up = unixTimestamp,
                 create_by = userId,
-                syllabus_json = GetJsonTempalte
+                syllabus_json = GetJsonTempalte,
+                is_open_edit_final = 0
             };
 
             db.Syllabi.Add(new_record);
@@ -352,6 +354,56 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
 
             return Ok(new { data = CheckContent, success = true });
+        }
+        [HttpPost]
+        [Route("request-edit-syllabus")]
+        public async Task<IActionResult> RequestEditSyllabus([FromBody] SyllabusDTOs items)
+        {
+            if (string.IsNullOrEmpty(items.edit_content))
+            {
+                return Ok(new { message = "Không được bỏ trống lý do yêu cầu chỉnh sửa", success = false });
+            }
+            var checkSyllabus = await db.Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .FirstOrDefaultAsync();
+            if (checkSyllabus == null)
+                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+
+            checkSyllabus.is_open_edit_final = 1;
+            checkSyllabus.edit_content = items.edit_content;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = checkSyllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa yêu cầu mở chỉnh sửa bổ sung đề cương sau duyệt",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Gửi yêu cầu mở chỉnh sửa bổ sung thành công", success = true });
+        }
+        [HttpPost]
+        [Route("cancer-edit-syllabus")]
+        public async Task<IActionResult> CancerSyllabusEdit([FromBody] SyllabusDTOs items)
+        {
+            var checkSyllabus = await db.Syllabi
+               .Where(x => x.id_syllabus == items.id_syllabus)
+               .FirstOrDefaultAsync();
+            if (checkSyllabus == null)
+                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+
+            checkSyllabus.is_open_edit_final = 0;
+            checkSyllabus.edit_content = null;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = checkSyllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa thu hồi yêu cầu chỉnh sửa đề cương sau duyệt",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Thu hồi đề cương thành công", success = true });
         }
     }
 }

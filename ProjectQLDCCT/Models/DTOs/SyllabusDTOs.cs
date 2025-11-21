@@ -17,5 +17,8 @@ namespace ProjectQLDCCT.Models.DTOs
 
         public int? id_program { get; set; }
         public string? returned_content { get; set; }
+        public string? edit_content { get; set; }
+
+        public int? is_open_edit_final { get; set; }
     }
 }

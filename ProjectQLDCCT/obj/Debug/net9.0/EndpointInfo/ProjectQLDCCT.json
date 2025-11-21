@@ -98,6 +98,130 @@
         }
       }
     },
+    "/api/ctdt/browse-outline/log-hoat-dong-de-cuong": {
+      "post": {
+        "tags": [
+          "BrowseOutlineCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ctdt/browse-outline/preview-request-edit-syllabus": {
+      "post": {
+        "tags": [
+          "BrowseOutlineCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ctdt/browse-outline/accept-request-edit-syllabus": {
+      "post": {
+        "tags": [
+          "BrowseOutlineCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ctdt/browse-outline/cancer-request-edit-syllabus": {
+      "post": {
+        "tags": [
+          "BrowseOutlineCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/admin/civilservants/{id}": {
       "post": {
         "tags": [
@@ -1545,6 +1669,37 @@
         }
       }
     },
+    "/api/ctdt/course/log-hoat-dong-de-cuong": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course/loads-ctdt-by-dv": {
       "get": {
         "tags": [
@@ -1745,6 +1900,37 @@
                 "file": {
                   "style": "form"
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course/export-danh-sach-mon-hoc-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "CourseDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
               }
             }
           }
@@ -4241,6 +4427,68 @@
         }
       }
     },
+    "/api/gvdc/write-course/request-edit-syllabus": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-course/cancer-edit-syllabus": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/gvdc/write-template-syllabus/preview-template": {
       "post": {
         "tags": [
@@ -5062,6 +5310,36 @@
         },
         "additionalProperties": false
       },
+      "LogSyllabusDTOs": {
+        "type": "object",
+        "properties": {
+          "id_log": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "content_value": {
+            "type": "string",
+            "nullable": true
+          },
+          "id_course": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "log_time": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginDTOs": {
         "type": "object",
         "properties": {
@@ -5407,6 +5685,15 @@
           },
           "returned_content": {
             "type": "string",
+            "nullable": true
+          },
+          "edit_content": {
+            "type": "string",
+            "nullable": true
+          },
+          "is_open_edit_final": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

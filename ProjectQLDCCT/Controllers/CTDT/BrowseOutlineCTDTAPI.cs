@@ -101,12 +101,15 @@ namespace ProjectQLDCCT.Controllers.CTDT
             var CountSyllabus_2 = await LoadSyllabus.Where(x => x.id_status == 2).CountAsync();
             var CountSyllabus_3 = await LoadSyllabus.Where(x => x.id_status == 3).CountAsync();
             var CountSyllabus_4 = await LoadSyllabus.Where(x => x.id_status == 4).CountAsync();
-
+            var CountSyllabus_5 = await LoadSyllabus.Where(x => x.is_open_edit_final == 1).CountAsync();
+            var CountSyllabus_6 = await LoadSyllabus.Where(x => x.id_status == 7).CountAsync();
             ListCount.Add(new
             {
                 dang_cho_duyet = CountSyllabus_2,
                 tra_de_cuong = CountSyllabus_3,
-                hoan_thanh = CountSyllabus_4
+                hoan_thanh = CountSyllabus_4,
+                mo_de_cuong_sau_duyet = CountSyllabus_5,
+                dang_mo_bo_sung_sau_duyet = CountSyllabus_6
             });
             if (items.id_program > 0)
             {
@@ -116,7 +119,10 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 LoadSyllabus = LoadSyllabus.Where(x => x.id_status == items.id_status);
             }
-
+            if (items.is_open_edit_final > 0)
+            {
+                LoadSyllabus = LoadSyllabus.Where(x => x.is_open_edit_final == items.is_open_edit_final);
+            }
             var query = await LoadSyllabus
                     .Select(x => new
                     {
@@ -133,6 +139,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                         code_civil = db.CivilServants.Where(g => g.email == x.id_teacherbysubjectNavigation.id_userNavigation.email).Select(g => g.code_civilSer).FirstOrDefault(),
                         name_civil = db.CivilServants.Where(g => g.email == x.id_teacherbysubjectNavigation.id_userNavigation.email).Select(g => g.fullname_civilSer).FirstOrDefault(),
                         email_civil = db.CivilServants.Where(g => g.email == x.id_teacherbysubjectNavigation.id_userNavigation.email).Select(g => g.email).FirstOrDefault(),
+                        x.is_open_edit_final
                     })
                     .ToListAsync();
             if (query.Count > 0)
@@ -187,6 +194,89 @@ namespace ProjectQLDCCT.Controllers.CTDT
             db.Log_Syllabi.Add(new_record_log);
             await db.SaveChangesAsync();
             return Ok(new { message = "Hoàn trả đề cương thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("log-hoat-dong-de-cuong")]
+        public async Task<IActionResult> LoadLogSyllabus([FromBody] LogSyllabusDTOs items)
+        {
+            var LoadLogOperation = await db.Log_Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .OrderByDescending(x => x.id_log)
+                .Select(x => new
+                {
+                    x.content_value,
+                    x.log_time
+                })
+                .ToListAsync();
+            return Ok(LoadLogOperation);
+        }
+
+        [HttpPost]
+        [Route("preview-request-edit-syllabus")]
+        public async Task<IActionResult> RequestEditSyllabus([FromBody] SyllabusDTOs items)
+        {
+            var CheckSyllabus = await db.Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .Select(x => x.edit_content)
+                .FirstOrDefaultAsync();
+            if (CheckSyllabus == null)
+                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+
+            return Ok(new { data = CheckSyllabus, success = true });
+        }
+
+        [HttpPost]
+        [Route("accept-request-edit-syllabus")]
+        public async Task<IActionResult> AcceptRequestEditSyllabus([FromBody] SyllabusDTOs items)
+        {
+            var CheckSyllabus = await db.Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .FirstOrDefaultAsync();
+            if (CheckSyllabus == null)
+                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+
+            CheckSyllabus.is_open_edit_final = 0;
+            CheckSyllabus.edit_content = null;
+            CheckSyllabus.id_status = 7;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = CheckSyllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa duyệt yêu cầu mở đề cương chỉnh sửa bổ sung sau duyệt",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Duyệt thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("cancer-request-edit-syllabus")]
+        public async Task<IActionResult> CancerRequestEditSyllabus([FromBody] SyllabusDTOs items)
+        {
+            if (string.IsNullOrEmpty(items.returned_content))
+            {
+                return Ok(new { message = "Không được để trống lý do từ chối yêu cầu mở chỉnh sửa", success = false });
+            }
+            var CheckSyllabus = await db.Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .FirstOrDefaultAsync();
+            if (CheckSyllabus == null)
+                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+
+            CheckSyllabus.is_open_edit_final = 2;
+            CheckSyllabus.returned_content = items.returned_content;
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+            var new_record_log = new Log_Syllabus
+            {
+                id_syllabus = CheckSyllabus.id_syllabus,
+                content_value = $"Giảng viên {GetNameGV} vừa từ chối yêu cầu mở đề cương bổ sung sau duyệt",
+                log_time = unixTimestamp
+            };
+            db.Log_Syllabi.Add(new_record_log);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Từ chối yêu cầu thành công", success = true });
         }
     }
 }

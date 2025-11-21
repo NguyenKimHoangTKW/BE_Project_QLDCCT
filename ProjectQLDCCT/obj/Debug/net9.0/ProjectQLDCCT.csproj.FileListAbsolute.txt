@@ -540,5 +540,6 @@ D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DocumentForm
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DocumentFormat.OpenXml.Framework.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\HtmlToOpenXml.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.IO.Packaging.dll
-D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\swae.build.ex.cache

@@ -29,6 +29,10 @@ public partial class Syllabus
 
     public string? returned_content { get; set; }
 
+    public string? edit_content { get; set; }
+
+    public int? is_open_edit_final { get; set; }
+
     [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<Log_Syllabus> Log_Syllabi { get; set; } = new List<Log_Syllabus>();
 

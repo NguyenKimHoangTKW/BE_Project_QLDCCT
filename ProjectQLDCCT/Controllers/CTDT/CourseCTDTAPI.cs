@@ -672,7 +672,19 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             return Ok(new { data = finalList, message = "Tải dữ liệu thành công", success = true });
         }
-
-
+        [HttpPost]
+        [Route("log-hoat-dong-de-cuong")]
+        public async Task<IActionResult> LoadLogSyllabus([FromBody] LogSyllabusDTOs items)
+        {
+            var LoadLogOperation = await db.Log_Syllabi
+                .Where(x => x.id_syllabusNavigation.id_teacherbysubjectNavigation.id_course == items.id_course)
+                .Select(x => new
+                {
+                    x.content_value,
+                    x.log_time
+                })
+                .ToListAsync();
+            return Ok(LoadLogOperation);
+        }
     }
 }

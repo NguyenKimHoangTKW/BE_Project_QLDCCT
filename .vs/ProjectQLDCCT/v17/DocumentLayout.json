@@ -1,18 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\browseoutlinectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\browseoutlinectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\browseoutlinectdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\gvdc\\writecoursegvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\gvdc\\writecoursegvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,46 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 464,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "WriteTemplateSyllabusGVDCAPI.cs",
-              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
-              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAkwD8AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T07:52:26.762Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "WriteCourseGVDCAPI.cs",
-              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteCourseGVDCAPI.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\GVDC\\WriteCourseGVDCAPI.cs",
-              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteCourseGVDCAPI.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\GVDC\\WriteCourseGVDCAPI.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAqwDcAAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T03:07:24.076Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "BrowseOutlineCTDTAPI.cs",
-              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\BrowseOutlineCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\BrowseOutlineCTDTAPI.cs",
               "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\BrowseOutlineCTDTAPI.cs",
-              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\BrowseOutlineCTDTAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\BrowseOutlineCTDTAPI.cs",
               "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\BrowseOutlineCTDTAPI.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAA9wFoAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAkwG8AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T08:59:27.793Z",
+              "WhenOpened": "2025-11-19T16:21:45.56Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WriteTemplateSyllabusGVDCAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "ViewState": "AgIAAK8BAAAAAAAAAAAqwL4BAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-19T17:19:42.19Z"
             }
           ]
         }

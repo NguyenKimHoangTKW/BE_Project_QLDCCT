@@ -436,6 +436,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("save-final")]
         public async Task<IActionResult> SaveFinalSyllabus([FromBody] SaveFinalSyllabusDTO dto)
         {
+            var listInt = new int?[] { 1, 7 };
             var token = HttpContext.Request.Cookies["jwt"];
             if (string.IsNullOrWhiteSpace(token))
                 throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
@@ -463,7 +464,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 .FirstOrDefaultAsync();
 
             var CheckTypeSyllabus = await db.Syllabi
-                .Where(x => x.id_teacherbysubjectNavigation.id_user == userId && x.id_teacherbysubjectNavigation.id_course == GetCourse && x.id_status > 1)
+                .Where(x => x.id_teacherbysubjectNavigation.id_user == userId && x.id_teacherbysubjectNavigation.id_course == GetCourse && !listInt.Contains(x.id_status))
                 .ToListAsync();
 
             if (CheckTypeSyllabus.Any())
@@ -493,6 +494,9 @@ namespace ProjectQLDCCT.Controllers.GVDC
             syllabus.syllabus_json = json;
             syllabus.time_up = unixTimestamp;
             syllabus.id_status = 2;
+            syllabus.returned_content = null;
+            syllabus.edit_content = null;
+            syllabus.is_open_edit_final = 0;
             var GetNameGV = await GetUserPermissionNameCodeGV();
             var new_record_log = new Log_Syllabus
             {
