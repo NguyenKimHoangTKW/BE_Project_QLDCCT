@@ -4,7 +4,7 @@ namespace ProjectQLDCCT.Models.DTOs
 {
     public class KeySemesterDTOs
     {
-        public int id_key_year_semester { get; set; }
+        public int? id_key_year_semester { get; set; }
 
         public string? code_key_year_semester { get; set; }
 

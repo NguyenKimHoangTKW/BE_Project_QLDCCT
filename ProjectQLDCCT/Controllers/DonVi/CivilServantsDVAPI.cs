@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace ProjectQLDCCT.Controllers.DonVi
@@ -221,7 +223,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
-        
+
         [HttpPost]
         [Route("save-permission-cbvc")]
         public async Task<IActionResult> SaveQuyen([FromBody] CivilServantsDTOs items)
@@ -342,6 +344,182 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 return Ok(new { message = "Lỗi khi tải dữ liệu quyền: " + ex.Message, success = false });
             }
         }
+        [HttpPost("upload-excel-danh-sach-giang-vien")]
+        public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
+        {
+            var GetFaculty = await GetUserPermissionFaculties();
+            if (file == null || file.Length == 0)
+                return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
 
+            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
+                return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
+            try
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                var ID = Request.Form["id_program"];
+                int IdProgram = int.Parse(ID);
+                if (IdProgram == 0)
+                {
+                    return Ok(new { message = "Vui lòng chọn Chương trình đào tạo cố định để Import", success = false });
+                }
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+                        }
+
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var ma_gv = worksheet.Cells[row, 2].Text?.Trim();
+                            var ten_gv = worksheet.Cells[row, 3].Text?.Trim();
+                            var email = worksheet.Cells[row, 4].Text?.Trim();
+                            var ngaysinh = worksheet.Cells[row, 5].Text?.Trim();
+
+                            var check_gv = await db.CivilServants
+                                .FirstOrDefaultAsync(x =>
+                                    x.code_civilSer.ToLower().Trim() == ma_gv.ToLower() &&
+                                    x.fullname_civilSer.ToLower().Trim() == ten_gv.ToLower() &&
+                                    x.id_program == IdProgram
+                                    );
+                            if (check_gv == null)
+                            {
+                                check_gv = new CivilServant
+                                {
+                                    code_civilSer = string.IsNullOrWhiteSpace(ma_gv) ? null : ma_gv.ToUpper(),
+                                    fullname_civilSer = string.IsNullOrWhiteSpace(ten_gv) ? null : ten_gv,
+                                    email = string.IsNullOrWhiteSpace(email) ? null : email,
+                                    birthday = ParseDateOnly(ngaysinh),
+                                    time_cre = unixTimestamp,
+                                    time_up = unixTimestamp
+                                };
+
+                                db.CivilServants.Add(check_gv);
+
+                            }
+                            else
+                            {
+                                check_gv.email = string.IsNullOrWhiteSpace(email) ? null : email;
+                                check_gv.time_up = unixTimestamp;
+                            }
+                            await db.SaveChangesAsync();
+                        }
+
+                        return Ok(new { message = "Import dữ liệu thành công", success = true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
+            }
+        }
+        private DateOnly? ParseDateOnly(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
+
+            DateTime dt;
+
+            var formats = new[] { "dd/MM/yyyy", "d/M/yyyy", "dd-MM-yyyy", "d-M-yyyy" };
+
+            if (DateTime.TryParseExact(input.Trim(), formats,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out dt))
+            {
+                return DateOnly.FromDateTime(dt);
+            }
+
+            return null;
+        }
+
+
+        [HttpPost]
+        [Route("export-danh-sach-giang-vien-thuoc-don-vi")]
+        public async Task<IActionResult> Export([FromBody] CivilServantsDTOs items)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var GetFaculty = await GetUserPermissionFaculties();
+            var totalRecords = await db.CivilServants
+                .Where(x => GetFaculty.Contains(x.id_programNavigation.id_faculty ?? 0))
+                .CountAsync();
+            var query = db.CivilServants
+                .Where(x => GetFaculty.Contains(x.id_programNavigation.id_faculty ?? 0)).AsQueryable();
+            if (items.id_program > 0)
+            {
+                query = query.Where(x => x.id_program == items.id_program);
+            }
+            var GetItems = await query
+                .OrderByDescending(x => x.id_civilSer)
+                .Skip((items.Page - 1) * items.PageSize)
+                .Take(items.PageSize)
+                .Select(x => new
+                {
+                    x.id_civilSer,
+                    x.code_civilSer,
+                    x.fullname_civilSer,
+                    x.email,
+                    x.birthday,
+                    x.id_programNavigation.name_program,
+                    x.time_up,
+                    x.time_cre
+                })
+                .ToListAsync();
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã giảng viên","Tên giảng viên","Email",
+                    "Ngày sinh","Thuộc CTĐT","Ngày tạo","Cập nhật lần cuối"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+
+            foreach (var item in GetItems)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_civilSer;
+                ws.Cells[row, 3].Value = item.fullname_civilSer;
+                ws.Cells[row, 4].Value = item.email;
+                ws.Cells[row, 5].Value = item.birthday.HasValue ? item.birthday.Value.ToString("dd-MM-yyyy") : "";
+                ws.Cells[row, 6].Value = item.name_program;
+                ws.Cells[row, 7].Value = ConvertUnix(item.time_cre);
+                ws.Cells[row, 8].Value = ConvertUnix(item.time_up);
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Exports.xlsx"
+            );
+        }
+
+        private string ConvertUnix(int? unix)
+        {
+            if (unix == null || unix <= 0) return "";
+            return DateTimeOffset.FromUnixTimeSeconds(unix.Value)
+                                 .ToLocalTime()
+                                 .ToString("dd/MM/yyyy HH:mm:ss");
+        }
     }
 }

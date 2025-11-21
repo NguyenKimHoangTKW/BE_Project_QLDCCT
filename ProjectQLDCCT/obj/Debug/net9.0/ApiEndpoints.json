@@ -952,6 +952,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "Export",
+    "RelativePath": "api/donvi/civil-servants/export-danh-sach-giang-vien-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
     "Method": "GetPermissionCBVC",
     "RelativePath": "api/donvi/civil-servants/get-permission-cbvc",
     "HttpMethod": "POST",
@@ -1068,6 +1084,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/civil-servants/upload-excel-danh-sach-giang-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
     "Method": "DeleteCO",
     "RelativePath": "api/donvi/civil-servants/xoa-du-lieu-can-bo-vien-chuc",
     "HttpMethod": "POST",
@@ -1174,6 +1206,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "Export",
+    "RelativePath": "api/donvi/course-learning-outcome/export-danh-sach-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SemesterDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
     "Method": "InfoCLO",
     "RelativePath": "api/donvi/course-learning-outcome/info-chuan-dau-ra-hoc-phan",
     "HttpMethod": "POST",
@@ -1222,6 +1270,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/course-learning-outcome/upload-excel-danh-sach-chuan-dau-ra-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CLODVAPI",
     "Method": "DeleteCLO",
     "RelativePath": "api/donvi/course-learning-outcome/xoa-du-lieu-chuan-dau-ra-hoc-phan",
     "HttpMethod": "POST",
@@ -1231,6 +1295,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "Export",
+    "RelativePath": "api/donvi/course-objectives/export-danh-sach-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SemesterDTOs",
         "IsRequired": true
       }
     ],
@@ -1296,6 +1376,22 @@
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.COsDVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/course-objectives/upload-excel-danh-sach-muc-tieu-hoc-phan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -1466,6 +1562,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "Method": "Export",
+    "RelativePath": "api/donvi/key-semester/export-danh-sach-khoa-hoc-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SemesterDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
     "Method": "InfoKeySemester",
     "RelativePath": "api/donvi/key-semester/info-khoa-hoc",
     "HttpMethod": "POST",
@@ -1508,6 +1620,22 @@
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.KeySemesterDTOs",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/key-semester/upload-excel-danh-sach-khoa-hoc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -1810,6 +1938,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "Method": "Export",
+    "RelativePath": "api/donvi/semester/export-danh-sach-hoc-ky-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SemesterDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
     "Method": "InfoHocKys",
     "RelativePath": "api/donvi/semester/info-hoc-ky",
     "HttpMethod": "POST",
@@ -1868,6 +2012,22 @@
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.SemesterDTOs",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/semester/upload-excel-danh-sach-hoc-ky",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

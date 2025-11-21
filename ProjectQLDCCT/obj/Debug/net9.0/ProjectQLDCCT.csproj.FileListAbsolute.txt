@@ -543,3 +543,4 @@ D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.IO.Pa
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\swae.build.ex.cache
+D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\swae.build.ex.cache

@@ -810,6 +810,69 @@
         }
       }
     },
+    "/api/donvi/civil-servants/upload-excel-danh-sach-giang-vien": {
+      "post": {
+        "tags": [
+          "CivilServantsDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/civil-servants/export-danh-sach-giang-vien-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "CivilServantsDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course-learning-outcome/load-du-lieu-chuan-dau-ra-hoc-phan": {
       "post": {
         "tags": [
@@ -954,6 +1017,69 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course-learning-outcome/upload-excel-danh-sach-chuan-dau-ra-hoc-phan": {
+      "post": {
+        "tags": [
+          "CLODVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course-learning-outcome/export-danh-sach-chuan-dau-ra-hoc-phan": {
+      "post": {
+        "tags": [
+          "CLODVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
               }
             }
           }
@@ -1254,6 +1380,69 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course-objectives/upload-excel-danh-sach-muc-tieu-hoc-phan": {
+      "post": {
+        "tags": [
+          "COsDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course-objectives/export-danh-sach-muc-tieu-hoc-phan": {
+      "post": {
+        "tags": [
+          "COsDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
               }
             }
           }
@@ -2478,6 +2667,69 @@
         }
       }
     },
+    "/api/donvi/semester/upload-excel-danh-sach-hoc-ky": {
+      "post": {
+        "tags": [
+          "HocKyDVApi"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/semester/export-danh-sach-hoc-ky-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "HocKyDVApi"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/key-semester/loads-danh-sach-khoa-hoc": {
       "post": {
         "tags": [
@@ -2622,6 +2874,69 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/KeySemesterDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/key-semester/upload-excel-danh-sach-khoa-hoc": {
+      "post": {
+        "tags": [
+          "KeySemesteDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/key-semester/export-danh-sach-khoa-hoc-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "KeySemesteDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SemesterDTOs"
               }
             }
           }
@@ -5256,7 +5571,8 @@
         "properties": {
           "id_key_year_semester": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "code_key_year_semester": {
             "type": "string",

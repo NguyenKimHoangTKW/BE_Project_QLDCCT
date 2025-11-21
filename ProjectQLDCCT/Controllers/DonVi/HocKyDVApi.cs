@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
@@ -123,5 +124,139 @@ namespace ProjectQLDCCT.Controllers.CTDT
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
+        [HttpPost("upload-excel-danh-sach-hoc-ky")]
+        public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
+        {
+
+            if (file == null || file.Length == 0)
+                return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
+
+            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
+                return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
+            try
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                var ID = Request.Form["id_faculty"];
+                int IdFaculty = int.Parse(ID);
+                if (IdFaculty == 0)
+                {
+                    return Ok(new { message = "Vui lòng chọn Đơn vị cố định để Import", success = false });
+                }
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+                        }
+
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var ma_hk = worksheet.Cells[row, 2].Text?.Trim();
+                            var ten_hk = worksheet.Cells[row, 3].Text?.Trim();
+
+                            var check_hk = await db.Semesters
+                                .FirstOrDefaultAsync(x =>
+                                    x.code_semester.ToLower().Trim() == ma_hk.ToLower() &&
+                                    x.name_semester.ToLower().Trim() == ten_hk.ToLower() &&
+                                    x.id_faculty == IdFaculty
+                                    );
+                            if (check_hk == null)
+                            {
+                                check_hk = new Semester
+                                {
+                                    code_semester = string.IsNullOrWhiteSpace(ma_hk) ? null : ma_hk.ToUpper(),
+                                    name_semester = string.IsNullOrWhiteSpace(ten_hk) ? null : ten_hk,
+                                    tim_cre = unixTimestamp,
+                                    time_up = unixTimestamp
+                                };
+
+                                db.Semesters.Add(check_hk);
+
+                            }
+                            else
+                            {
+                                check_hk.time_up = unixTimestamp;
+                            }
+                            await db.SaveChangesAsync();
+                        }
+
+                        return Ok(new { message = "Import dữ liệu thành công", success = true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
+            }
+        }
+        [HttpPost]
+        [Route("export-danh-sach-hoc-ky-thuoc-don-vi")]
+        public async Task<IActionResult> Export([FromBody] SemesterDTOs items)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var hocKyList = await db.Semesters
+               .Where(x => x.id_faculty == items.id_faculty)
+               .OrderByDescending(x => x.id_semester)
+               .Select(x => new
+               {
+                   x.id_semester,
+                   x.code_semester,
+                   x.name_semester,
+                   x.tim_cre,
+                   x.time_up
+               })
+               .ToListAsync();
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã học kỳ","Tên học kỳ", "Ngày tạo","Cập nhật lần cuối"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+
+            foreach (var item in hocKyList)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_semester;
+                ws.Cells[row, 3].Value = item.name_semester;
+                ws.Cells[row, 4].Value = ConvertUnix(item.tim_cre);
+                ws.Cells[row, 5].Value = ConvertUnix(item.time_up);
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Exports.xlsx"
+            );
+        }
+
+        private string ConvertUnix(int? unix)
+        {
+            if (unix == null || unix <= 0) return "";
+            return DateTimeOffset.FromUnixTimeSeconds(unix.Value)
+                                 .ToLocalTime()
+                                 .ToString("dd/MM/yyyy HH:mm:ss");
+        }
+
     }
 }

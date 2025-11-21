@@ -484,6 +484,5 @@ namespace ProjectQLDCCT.Controllers.CTDT
                                  .ToLocalTime()
                                  .ToString("dd/MM/yyyy");
         }
-
     }
 }

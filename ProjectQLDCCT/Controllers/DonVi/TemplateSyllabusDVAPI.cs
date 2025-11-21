@@ -380,7 +380,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 .FirstOrDefaultAsync();
 
             if (checkCourse == null)
-                return NotFound(new { success = false, message = "Không tìm thấy học phần" });
+                return Ok(new { success = false, message = "Không tìm thấy học phần" });
 
             var listPlo = await db.ProgramLearningOutcomes
                 .Where(x => x.Id_Program == checkCourse.id_program)
