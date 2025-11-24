@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
@@ -8,6 +9,7 @@ using ProjectQLDCCT.Models.DTOs;
 
 namespace ProjectQLDCCT.Controllers.Admin
 {
+    [Authorize(Policy = "Admin")]
     [Route("api/admin/civilservants")]
     [ApiController]
     public class CivilServantsApiAdmin : ControllerBase

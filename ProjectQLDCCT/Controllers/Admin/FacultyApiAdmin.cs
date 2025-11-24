@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using System.ComponentModel;
 
 namespace ProjectQLDCCT.Controllers.Admin
 {
+    [Authorize(Policy = "Admin")]
     [Route("api/admin/faculty")]
     [ApiController]
     public class FacultyApiAdmin : ControllerBase

@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Google.Cloud.AIPlatform.V1;
 using Google.Protobuf.WellKnownTypes;
 using HtmlToOpenXml;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ using System.Text.Json;
 
 namespace ProjectQLDCCT.Controllers.GVDC
 {
+    [Authorize(Policy = "GVDC")]
     [Route("api/gvdc/write-template-syllabus")]
     [ApiController]
     public class WriteTemplateSyllabusGVDCAPI : ControllerBase

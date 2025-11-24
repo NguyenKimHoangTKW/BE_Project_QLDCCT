@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -8,8 +9,9 @@ using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 
-namespace ProjectQLDCCT.Controllers.CTDT
+namespace ProjectQLDCCT.Controllers.DonVi
 {
+    [Authorize(Policy = "DonVi")]
     [Route("api/donvi/course")]
     [ApiController]
     public class CourseDVAPI : ControllerBase

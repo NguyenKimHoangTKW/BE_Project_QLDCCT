@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Linq;
 
 namespace ProjectQLDCCT.Controllers.CTDT
 {
+    [Authorize(Policy = "CTDT")]
     [Route("api/ctdt/course")]
     [ApiController]
     public class CourseCTDTAPI : ControllerBase
@@ -349,90 +351,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
-        [HttpPost("upload-excel-danh-sach-mon-hoc")]
-        public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
-
-            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
-                return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
-            try
-            {
-                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-
-                using (var stream = new MemoryStream())
-                {
-                    await file.CopyToAsync(stream);
-                    stream.Position = 0;
-
-                    using (var package = new ExcelPackage(stream))
-                    {
-                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-                        if (worksheet == null)
-                        {
-                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
-                        }
-
-
-                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
-                        {
-                            var ma_mh = worksheet.Cells[row, 2].Text?.Trim();
-                            var ten_mh = worksheet.Cells[row, 3].Text?.Trim();
-                            var nhom_mh = worksheet.Cells[row, 4].Text?.Trim();
-                            var tinchi = worksheet.Cells[row, 5].Text?.Trim();
-                            var tongLyThuyet = worksheet.Cells[row, 6].Text?.Trim();
-                            var tongThucHanh = worksheet.Cells[row, 7].Text?.Trim();
-                            var ThuocHocPhan = worksheet.Cells[row, 8].Text?.Trim();
-
-                            var CheckNhomMH = await db.Group_Courses.Where(x => x.name_gr_course.ToLower().Trim() == nhom_mh.ToLower().Trim()).FirstOrDefaultAsync();
-                            if (!string.IsNullOrWhiteSpace(nhom_mh) && CheckNhomMH == null)
-                            {
-                                return Ok(new { message = $"Tên nhóm môn học ${nhom_mh} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
-                            }
-                            var CheckIsHocPhan = await db.IsCourses.FirstOrDefaultAsync(x => x.name.ToLower().Trim() == ThuocHocPhan.ToLower().Trim());
-                            if (!string.IsNullOrWhiteSpace(ThuocHocPhan) && CheckIsHocPhan == null)
-                            {
-                                return Ok(new { message = $"Là học phần ${ThuocHocPhan} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
-                            }
-                            var check_mh = await db.Courses
-                                .FirstOrDefaultAsync(x =>
-                                    x.code_course.ToLower().Trim() == ma_mh.ToLower() &&
-                                    x.code_course.ToLower().Trim() == ma_mh.ToLower());
-
-                            if (check_mh == null)
-                            {
-                                check_mh = new Course
-                                {
-                                    code_course = string.IsNullOrWhiteSpace(ma_mh) ? null : ma_mh.ToUpper(),
-                                    name_course = ten_mh,
-                                    id_gr_course = string.IsNullOrWhiteSpace(nhom_mh) ? null : CheckNhomMH.id_gr_course,
-                                    id_isCourse = string.IsNullOrWhiteSpace(ThuocHocPhan) ? null : CheckIsHocPhan.id,
-                                    credits = int.Parse(tinchi),
-                                    totalPractice = string.IsNullOrWhiteSpace(tongThucHanh) ? null : int.Parse(tongThucHanh),
-                                    totalTheory = string.IsNullOrWhiteSpace(tongLyThuyet) ? null : int.Parse(tongLyThuyet),
-                                    time_cre = unixTimestamp,
-                                    time_up = unixTimestamp
-                                };
-                                db.Courses.Add(check_mh);
-                            }
-                            else
-                            {
-                                check_mh.time_up = unixTimestamp;
-                            }
-
-                            await db.SaveChangesAsync();
-                        }
-
-                        return Ok(new { message = "Import dữ liệu thành công", success = true });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
-            }
-        }
 
         [HttpPost]
         [Route("save-phan-quyen-viet-de-cuong-cbvc")]
@@ -685,6 +603,275 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 })
                 .ToListAsync();
             return Ok(LoadLogOperation);
+        }
+
+
+        [HttpPost("upload-excel-danh-sach-mon-hoc")]
+        public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return Ok(new { message = "Vui lòng chọn file Excel.", success = false });
+
+            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
+                return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
+            try
+            {
+                ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                var ID = Request.Form["id_program"];
+                int IdProgram = int.Parse(ID);
+                var checkCtdt = await db.TrainingPrograms.FirstOrDefaultAsync(x => x.id_program == IdProgram);
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+                        }
+
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var ma_mh = worksheet.Cells[row, 2].Text?.Trim();
+                            var ten_mh = worksheet.Cells[row, 3].Text?.Trim();
+                            var nhom_mh = worksheet.Cells[row, 4].Text?.Trim();
+                            var tinchi = worksheet.Cells[row, 5].Text?.Trim();
+                            var tongLyThuyet = worksheet.Cells[row, 6].Text?.Trim();
+                            var tongThucHanh = worksheet.Cells[row, 7].Text?.Trim();
+                            var ThuocHocPhan = worksheet.Cells[row, 8].Text?.Trim();
+                            var ThuocHocKy = worksheet.Cells[row, 9].Text?.Trim();
+                            var ThuocKhoaHoc = worksheet.Cells[row, 10].Text?.Trim();
+                            var CheckNhomMH = await db.Group_Courses.Where(x => x.name_gr_course.ToLower().Trim() == nhom_mh.ToLower().Trim()).FirstOrDefaultAsync();
+                            if (!string.IsNullOrWhiteSpace(nhom_mh) && CheckNhomMH == null)
+                            {
+                                return Ok(new { message = $"Tên nhóm môn học ${nhom_mh} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
+                            }
+                            var CheckIsHocPhan = await db.IsCourses.FirstOrDefaultAsync(x => x.name.ToLower().Trim() == ThuocHocPhan.ToLower().Trim());
+                            if (!string.IsNullOrWhiteSpace(ThuocHocPhan) && CheckIsHocPhan == null)
+                            {
+                                return Ok(new { message = $"Là học phần ${ThuocHocPhan} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
+                            }
+                            var CheckKhoaHoc = await db.KeyYearSemesters.FirstOrDefaultAsync(x => x.name_key_year_semester.ToLower().Trim() == ThuocKhoaHoc.ToLower().Trim() && checkCtdt.id_faculty == x.id_faculty);
+                            if (!string.IsNullOrWhiteSpace(ThuocKhoaHoc) && CheckKhoaHoc == null)
+                            {
+                                return Ok(new { message = $"Khóa học ${ThuocKhoaHoc} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
+                            }
+                            var CheckHocKy = await db.Semesters.FirstOrDefaultAsync(x => x.name_semester.ToLower().Trim() == ThuocHocKy.ToLower().Trim() && checkCtdt.id_faculty == x.id_faculty);
+                            if (!string.IsNullOrWhiteSpace(ThuocHocKy) && CheckHocKy == null)
+                            {
+                                return Ok(new { message = $"Học kỳ ${ThuocHocKy} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
+                            }
+                            var check_mh = await db.Courses
+                                .FirstOrDefaultAsync(x =>
+                                    x.code_course.ToLower().Trim() == ma_mh.ToLower() &&
+                                    x.name_course.ToLower().Trim() == ten_mh.ToLower() &&
+                                    x.id_key_year_semester == CheckKhoaHoc.id_key_year_semester &&
+                                    x.id_semester == CheckHocKy.id_semester
+                                    );
+                            if (check_mh == null)
+                            {
+                                check_mh = new Course
+                                {
+                                    code_course = string.IsNullOrWhiteSpace(ma_mh) ? null : ma_mh.ToUpper(),
+                                    name_course = ten_mh,
+                                    id_gr_course = string.IsNullOrWhiteSpace(nhom_mh) ? null : CheckNhomMH.id_gr_course,
+                                    id_isCourse = string.IsNullOrWhiteSpace(ThuocHocPhan) ? null : CheckIsHocPhan.id,
+                                    credits = int.Parse(tinchi),
+                                    totalPractice = string.IsNullOrWhiteSpace(tongThucHanh) ? 0 : int.Parse(tongThucHanh),
+                                    totalTheory = string.IsNullOrWhiteSpace(tongLyThuyet) ? 0 : int.Parse(tongLyThuyet),
+                                    id_program = IdProgram,
+                                    id_key_year_semester = string.IsNullOrWhiteSpace(ThuocKhoaHoc) ? null : CheckKhoaHoc.id_key_year_semester,
+                                    id_semester = string.IsNullOrWhiteSpace(ThuocHocKy) ? null : CheckHocKy.id_semester,
+                                    time_cre = unixTimestamp,
+                                    time_up = unixTimestamp
+                                };
+                                db.Courses.Add(check_mh);
+                            }
+                            else
+                            {
+                                check_mh.id_gr_course = string.IsNullOrWhiteSpace(nhom_mh) ? null : CheckNhomMH.id_gr_course;
+                                check_mh.id_isCourse = string.IsNullOrWhiteSpace(ThuocHocPhan) ? null : CheckIsHocPhan.id;
+                                check_mh.credits = int.Parse(tinchi);
+                                check_mh.totalPractice = string.IsNullOrWhiteSpace(tongThucHanh) ? 0 : int.Parse(tongThucHanh);
+                                check_mh.totalTheory = string.IsNullOrWhiteSpace(tongLyThuyet) ? 0 : int.Parse(tongLyThuyet);
+                                check_mh.time_up = unixTimestamp;
+                            }
+                            await db.SaveChangesAsync();
+                        }
+
+                        return Ok(new { message = "Import dữ liệu thành công", success = true });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
+            }
+        }
+
+        [HttpPost]
+        [Route("export-danh-sach-mon-hoc-thuoc-don-vi")]
+        public async Task<IActionResult> ExportCourse([FromBody] CourseDTOs items)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var query = db.Courses.AsNoTracking().Where(x => x.id_program == items.id_program);
+
+            if (items.id_gr_course > 0)
+                query = query.Where(x => x.id_gr_course == items.id_gr_course);
+            if (items.id_isCourse > 0)
+                query = query.Where(x => x.id_isCourse == items.id_isCourse);
+            if (items.id_key_year_semester > 0)
+                query = query.Where(x => x.id_key_year_semester == items.id_key_year_semester);
+            if (items.id_semester > 0)
+                query = query.Where(x => x.id_semester == items.id_semester);
+
+            var data = await query
+                .OrderByDescending(x => x.id_course)
+                .Select(x => new
+                {
+                    x.code_course,
+                    x.name_course,
+                    name_gr_course = x.id_gr_courseNavigation.name_gr_course,
+                    x.credits,
+                    x.totalTheory,
+                    x.totalPractice,
+                    name_program = x.id_programNavigation.name_program,
+                    name_is_course = x.id_isCourseNavigation.name,
+                    name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
+                    name_key_year = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester,
+                    x.time_cre,
+                    x.time_up
+                })
+                .ToListAsync();
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã môn học","Tên môn học","Nhóm học phần",
+                    "Số tín chỉ","Lý thuyết","Thực hành","Thuộc CTĐT",
+                    "Loại học phần","Học kỳ","Khóa - Năm","Ngày tạo","Cập nhật"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+
+            foreach (var item in data)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_course;
+                ws.Cells[row, 3].Value = item.name_course;
+                ws.Cells[row, 4].Value = item.name_gr_course;
+                ws.Cells[row, 5].Value = item.credits;
+                ws.Cells[row, 6].Value = item.totalTheory;
+                ws.Cells[row, 7].Value = item.totalPractice;
+                ws.Cells[row, 8].Value = item.name_program;
+                ws.Cells[row, 9].Value = item.name_is_course;
+                ws.Cells[row, 10].Value = item.name_semester;
+                ws.Cells[row, 11].Value = item.name_key_year;
+                ws.Cells[row, 12].Value = ConvertUnix(item.time_cre);
+                ws.Cells[row, 13].Value = ConvertUnix(item.time_up);
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"DanhSachMonHoc_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+            );
+        }
+
+        private string ConvertUnix(int? unix)
+        {
+            if (unix == null || unix <= 0) return "";
+            return DateTimeOffset.FromUnixTimeSeconds(unix.Value)
+                                 .ToLocalTime()
+                                 .ToString("dd/MM/yyyy");
+        }
+
+
+
+        [HttpPost]
+        [Route("export-danh-sach-mon-hoc-chua-co-de-cuong")]
+        public async Task<IActionResult> ExportThongKe([FromBody] CourseDTOs items)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var query = db.Courses.AsNoTracking().Where(x => x.id_program == items.id_program);
+            if (items.id_gr_course > 0)
+                query = query.Where(x => x.id_gr_course == items.id_gr_course);
+            if (items.id_isCourse > 0)
+                query = query.Where(x => x.id_isCourse == items.id_isCourse);
+            if (items.id_key_year_semester > 0)
+                query = query.Where(x => x.id_key_year_semester == items.id_key_year_semester);
+            if (items.id_semester > 0)
+                query = query.Where(x => x.id_semester == items.id_semester);
+
+            var data = await query
+                .OrderByDescending(x => x.id_course)
+                .Select(x => new
+                {
+                    x.code_course,
+                    x.name_course,
+                    name_gr_course = x.id_gr_courseNavigation.name_gr_course,
+                    name_program = x.id_programNavigation.name_program,
+                    name_is_course = x.id_isCourseNavigation.name,
+                    name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
+                    name_key_year = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester,
+                    status = db.Syllabi.Any(g => g.id_teacherbysubjectNavigation.id_course == x.id_course && g.id_status == 4)
+                })
+                .ToListAsync();
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã môn học","Tên môn học","Nhóm học phần","Thuộc CTĐT",
+                    "Loại học phần","Học kỳ","Khóa - Năm","Trạng thái tồn tại đề cương"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+            foreach (var item in data)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_course;
+                ws.Cells[row, 3].Value = item.name_course;
+                ws.Cells[row, 4].Value = item.name_gr_course;
+                ws.Cells[row, 5].Value = item.name_program;
+                ws.Cells[row, 6].Value = item.name_is_course;
+                ws.Cells[row, 7].Value = item.name_semester;
+                ws.Cells[row, 8].Value = item.name_key_year;
+                ws.Cells[row, 9].Value = item.status;
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"DanhSachMonHoc_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+            );
         }
     }
 }

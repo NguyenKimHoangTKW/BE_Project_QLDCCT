@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace ProjectQLDCCT.Controllers.CTDT
 {
+    [Authorize(Policy = "CTDT")]
     [Route("api/ctdt/browse-outline")]
     [ApiController]
     public class BrowseOutlineCTDTAPI : ControllerBase
@@ -96,20 +98,22 @@ namespace ProjectQLDCCT.Controllers.CTDT
             var GetProgram = await GetUserPermissionPrograming();
             var listint = new int?[] { 2, 3, 4 };
             var LoadSyllabus = db.Syllabi
-                .Where(x => GetProgram.Contains(x.id_teacherbysubjectNavigation.id_courseNavigation.id_program ?? 0) && listint.Contains(x.id_status ?? 0)).AsQueryable();
+                .Where(x => GetProgram.Contains(x.id_teacherbysubjectNavigation.id_courseNavigation.id_program ?? 0)).AsQueryable();
             var ListCount = new List<object>();
             var CountSyllabus_2 = await LoadSyllabus.Where(x => x.id_status == 2).CountAsync();
             var CountSyllabus_3 = await LoadSyllabus.Where(x => x.id_status == 3).CountAsync();
             var CountSyllabus_4 = await LoadSyllabus.Where(x => x.id_status == 4).CountAsync();
             var CountSyllabus_5 = await LoadSyllabus.Where(x => x.is_open_edit_final == 1).CountAsync();
             var CountSyllabus_6 = await LoadSyllabus.Where(x => x.id_status == 7).CountAsync();
+            var CountSyllabus_7 = await LoadSyllabus.Where(x => x.is_open_edit_final == 2).CountAsync();
             ListCount.Add(new
             {
                 dang_cho_duyet = CountSyllabus_2,
                 tra_de_cuong = CountSyllabus_3,
                 hoan_thanh = CountSyllabus_4,
                 mo_de_cuong_sau_duyet = CountSyllabus_5,
-                dang_mo_bo_sung_sau_duyet = CountSyllabus_6
+                dang_mo_bo_sung_sau_duyet = CountSyllabus_6,
+                tu_choi_mo_bo_sung = CountSyllabus_7
             });
             if (items.id_program > 0)
             {

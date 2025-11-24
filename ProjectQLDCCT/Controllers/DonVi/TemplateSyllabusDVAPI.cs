@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.ConditionalFormatting.Contracts;
@@ -10,6 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProjectQLDCCT.Controllers.DonVi
 {
+    [Authorize(Policy = "DonVi")]
     [Route("api/donvi/syllabustemplate")]
     [ApiController]
     public class TemplateSyllabusDVAPI : ControllerBase

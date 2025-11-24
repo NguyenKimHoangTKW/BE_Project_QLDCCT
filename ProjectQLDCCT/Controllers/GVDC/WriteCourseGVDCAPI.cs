@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
@@ -10,6 +11,7 @@ using System.Security.Cryptography.Xml;
 
 namespace ProjectQLDCCT.Controllers.GVDC
 {
+    [Authorize(Policy = "GVDC")]
     [Route("api/gvdc/write-course")]
     [ApiController]
     public class WriteCourseGVDCAPI : ControllerBase

@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
+using System.IdentityModel.Tokens.Jwt;
 
-namespace ProjectQLDCCT.Controllers.CTDT
+namespace ProjectQLDCCT.Controllers.DonVi
 {
+    [Authorize(Policy = "DonVi")]
     [Route("api/donvi/key-semester")]
     [ApiController]
     public class KeySemesteDVAPI : ControllerBase

@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,9 +8,11 @@ using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.Drawing.Printing;
+using System.IdentityModel.Tokens.Jwt;
 
-namespace ProjectQLDCCT.Controllers.CTDT
+namespace ProjectQLDCCT.Controllers.DonVi
 {
+    [Authorize(Policy = "DonVi")]
     [Route("api/donvi/semester")]
     [ApiController]
     public class HocKyDVApi : ControllerBase
@@ -22,10 +25,42 @@ namespace ProjectQLDCCT.Controllers.CTDT
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
+        private async Task<List<int>> GetUserPermissionFaculties()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new UnauthorizedAccessException("Token không chứa id_users.");
+
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
+
+            var loadPermission = await db.UserByFaculPrograms
+                .Where(x => x.id_users == userId && x.id_faculty != null)
+                .Select(x => x.id_facultyNavigation.id_faculty)
+                .ToListAsync();
+            return loadPermission;
+        }
         [HttpPost]
         [Route("loads-danh-sach-hoc-ky")]
-        public async Task<IActionResult> LoadsHocKy([FromBody] SemesterDTOs items)
+        public async Task<IActionResult> LoadsHocKy([FromBody] SemesterDTOs? items)
         {
+            var GetFaculty = await GetUserPermissionFaculties();
             var totalRecords = await db.Semesters
                 .Where(x => x.id_faculty == items.id_faculty)
                 .CountAsync();

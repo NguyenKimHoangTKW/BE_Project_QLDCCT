@@ -750,6 +750,38 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "ExportThongKe",
+    "RelativePath": "api/ctdt/course/export-danh-sach-mon-hoc-chua-co-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "ExportCourse",
+    "RelativePath": "api/ctdt/course/export-danh-sach-mon-hoc-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "InfoMonHoc",
     "RelativePath": "api/ctdt/course/info-mon-hoc",
     "HttpMethod": "POST",
@@ -1413,7 +1445,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "UpdateMonHoc",
     "RelativePath": "api/donvi/course/cap-nhat-mon-hoc",
     "HttpMethod": "POST",
@@ -1429,7 +1461,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "ExportCourse",
     "RelativePath": "api/donvi/course/export-danh-sach-mon-hoc-thuoc-don-vi",
     "HttpMethod": "POST",
@@ -1445,7 +1477,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "InfoMonHoc",
     "RelativePath": "api/donvi/course/info-mon-hoc",
     "HttpMethod": "POST",
@@ -1461,7 +1493,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "LoadOptionSelectedUpdate",
     "RelativePath": "api/donvi/course/load-select-chuc-nang-course",
     "HttpMethod": "GET",
@@ -1471,7 +1503,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "LoadsCTDTByDV",
     "RelativePath": "api/donvi/course/loads-ctdt-by-dv",
     "HttpMethod": "GET",
@@ -1481,7 +1513,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "LoadCourse",
     "RelativePath": "api/donvi/course/loads-danh-sach-mon-hoc-thuoc-don-vi",
     "HttpMethod": "POST",
@@ -1497,7 +1529,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "ThemMoiMonHoc",
     "RelativePath": "api/donvi/course/them-moi-mon-hoc",
     "HttpMethod": "POST",
@@ -1513,7 +1545,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "UploadExcelMonHoc",
     "RelativePath": "api/donvi/course/upload-excel-danh-sach-mon-hoc",
     "HttpMethod": "POST",
@@ -1529,7 +1561,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "DeleteMonHoc",
     "RelativePath": "api/donvi/course/xoa-du-lieu-mon-hoc",
     "HttpMethod": "POST",
@@ -1545,7 +1577,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "UpdateKeySemester",
     "RelativePath": "api/donvi/key-semester/cap-nhat-khoa-hoc",
     "HttpMethod": "POST",
@@ -1561,7 +1593,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "Export",
     "RelativePath": "api/donvi/key-semester/export-danh-sach-khoa-hoc-thuoc-don-vi",
     "HttpMethod": "POST",
@@ -1577,7 +1609,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "InfoKeySemester",
     "RelativePath": "api/donvi/key-semester/info-khoa-hoc",
     "HttpMethod": "POST",
@@ -1593,7 +1625,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "LoadListKeySemester",
     "RelativePath": "api/donvi/key-semester/loads-danh-sach-khoa-hoc",
     "HttpMethod": "POST",
@@ -1609,7 +1641,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "ThemMoiKeySemester",
     "RelativePath": "api/donvi/key-semester/them-moi-khoa-hoc",
     "HttpMethod": "POST",
@@ -1625,7 +1657,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "UploadExcelMonHoc",
     "RelativePath": "api/donvi/key-semester/upload-excel-danh-sach-khoa-hoc",
     "HttpMethod": "POST",
@@ -1641,7 +1673,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.KeySemesteDVAPI",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.KeySemesteDVAPI",
     "Method": "DeleteKeySemester",
     "RelativePath": "api/donvi/key-semester/xoa-du-lieu-khoa-hoc",
     "HttpMethod": "POST",
@@ -2043,7 +2075,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "DeleteHocKys",
     "RelativePath": "api/donvi/semester/delete-hoc-kys",
     "HttpMethod": "POST",
@@ -2059,7 +2091,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "Export",
     "RelativePath": "api/donvi/semester/export-danh-sach-hoc-ky-thuoc-don-vi",
     "HttpMethod": "POST",
@@ -2075,7 +2107,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "InfoHocKys",
     "RelativePath": "api/donvi/semester/info-hoc-ky",
     "HttpMethod": "POST",
@@ -2091,7 +2123,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "LoadsHocKy",
     "RelativePath": "api/donvi/semester/loads-danh-sach-hoc-ky",
     "HttpMethod": "POST",
@@ -2107,7 +2139,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "ThemsMoiHocKy",
     "RelativePath": "api/donvi/semester/them-moi-hoc-kyf",
     "HttpMethod": "POST",
@@ -2123,7 +2155,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "UpdateHocKys",
     "RelativePath": "api/donvi/semester/update-hoc-kys",
     "HttpMethod": "POST",
@@ -2139,7 +2171,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "UploadExcelMonHoc",
     "RelativePath": "api/donvi/semester/upload-excel-danh-sach-hoc-ky",
     "HttpMethod": "POST",

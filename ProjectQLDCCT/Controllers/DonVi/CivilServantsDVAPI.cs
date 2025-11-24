@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -10,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace ProjectQLDCCT.Controllers.DonVi
 {
+    [Authorize(Policy = "DonVi")]
     [Route("api/donvi/civil-servants")]
     [ApiController]
     public class CivilServantsDVAPI : ControllerBase
@@ -292,7 +294,10 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 var user = await db.Users
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.email == cbvc.email);
-
+                if(user.id_type_users == 4)
+                {
+                    return Ok(new { message = "Giảng viên này đang được phân công viết đề cương, không thể phân công cấp chương trình", success = false });
+                }
                 if (user == null)
                 {
                     return Ok(new
