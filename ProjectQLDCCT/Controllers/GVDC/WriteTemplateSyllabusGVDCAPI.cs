@@ -1,15 +1,20 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Google.Cloud.AIPlatform.V1;
+using Google.Protobuf.WellKnownTypes;
 using HtmlToOpenXml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProjectQLDCCT.Data;
+using ProjectQLDCCT.Helpers.Services;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Text.Json;
 
 namespace ProjectQLDCCT.Controllers.GVDC
 {
@@ -17,13 +22,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
     [ApiController]
     public class WriteTemplateSyllabusGVDCAPI : ControllerBase
     {
+        private readonly ILmStudioService _lmStudio;
+
+        public class PromptRequest
+        {
+            public string sectionTitle { get; set; }
+            public string courseName { get; set; }
+            public string customPrompt { get; set; }
+        }
+
+
         private readonly QLDCContext db;
         private readonly int unixTimestamp;
-        public WriteTemplateSyllabusGVDCAPI(QLDCContext _db)
+        public WriteTemplateSyllabusGVDCAPI(QLDCContext _db, ILmStudioService lmStudio)
         {
             db = _db;
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            _lmStudio = lmStudio;
         }
         private async Task<string> GetUserPermissionNameCodeGV()
         {
@@ -97,6 +113,117 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 message = "Tải mẫu đề cương thành công"
             });
         }
+
+        [HttpPost("suggest-stream")]
+        public async Task SuggestStream([FromBody] PromptRequest req)
+        {
+            // Không dùng IActionResult nữa, mà stream trực tiếp vào Response
+            HttpContext.Response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+            HttpContext.Response.Headers.Add("Cache-Control", "no-cache");
+            HttpContext.Response.Headers.Add("X-Accel-Buffering", "no"); // tránh buffer ở reverse proxy (nếu có)
+
+            var sectionTitle = req.sectionTitle;
+            var courseName = req.courseName;
+
+            // Prompt mặc định (bạn chỉnh lại theo ý)
+            string defaultPrompt =
+        $@"Bạn là chuyên gia giáo dục đại học, có kinh nghiệm biên soạn đề cương chi tiết học phần.
+
+Hãy viết MỘT đoạn văn dài, gồm nhiều đoạn, văn phong học thuật – chuẩn mực – logic, nội dung rõ ràng, có mở đầu – triển khai – kết luận.
+
+YÊU CẦU:
+Không bullet
+Không đánh số
+Không gạch đầu dòng
+Không liệt kê
+Không sử dụng văn phong trò chuyện
+Không dùng từ ngữ đời thường
+Không lặp lại câu
+Không viết ngắn
+Tối thiểu khoảng 800–1000 chữ
+
+Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}"", theo ngữ cảnh giáo dục đại học.";
+
+            var finalPrompt = string.IsNullOrWhiteSpace(req.customPrompt)
+                ? defaultPrompt
+                : req.customPrompt;
+
+            // Tạo payload cho LM Studio (OpenAI-compatible)
+            var payload = new
+            {
+                model = "fusechat-gemma-2-9b-instruct",
+                stream = true,   // BẬT STREAM
+                messages = new[]
+                {
+            new {
+                role = "user",
+                content = finalPrompt
+            }
+        }
+            };
+
+            var httpFactory = HttpContext.RequestServices.GetRequiredService<IHttpClientFactory>();
+            var client = httpFactory.CreateClient("LmStudio");
+
+            var json = System.Text.Json.JsonSerializer.Serialize(payload);
+            using var httpReq = new HttpRequestMessage(HttpMethod.Post, "chat/completions")
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            // Quan trọng: ResponseHeadersRead để bắt đầu đọc stream sớm
+            using var httpRes = await client.SendAsync(
+                httpReq,
+                HttpCompletionOption.ResponseHeadersRead,
+                HttpContext.RequestAborted
+            );
+
+            httpRes.EnsureSuccessStatusCode();
+
+            await using var responseStream = await httpRes.Content.ReadAsStreamAsync(HttpContext.RequestAborted);
+            using var reader = new StreamReader(responseStream);
+
+            // LM Studio stream giống OpenAI: từng dòng "data: {json}" và kết thúc "[DONE]"
+            while (!reader.EndOfStream && !HttpContext.RequestAborted.IsCancellationRequested)
+            {
+                var line = await reader.ReadLineAsync();
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+                if (!line.StartsWith("data:"))
+                    continue;
+
+                var data = line.Substring("data:".Length).Trim();
+
+                if (data == "[DONE]")
+                    break;
+
+                try
+                {
+                    using var doc = JsonDocument.Parse(data);
+                    var root = doc.RootElement;
+                    var choices = root.GetProperty("choices");
+                    if (choices.GetArrayLength() == 0) continue;
+
+                    // Với streaming kiểu OpenAI: choices[0].delta.content
+                    if (choices[0].TryGetProperty("delta", out var delta)
+                        && delta.TryGetProperty("content", out var contentElement))
+                    {
+                        var content = contentElement.GetString();
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            await HttpContext.Response.WriteAsync(content);
+                            await HttpContext.Response.Body.FlushAsync();
+                        }
+                    }
+                }
+                catch
+                {
+                    // Nếu parse fail thì bỏ qua chunk đó
+                }
+            }
+        }
+
 
         [HttpPost]
         [Route("preview-course-objectives")]
@@ -481,7 +608,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
             var CheckMappingPI = await db.MappingCLObyPIs
                 .Where(x => CheckMappingCLO.Contains(x.id_CLoMapping ?? 0))
                 .ToListAsync();
-            if(!CheckMappingPI.Any())
+            if (!CheckMappingPI.Any())
                 return Ok(new { message = "Bạn chưa có dữ liệu ma trận PI thuộc PLO, không thể lưu", success = false });
             var syllabus = await db.Syllabi
                 .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus);

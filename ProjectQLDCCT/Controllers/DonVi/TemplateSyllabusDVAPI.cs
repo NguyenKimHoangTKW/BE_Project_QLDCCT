@@ -429,7 +429,5 @@ namespace ProjectQLDCCT.Controllers.DonVi
 
             return Ok(new { success = true, count_plo = totalPloMapped, data = listData });
         }
-
-
     }
 }

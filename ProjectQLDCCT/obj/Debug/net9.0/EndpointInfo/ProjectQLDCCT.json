@@ -4544,6 +4544,236 @@
         }
       }
     },
+    "/api/donvi/program/loads-select-don-vi": {
+      "get": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/loads-ctdt-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/them-moi-ctdt": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/get-thong-tin-ctdt": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/cap-nhat-thong-tin-ctdt": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/xoa-du-lieu-ctdt": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/upload-excel-chuong-trinh-dao-tao": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/program/export-danh-sach-ctdt-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "TrainingProgramDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/gvdc/write-course/loads-danh-sach-de-cuong-can-soan": {
       "get": {
         "tags": [
@@ -4824,6 +5054,37 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/suggest-stream": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptRequest"
               }
             }
           }
@@ -5883,6 +6144,24 @@
         },
         "additionalProperties": false
       },
+      "PromptRequest": {
+        "type": "object",
+        "properties": {
+          "sectionTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "courseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customPrompt": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SaveFinalSyllabusDTO": {
         "type": "object",
         "properties": {
@@ -6178,6 +6457,14 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

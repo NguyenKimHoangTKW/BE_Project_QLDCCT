@@ -3,10 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Helpers;
+using ProjectQLDCCT.Helpers.Services;
 using ProjectQLDCCT.Hubs;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient("LmStudio", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:1234/v1/");
+    client.Timeout = Timeout.InfiniteTimeSpan;
+});
+builder.Services.AddTransient<ILmStudioService, LmStudioService>();
 
 // ----------------------
 // 1️⃣ Đăng ký dịch vụ
@@ -127,6 +135,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 // ----------------------
@@ -134,7 +143,6 @@ if (app.Environment.IsDevelopment())
 // ----------------------
 app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseMiddleware<JwtSessionMiddleware>();
 app.UseAuthorization();

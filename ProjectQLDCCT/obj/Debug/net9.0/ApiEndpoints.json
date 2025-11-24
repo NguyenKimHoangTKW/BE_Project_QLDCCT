@@ -1921,6 +1921,128 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "UpdateCTDT",
+    "RelativePath": "api/donvi/program/cap-nhat-thong-tin-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "ExportCourse",
+    "RelativePath": "api/donvi/program/export-danh-sach-ctdt-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "InfoCTDT",
+    "RelativePath": "api/donvi/program/get-thong-tin-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "LoadData",
+    "RelativePath": "api/donvi/program/loads-ctdt-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "LoadDonViByCTDT",
+    "RelativePath": "api/donvi/program/loads-select-don-vi",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "ThemMoiCTDT",
+    "RelativePath": "api/donvi/program/them-moi-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/program/upload-excel-chuong-trinh-dao-tao",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.TrainingProgramDVAPI",
+    "Method": "DeleteCTDT",
+    "RelativePath": "api/donvi/program/xoa-du-lieu-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.HocKyDVApi",
     "Method": "DeleteHocKys",
     "RelativePath": "api/donvi/semester/delete-hoc-kys",
@@ -2645,6 +2767,28 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SuggestStream",
+    "RelativePath": "api/gvdc/write-template-syllabus/suggest-stream",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI\u002BPromptRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Login.LoginApi",
