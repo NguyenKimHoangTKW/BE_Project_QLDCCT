@@ -5,6 +5,7 @@ using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Helpers;
 using ProjectQLDCCT.Helpers.Middlewares;
 using ProjectQLDCCT.Helpers.Services;
+using ProjectQLDCCT.Helpers.SignalR;
 using ProjectQLDCCT.Hubs;
 using System.Text;
 
@@ -155,6 +156,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
 
+
 app.UseAuthentication();
 app.UseMiddleware<JwtSessionMiddleware>();
 app.UseAuthentication();
@@ -165,6 +167,7 @@ app.UseMiddleware<CustomAuthorizationMiddleware>();
 
 
 app.MapHub<ImportHub>("/importHub");
+app.MapHub<SyllabusHub>("/hubs/syllabus");
 
 app.MapControllers();
 

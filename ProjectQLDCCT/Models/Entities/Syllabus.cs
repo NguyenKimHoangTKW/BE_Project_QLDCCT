@@ -46,7 +46,13 @@ public partial class Syllabus
     public virtual ICollection<SyllabusApproval> SyllabusApprovals { get; set; } = new List<SyllabusApproval>();
 
     [InverseProperty("id_syllabusNavigation")]
+    public virtual ICollection<SyllabusDraft> SyllabusDrafts { get; set; } = new List<SyllabusDraft>();
+
+    [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<SyllabusSection> SyllabusSections { get; set; } = new List<SyllabusSection>();
+
+    [InverseProperty("id_syllabusNavigation")]
+    public virtual ICollection<Syllabus_Draft> Syllabus_Drafts { get; set; } = new List<Syllabus_Draft>();
 
     [ForeignKey("create_by")]
     [InverseProperty("Syllabi")]

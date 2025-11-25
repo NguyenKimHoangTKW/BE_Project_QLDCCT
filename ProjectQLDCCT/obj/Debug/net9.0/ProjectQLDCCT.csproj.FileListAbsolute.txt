@@ -540,7 +540,6 @@ D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DocumentForm
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DocumentFormat.OpenXml.Framework.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\HtmlToOpenXml.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.IO.Packaging.dll
-D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\swae.build.ex.cache
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\swae.build.ex.cache
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\Google.Api.CommonProtos.dll
@@ -580,3 +579,4 @@ D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\OpenAI.Net.d
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.Interactive.Async.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.Linq.Async.dll
 D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

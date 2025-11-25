@@ -2456,6 +2456,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "AcceptJoinWriteCourse",
+    "RelativePath": "api/gvdc/write-course/accept-join-write-course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ApproveUserSyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "CancerSyllabusEdit",
     "RelativePath": "api/gvdc/write-course/cancer-edit-syllabus",
     "HttpMethod": "POST",
@@ -2555,6 +2571,38 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "RejectJoinWriteCourse",
+    "RelativePath": "api/gvdc/write-course/reject-join-write-course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ApproveUserSyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "RemoveJoinWriteCourse",
+    "RelativePath": "api/gvdc/write-course/remove-join-write-course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ApproveUserSyllabusDTOs",
         "IsRequired": true
       }
     ],
@@ -2674,6 +2722,38 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadDraft",
+    "RelativePath": "api/gvdc/write-template-syllabus/load-draft-section",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "LoadDrafts",
+    "RelativePath": "api/gvdc/write-template-syllabus/load-drafts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ProjectQLDCCT.Models.DTOs.LoadDraftDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
     "Method": "LoadMappingCLOBySyllabus",
     "RelativePath": "api/gvdc/write-template-syllabus/load-mapping-clo-by-de-cuong",
     "HttpMethod": "POST",
@@ -2786,6 +2866,38 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SaveDraftContent",
+    "RelativePath": "api/gvdc/write-template-syllabus/save-content-draft",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "ProjectQLDCCT.Models.DTOs.SaveSyllabusDraftContentDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SaveDraftSection",
+    "RelativePath": "api/gvdc/write-template-syllabus/save-draft-section",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ProjectQLDCCT.Models.DTOs.SaveDraftSectionDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
     "Method": "SaveFinalSyllabus",
     "RelativePath": "api/gvdc/write-template-syllabus/save-final",
     "HttpMethod": "POST",
@@ -2795,6 +2907,22 @@
       {
         "Name": "dto",
         "Type": "ProjectQLDCCT.Models.DTOs.SaveFinalSyllabusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SaveFinalFromDraft",
+    "RelativePath": "api/gvdc/write-template-syllabus/save-final-from-draft",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "ProjectQLDCCT.Models.DTOs.SaveFinalFromDraftDTO",
         "IsRequired": true
       }
     ],
@@ -2827,6 +2955,22 @@
       {
         "Name": "items",
         "Type": "System.Collections.Generic.List\u00601[[ProjectQLDCCT.Models.DTOs.MappingCLObyPIDTOs, ProjectQLDCCT, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteTemplateSyllabusGVDCAPI",
+    "Method": "SaveDraftSections",
+    "RelativePath": "api/gvdc/write-template-syllabus/save-sections",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "ProjectQLDCCT.Models.DTOs.SaveSyllabusDraftSectionDTO",
         "IsRequired": true
       }
     ],

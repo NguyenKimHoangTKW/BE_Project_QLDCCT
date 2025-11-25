@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Google.Cloud.AIPlatform.V1;
@@ -7,10 +8,12 @@ using HtmlToOpenXml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Helpers.Services;
+using ProjectQLDCCT.Helpers.SignalR;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,7 +28,9 @@ namespace ProjectQLDCCT.Controllers.GVDC
     public class WriteTemplateSyllabusGVDCAPI : ControllerBase
     {
         private readonly ILmStudioService _lmStudio;
-
+        private readonly IHubContext<SyllabusHub> _hub;
+        private readonly QLDCContext db;
+        private readonly int unixTimestamp;
         public class PromptRequest
         {
             public string sectionTitle { get; set; }
@@ -34,15 +39,40 @@ namespace ProjectQLDCCT.Controllers.GVDC
         }
 
 
-        private readonly QLDCContext db;
-        private readonly int unixTimestamp;
-        public WriteTemplateSyllabusGVDCAPI(QLDCContext _db, ILmStudioService lmStudio)
+      
+        public WriteTemplateSyllabusGVDCAPI(QLDCContext _db, ILmStudioService lmStudio, IHubContext<SyllabusHub> hub)
         {
             db = _db;
+            _hub = hub;
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             _lmStudio = lmStudio;
         }
+        private int GetUserIdFromJWT()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Token không chứa id_users hợp lệ.");
+
+            return userId;
+        }
+
         private async Task<string> GetUserPermissionNameCodeGV()
         {
             var token = HttpContext.Request.Cookies["jwt"];
@@ -669,6 +699,220 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 "Syllabus.docx"
             );
+        }
+
+
+
+
+
+        // 1) Lưu draft 1 section
+        [HttpPost("save-draft-section")]
+        public async Task<IActionResult> SaveDraftSection([FromBody] SaveDraftSectionDTO dto)
+        {
+            var userId = GetUserIdFromJWT();
+
+            var draft = await db.SyllabusDrafts
+                .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus
+                                       && x.section_code == dto.section_code);
+
+            if (draft == null)
+            {
+                draft = new SyllabusDraft
+                {
+                    id_syllabus = dto.id_syllabus,
+                    section_code = dto.section_code,
+                    content_code = dto.content,
+                    id_user = userId,
+                    update_time = unixTimestamp
+                };
+                db.SyllabusDrafts.Add(draft);
+            }
+            else
+            {
+                draft.content_code = dto.content;
+                draft.id_user = userId;
+                draft.update_time = unixTimestamp;
+            }
+
+            await db.SaveChangesAsync();
+
+            var userName = await db.Users
+                .Where(u => u.id_users == userId)
+                .Select(u => u.Username)
+                .FirstOrDefaultAsync();
+
+            // broadcast cho tất cả người đang mở syllabus này
+            // ⭐ realtime notify
+            await _hub.Clients.Group(dto.id_syllabus.ToString())
+                .SendAsync("SectionDraftUpdated", new
+                {
+                    id_syllabus = dto.id_syllabus,
+                    section_code = dto.section_code,
+                    content_code = dto.content
+                });
+
+            return Ok(new { success = true });
+        }
+
+        // 2) Load draft hiện tại của syllabus (mỗi section 1 content)
+        [HttpPost("load-drafts")]
+        public async Task<IActionResult> LoadDrafts([FromBody] LoadDraftDTO dto)
+        {
+            var drafts = await db.SyllabusDrafts
+                .Where(x => x.id_syllabus == dto.id_syllabus)
+                .Select(x => new
+                {
+                    x.section_code,
+                    x.content_code,
+                    x.id_user,
+                    x.update_time
+                })
+                .ToListAsync();
+
+            return Ok(new { success = true, data = drafts });
+        }
+        public class SyllabusSectionDTO
+        {
+            public string section_code { get; set; }
+            public string section_name { get; set; }
+            public string value { get; set; }
+            public string allow_input { get; set; }
+            public string contentType { get; set; }
+            public string dataBinding { get; set; }
+        }
+        [HttpPost("save-final-from-draft")]
+        public async Task<IActionResult> SaveFinalFromDraft([FromBody] SaveFinalFromDraftDTO dto)
+        {
+            var userId = GetUserIdFromJWT();
+
+            // check quyền: chỉ GV chính / người được quyền mới cho save
+            var isOwner = await db.Syllabi
+                .AnyAsync(x => x.id_syllabus == dto.id_syllabus
+                            && x.id_teacherbysubjectNavigation.id_user == userId);
+
+            if (!isOwner)
+                return Ok(new { success = false, message = "Bạn không có quyền lưu bản final của đề cương này." });
+
+            var syllabus = await db.Syllabi
+                .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus);
+
+            if (syllabus == null)
+                return NotFound(new { success = false, message = "Không tìm thấy đề cương." });
+
+            // Deserialize về DTO chuẩn
+            List<SyllabusSectionDTO> sections = new();
+            if (!string.IsNullOrEmpty(syllabus.syllabus_json))
+            {
+                sections = System.Text.Json.JsonSerializer.Deserialize<List<SyllabusSectionDTO>>(syllabus.syllabus_json);
+            }
+
+            var drafts = await db.SyllabusDrafts
+                .Where(x => x.id_syllabus == dto.id_syllabus)
+                .ToListAsync();
+
+            // MERGE content từ draft
+            foreach (var sec in sections)
+            {
+                var draft = drafts.FirstOrDefault(d => d.section_code == sec.section_code);
+                if (draft != null)
+                    sec.value = draft.content_code ?? "";
+            }
+
+            // Save Final
+            syllabus.syllabus_json = System.Text.Json.JsonSerializer.Serialize(sections);
+            syllabus.id_status = 4;
+            syllabus.time_up = unixTimestamp;
+
+            var userName = await db.Users
+                .Where(u => u.id_users == userId)
+                .Select(u => u.Username)
+                .FirstOrDefaultAsync();
+
+            // Log
+            db.Log_Syllabi.Add(new Log_Syllabus
+            {
+                id_syllabus = syllabus.id_syllabus,
+                content_value = $"Giảng viên {userName} vừa lưu bản final đề cương.",
+                log_time = unixTimestamp
+            });
+
+            // clear draft
+            db.SyllabusDrafts.RemoveRange(drafts);
+
+            await db.SaveChangesAsync();
+
+            return Ok(new
+            {
+                success = true,
+                message = "Đã lưu bản final đề cương từ tất cả nội dung draft.",
+            });
+        }
+
+        //ssssssssssssss
+        [HttpPost("save-content-draft")]
+        public async Task<IActionResult> SaveDraftContent([FromBody] SaveSyllabusDraftContentDTO req)
+        {
+            var exist = await db.Syllabus_Drafts
+                .FirstOrDefaultAsync(x => x.id_syllabus == req.id_syllabus);
+
+            if (exist == null)
+            {
+                exist = new Syllabus_Draft
+                {
+                    id_syllabus = req.id_syllabus,
+                    draft_json = req.draft_json,
+                    update_time = unixTimestamp
+                };
+                db.Syllabus_Drafts.Add(exist);
+            }
+            else
+            {
+                exist.draft_json = req.draft_json;
+                exist.update_time = unixTimestamp;
+            }
+
+            await db.SaveChangesAsync();
+            return Ok(new { success = true });
+        }
+        [HttpPost("save-sections")]
+        public async Task<IActionResult> SaveDraftSections([FromBody] SaveSyllabusDraftSectionDTO req)
+        {
+            var exist = await db.Syllabus_Draft_Sections
+                .FirstOrDefaultAsync(x => x.id_syllabus == req.id_syllabus);
+            if (exist == null)
+            {
+                exist = new Syllabus_Draft_Section
+                {
+                    id_syllabus = req.id_syllabus,
+                    section_json = req.section_json,
+                    update_time = unixTimestamp
+                };
+                db.Syllabus_Draft_Sections.Add(exist);
+            }
+            else
+            {
+                exist.section_json =req.section_json;
+                exist.update_time = unixTimestamp;
+            }
+
+            await db.SaveChangesAsync();
+            return Ok(new { success = true });
+        }
+        [HttpPost("load-draft-section")]
+        public async Task<IActionResult> LoadDraft([FromBody] SyllabusDTOs items) 
+        {
+            var sec = await db.Syllabus_Draft_Sections
+                .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
+
+            var cont = await db.Syllabus_Drafts
+                .FirstOrDefaultAsync(x => x.id_syllabus ==items.id_syllabus);
+
+            return Ok(new
+            {
+                success = true,
+                sections = sec?.section_json,
+                content = cont?.draft_json
+            });
         }
 
     }

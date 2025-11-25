@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using ProjectQLDCCT.Data;
+using ProjectQLDCCT.Helpers.SignalR;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
     [ApiController]
     public class WriteCourseGVDCAPI : ControllerBase
     {
+       
         private readonly QLDCContext db;
         private readonly int unixTimestamp;
         public WriteCourseGVDCAPI(QLDCContext _db)
@@ -509,6 +512,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     id_syllabus = items.id_syllabus,
                     is_approve = false,
                     is_key_user = false,
+                    is_refuse = false,
                     time_request = unixTimestamp,
                     time_accept_request = null
                 });
@@ -533,6 +537,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     email = x.id_userNavigation.email,
                     name_program = db.CivilServants.Where(g => g.email == x.id_userNavigation.email).Select(g => g.id_programNavigation.name_program).FirstOrDefault(),
                     x.is_approve,
+                    x.is_key_user,
+                    x.is_refuse,
                     x.time_request,
                     x.time_accept_request,
                 })
@@ -545,6 +551,50 @@ namespace ProjectQLDCCT.Controllers.GVDC
             {
                 return Ok(new { message = "Chưa có dữ liệu", success = false });
             }
+        }
+        [HttpPost]
+        [Route("accept-join-write-course")]
+        public async Task<IActionResult> AcceptJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
+        {
+            var checkApprove = await db.ApproveUserSyllabi.Where(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus).FirstOrDefaultAsync();
+            if (checkApprove == null)
+            {
+                return Ok(new { message = "Không tìm thấy thông tin", success = false });
+            }
+            checkApprove.is_approve = true;
+            checkApprove.is_refuse = false;
+            checkApprove.time_accept_request = unixTimestamp;
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Duyệt yêu cầu thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("reject-join-write-course")]
+        public async Task<IActionResult> RejectJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
+        {
+            var checkApprove = await db.ApproveUserSyllabi.Where(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus).FirstOrDefaultAsync();
+            if (checkApprove == null)
+            {
+                return Ok(new { message = "Không tìm thấy thông tin", success = false });
+            }
+            checkApprove.is_approve = false;
+            checkApprove.is_refuse = true;
+            checkApprove.time_accept_request = unixTimestamp;
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Từ chối yêu cầu thành công", success = true });
+        }
+        [HttpPost]
+        [Route("remove-join-write-course")]
+        public async Task<IActionResult> RemoveJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
+        {
+            var checkApprove = await db.ApproveUserSyllabi.Where(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus).FirstOrDefaultAsync();
+            if (checkApprove == null)
+            {
+                return Ok(new { message = "Không tìm thấy thông tin", success = false });
+            }
+            db.ApproveUserSyllabi.Remove(checkApprove);
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Loại thành viên thành công", success = true });
         }
     }
 }

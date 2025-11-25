@@ -20,6 +20,8 @@ public partial class ApproveUserSyllabus
 
     public bool? is_key_user { get; set; }
 
+    public bool? is_refuse { get; set; }
+
     public int? time_request { get; set; }
 
     public int? time_accept_request { get; set; }

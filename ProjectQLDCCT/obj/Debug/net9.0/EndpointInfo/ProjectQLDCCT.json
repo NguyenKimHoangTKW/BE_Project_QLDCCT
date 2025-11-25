@@ -5158,6 +5158,99 @@
         }
       }
     },
+    "/api/gvdc/write-course/accept-join-write-course": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-course/reject-join-write-course": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-course/remove-join-write-course": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/gvdc/write-template-syllabus/preview-template": {
       "post": {
         "tags": [
@@ -5600,10 +5693,225 @@
           }
         }
       }
+    },
+    "/api/gvdc/write-template-syllabus/save-draft-section": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveDraftSectionDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveDraftSectionDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveDraftSectionDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/load-drafts": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoadDraftDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoadDraftDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoadDraftDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/save-final-from-draft": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveFinalFromDraftDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveFinalFromDraftDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveFinalFromDraftDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/save-content-draft": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSyllabusDraftContentDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSyllabusDraftContentDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSyllabusDraftContentDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/save-sections": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSyllabusDraftSectionDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSyllabusDraftSectionDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveSyllabusDraftSectionDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-template-syllabus/load-draft-section": {
+      "post": {
+        "tags": [
+          "WriteTemplateSyllabusGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "ApproveUserSyllabusDTOs": {
+        "type": "object",
+        "properties": {
+          "id_ApproveUserSyllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_user": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "is_approve": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "is_key_user": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CLODTOs": {
         "type": "object",
         "properties": {
@@ -6011,6 +6319,16 @@
         },
         "additionalProperties": false
       },
+      "LoadDraftDTO": {
+        "type": "object",
+        "properties": {
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "LogSyllabusDTOs": {
         "type": "object",
         "properties": {
@@ -6286,6 +6604,34 @@
         },
         "additionalProperties": false
       },
+      "SaveDraftSectionDTO": {
+        "type": "object",
+        "properties": {
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "section_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaveFinalFromDraftDTO": {
+        "type": "object",
+        "properties": {
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "SaveFinalSyllabusDTO": {
         "type": "object",
         "properties": {
@@ -6326,6 +6672,46 @@
           "id_type_users": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaveSyllabusDraftContentDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "draft_json": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaveSyllabusDraftSectionDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "section_json": {
+            "type": "string",
             "nullable": true
           }
         },

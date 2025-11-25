@@ -84,6 +84,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<SyllabusApproval> SyllabusApprovals { get; set; }
 
+    public virtual DbSet<SyllabusDraft> SyllabusDrafts { get; set; }
+
     public virtual DbSet<SyllabusSection> SyllabusSections { get; set; }
 
     public virtual DbSet<SyllabusSectionContent> SyllabusSectionContents { get; set; }
@@ -91,6 +93,10 @@ public partial class QLDCContext : DbContext
     public virtual DbSet<SyllabusTemplate> SyllabusTemplates { get; set; }
 
     public virtual DbSet<SyllabusTemplateSection> SyllabusTemplateSections { get; set; }
+
+    public virtual DbSet<Syllabus_Draft> Syllabus_Drafts { get; set; }
+
+    public virtual DbSet<Syllabus_Draft_Section> Syllabus_Draft_Sections { get; set; }
 
     public virtual DbSet<TeacherBySubject> TeacherBySubjects { get; set; }
 
@@ -361,6 +367,13 @@ public partial class QLDCContext : DbContext
                 .HasConstraintName("FK_SyllabusApproval_Syllabus");
         });
 
+        modelBuilder.Entity<SyllabusDraft>(entity =>
+        {
+            entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.SyllabusDrafts).HasConstraintName("FK_SyllabusDrafts_Syllabus");
+
+            entity.HasOne(d => d.id_userNavigation).WithMany(p => p.SyllabusDrafts).HasConstraintName("FK_SyllabusDrafts_Users");
+        });
+
         modelBuilder.Entity<SyllabusSection>(entity =>
         {
             entity.HasKey(e => e.id_section).HasName("PK__Syllabus__3A8312DE091036DE");
@@ -407,6 +420,11 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.id_dataBindingNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK_SyllabusTemplateSection_DataBinding");
 
             entity.HasOne(d => d.id_templateNavigation).WithMany(p => p.SyllabusTemplateSections).HasConstraintName("FK__SyllabusT__id_te__6A30C649");
+        });
+
+        modelBuilder.Entity<Syllabus_Draft>(entity =>
+        {
+            entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.Syllabus_Drafts).HasConstraintName("FK_Syllabus_Draft_Syllabus");
         });
 
         modelBuilder.Entity<TeacherBySubject>(entity =>

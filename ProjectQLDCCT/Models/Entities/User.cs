@@ -40,6 +40,9 @@ public partial class User
     public virtual ICollection<Syllabus> Syllabi { get; set; } = new List<Syllabus>();
 
     [InverseProperty("id_userNavigation")]
+    public virtual ICollection<SyllabusDraft> SyllabusDrafts { get; set; } = new List<SyllabusDraft>();
+
+    [InverseProperty("id_userNavigation")]
     public virtual ICollection<TeacherBySubject> TeacherBySubjects { get; set; } = new List<TeacherBySubject>();
 
     [InverseProperty("id_usersNavigation")]
