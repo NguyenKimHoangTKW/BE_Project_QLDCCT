@@ -396,7 +396,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
             var newRecord = new TeacherBySubject
             {
                 id_user = checkUser.id_users,
-                id_course = items.id_course
+                id_course = items.id_course,
+                is_create_write = true,
             };
             db.TeacherBySubjects.Add(newRecord);
             await db.SaveChangesAsync();

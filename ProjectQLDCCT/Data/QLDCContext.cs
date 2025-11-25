@@ -16,6 +16,8 @@ public partial class QLDCContext : DbContext
     {
     }
 
+    public virtual DbSet<ApproveUserSyllabus> ApproveUserSyllabi { get; set; }
+
     public virtual DbSet<CLO_CO_Mapping> CLO_CO_Mappings { get; set; }
 
     public virtual DbSet<CLO_PI_Mapping> CLO_PI_Mappings { get; set; }
@@ -106,6 +108,15 @@ public partial class QLDCContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ApproveUserSyllabus>(entity =>
+        {
+            entity.HasKey(e => e.id_ApproveUserSyllabus).HasName("PK_Table_1");
+
+            entity.HasOne(d => d.id_syllabusNavigation).WithMany(p => p.ApproveUserSyllabi).HasConstraintName("FK_ApproveUserSyllabus_Syllabus");
+
+            entity.HasOne(d => d.id_userNavigation).WithMany(p => p.ApproveUserSyllabi).HasConstraintName("FK_ApproveUserSyllabus_Users");
+        });
+
         modelBuilder.Entity<CLO_CO_Mapping>(entity =>
         {
             entity.HasOne(d => d.id_CLONavigation).WithMany(p => p.CLO_CO_Mappings)
@@ -271,6 +282,11 @@ public partial class QLDCContext : DbContext
             entity.ToTable("LevelContribution", tb => tb.HasTrigger("trg_delete_LevelContribution"));
 
             entity.HasOne(d => d.id_facultyNavigation).WithMany(p => p.LevelContributions).HasConstraintName("FK_LevelContribution_Faculty");
+        });
+
+        modelBuilder.Entity<LogStatus>(entity =>
+        {
+            entity.ToTable("LogStatus", tb => tb.HasTrigger("trg_delete_LogStatus"));
         });
 
         modelBuilder.Entity<Log_Syllabus>(entity =>

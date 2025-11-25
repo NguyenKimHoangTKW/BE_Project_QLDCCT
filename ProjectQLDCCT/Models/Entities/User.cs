@@ -28,6 +28,9 @@ public partial class User
     public int status { get; set; }
 
     [InverseProperty("id_userNavigation")]
+    public virtual ICollection<ApproveUserSyllabus> ApproveUserSyllabi { get; set; } = new List<ApproveUserSyllabus>();
+
+    [InverseProperty("id_userNavigation")]
     public virtual ICollection<JWTSession> JWTSessions { get; set; } = new List<JWTSession>();
 
     [InverseProperty("created_byNavigation")]

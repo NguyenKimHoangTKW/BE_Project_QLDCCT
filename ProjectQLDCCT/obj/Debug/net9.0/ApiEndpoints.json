@@ -2133,7 +2133,7 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.SemesterDTOs",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2530,6 +2530,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "LoadListJoinWriteCourse",
+    "RelativePath": "api/gvdc/write-course/loads-list-join-write-course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "PreviewContentRefund",
     "RelativePath": "api/gvdc/write-course/preview-content-refund-syllabus",
     "HttpMethod": "POST",
@@ -2548,6 +2564,22 @@
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "RequestEditSyllabus",
     "RelativePath": "api/gvdc/write-course/request-edit-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "RequestUserSyllabusEdit",
+    "RelativePath": "api/gvdc/write-course/request-write-course-by-user",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

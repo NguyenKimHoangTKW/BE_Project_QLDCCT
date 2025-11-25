@@ -16,6 +16,8 @@ public partial class TeacherBySubject
 
     public int? id_course { get; set; }
 
+    public bool? is_create_write { get; set; }
+
     [InverseProperty("id_teacherbysubjectNavigation")]
     public virtual ICollection<Syllabus> Syllabi { get; set; } = new List<Syllabus>();
 

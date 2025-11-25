@@ -92,43 +92,83 @@ namespace ProjectQLDCCT.Controllers.GVDC
 
             return loadPermission ?? "";
         }
+        private async Task<int> GetUserPermissionIDUser()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Token không chứa id_users hợp lệ.");
+
+            return userId;
+        }
 
         [HttpGet]
         [Route("loads-danh-sach-de-cuong-can-soan")]
         public async Task<IActionResult> LoadCourseByPermission()
         {
             var List = await GetUserPermissionCourse();
-            var ListCourse = await db.TeacherBySubjects
-                 .Where(x => List.Contains(x.id_course ?? 0))
-                 .Select(x => new
-                 {
-                     x.id_teacherbysubject,
-                     x.id_course,
-                     x.id_courseNavigation.code_course,
-                     x.id_courseNavigation.name_course,
-                     name_gr_course = x.id_courseNavigation.id_gr_courseNavigation.name_gr_course,
-                     x.id_courseNavigation.credits,
-                     x.id_courseNavigation.totalTheory,
-                     x.id_courseNavigation.totalPractice,
-                     x.id_courseNavigation.id_isCourseNavigation.name,
-                     name_isCourse = x.id_courseNavigation.id_isCourseNavigation.name,
-                     name_key_year_semester = x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
-                     name_semester = x.id_courseNavigation.id_semesterNavigation.name_semester,
-                     name_program = x.id_courseNavigation.id_programNavigation.name_program,
-                     time_open = db.OpenSyllabusWindowsCourses
-                         .Where(g => g.id_course == x.id_course)
-                         .Select(g => g.open_time)
-                         .FirstOrDefault(),
-                     time_close = db.OpenSyllabusWindowsCourses
-                         .Where(g => g.id_course == x.id_course)
-                         .Select(g => g.close_time)
-                         .FirstOrDefault(),
-                     is_open = db.OpenSyllabusWindowsCourses
-                         .Where(g => g.id_course == x.id_course)
-                         .Select(g => g.is_open)
-                         .FirstOrDefault()
-                 })
-                 .ToListAsync();
+            var raw = await db.TeacherBySubjects
+                  .Where(x => List.Contains(x.id_course ?? 0))
+                  .Select(x => new
+                  {
+                      x.id_teacherbysubject,
+                      x.id_course,
+                      x.id_courseNavigation.code_course,
+                      x.id_courseNavigation.name_course,
+                      name_gr_course = x.id_courseNavigation.id_gr_courseNavigation.name_gr_course,
+                      x.id_courseNavigation.credits,
+                      x.id_courseNavigation.totalTheory,
+                      x.id_courseNavigation.totalPractice,
+                      name_isCourse = x.id_courseNavigation.id_isCourseNavigation.name,
+                      name_key_year_semester = x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
+                      name_semester = x.id_courseNavigation.id_semesterNavigation.name_semester,
+                      name_program = x.id_courseNavigation.id_programNavigation.name_program,
+
+                      window = db.OpenSyllabusWindowsCourses
+                          .Where(g => g.id_course == x.id_course)
+                          .Select(g => new { g.open_time, g.close_time, g.is_open })
+                          .FirstOrDefault()
+                  })
+                  .ToListAsync();
+
+            var ListCourse = raw
+                .GroupBy(x => x.id_course)
+                .Select(g => g.First())
+                .Select(x => new
+                {
+                    x.id_teacherbysubject,
+                    x.id_course,
+                    x.code_course,
+                    x.name_course,
+                    x.name_gr_course,
+                    x.credits,
+                    x.totalTheory,
+                    x.totalPractice,
+                    x.name_isCourse,
+                    x.name_key_year_semester,
+                    x.name_semester,
+                    x.name_program,
+                    time_open = x.window?.open_time,
+                    time_close = x.window?.close_time,
+                    is_open = x.window?.is_open
+                })
+                .ToList();
+
             if (ListCourse.Count > 0)
             {
                 return Ok(new { data = ListCourse, message = "Tải dữ liệu thành công", success = true });
@@ -143,6 +183,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc")]
         public async Task<IActionResult> ListCourseByID([FromBody] SyllabusDTOs items)
         {
+            var GetIDUser = await GetUserPermissionIDUser();
             var checkCourse = await db.Courses
                 .Where(x => x.id_course == items.id_course)
                 .ToListAsync();
@@ -180,7 +221,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
                            name_program = cs.id_programNavigation.name_program,
                            cs.email
                        })
-                       .ToList()
+                       .ToList(),
+                   is_approve_user = db.ApproveUserSyllabi.Where(g => g.id_syllabus == x.id_syllabus && g.id_user == GetIDUser).Select(g => g.is_approve).FirstOrDefault(),
                })
                .ToListAsync();
 
@@ -197,10 +239,15 @@ namespace ProjectQLDCCT.Controllers.GVDC
                  .FirstOrDefault();
             var GetNameCourse = await db.Courses
                 .Where(x => x.id_course == items.id_course)
-                .Select(x => x.name_course)
                 .FirstOrDefaultAsync();
+            var checkIsCreate = await db.TeacherBySubjects
+                .Where(x => x.id_user == GetIDUser
+                         && x.id_course == items.id_course)
+                .Select(x => x.is_create_write)
+                .FirstOrDefaultAsync();
+
             if (ListData.Any())
-                return Ok(new { data = ListData, name_course = GetNameCourse, success = true });
+                return Ok(new { data = ListData, name_course = GetNameCourse.name_course, is_write = checkIsCreate, success = true });
             else
 
                 return Ok(new { name_course = GetNameCourse, data = window, message = "Chưa có dữ liệu giảng viên viết đề cương", success = false });
@@ -210,73 +257,93 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("tao-moi-mau-de-cuong-cho-mon-hoc")]
         public async Task<IActionResult> TaoMoiMauDeCuong([FromBody] SyllabusDTOs items)
         {
+            var userId = GetUserIdFromJWT();
+            if (userId == null)
+                return Unauthorized("Thiếu hoặc sai JWT token.");
 
-            var token = HttpContext.Request.Cookies["jwt"];
-            if (string.IsNullOrWhiteSpace(token))
-                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+            var teacherSubject = await db.TeacherBySubjects
+                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject)
+                .Select(x => new
+                {
+                    x.id_teacherbysubject,
+                    id_user = x.id_user,
+                    faculty = x.id_courseNavigation.id_programNavigation.id_faculty
+                })
+                .FirstOrDefaultAsync();
 
-            var handler = new JwtSecurityTokenHandler();
-            JwtSecurityToken jwtToken;
-            try
+            if (teacherSubject == null)
+                return BadRequest(new { message = "Môn học không tồn tại.", success = false });
+
+            var finalExist = await db.Syllabi
+                 .AnyAsync(x => x.id_teacherbysubject == items.id_teacherbysubject
+                             && x.create_by == userId
+                             && x.id_status == 4);
+
+            if (finalExist)
             {
-                jwtToken = handler.ReadJwtToken(token);
-            }
-            catch
-            {
-                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+                return Ok(new
+                {
+                    message = "Bạn đã có đề cương đã hoàn thiện, không thể tạo thêm.",
+                    success = false
+                });
             }
 
-            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
-            if (string.IsNullOrEmpty(userIdClaim))
-                throw new UnauthorizedAccessException("Token không chứa id_users.");
-
-            if (!int.TryParse(userIdClaim, out int userId))
-                throw new UnauthorizedAccessException("Giá trị id_users trong token không hợp lệ.");
-            var CheckexistingFinalVersions = await db.Syllabi
-              .Where(x => x.id_teacherbysubject == items.id_teacherbysubject && x.create_by == userId && x.id_status == 4)
-              .ToListAsync();
-            if (CheckexistingFinalVersions.Any())
-            {
-                return Ok(new { message = "Bạn đã có đề cương đã hoàn thiện trong môn học này, không thể tạo thêm", success = false });
-            }
-            var existingVersions = await db.Syllabi
-                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject && x.create_by == userId)
+            var numericVersions = await db.Syllabi
+                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject
+                         && x.create_by == userId)
                 .Select(x => x.version)
                 .ToListAsync();
-            var GetJsonTempalte = await db.TeacherBySubjects
-                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject)
-                .Select(x => db.SyllabusTemplates.Where(g => g.id_faculty == x.id_courseNavigation.id_programNavigation.id_faculty).Select(g => g.template_json).FirstOrDefault()).FirstOrDefaultAsync();
-            int nextVersion = 1;
-            var numericVersions = existingVersions
+
+            int nextVersion = numericVersions
                 .Select(v => int.TryParse(v, out int n) ? n : 0)
-                .ToList();
+                .DefaultIfEmpty(0)
+                .Max() + 1;
 
-            if (numericVersions.Any())
-                nextVersion = numericVersions.Max() + 1;
+            var defaultTemplate = await db.SyllabusTemplates
+                .Where(x => x.id_faculty == teacherSubject.faculty)
+                .Select(x => x.template_json)
+                .FirstOrDefaultAsync();
 
-            var new_record = new Syllabus
+            var nowUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var new_syllabus = new Syllabus
             {
                 id_teacherbysubject = items.id_teacherbysubject,
                 id_status = 1,
                 version = nextVersion.ToString(),
+                create_by = userId.Value,
                 time_cre = unixTimestamp,
                 time_up = unixTimestamp,
-                create_by = userId,
-                syllabus_json = GetJsonTempalte,
+                syllabus_json = defaultTemplate,
                 is_open_edit_final = 0
             };
 
-            db.Syllabi.Add(new_record);
+            db.Syllabi.Add(new_syllabus);
             await db.SaveChangesAsync();
-            var GetNameGV = await GetUserPermissionNameCodeGV();
-            var new_record_log = new Log_Syllabus
+            if (!await db.ApproveUserSyllabi
+                .AnyAsync(x => x.id_user == teacherSubject.id_user && x.id_syllabus == new_syllabus.id_syllabus))
             {
-                id_syllabus = new_record.id_syllabus,
-                content_value = $"Giảng viên {GetNameGV} vừa tạo mới đề cương với phiên bản {nextVersion}",
-                log_time = unixTimestamp,
-            };
-            db.Log_Syllabi.Add(new_record_log);
+                db.ApproveUserSyllabi.Add(new ApproveUserSyllabus
+                {
+                    id_user = teacherSubject.id_user,
+                    id_syllabus = new_syllabus.id_syllabus,
+                    is_approve = true,
+                    is_key_user = true
+                });
+
+                await db.SaveChangesAsync();
+            }
+            var gvName = await GetUserPermissionNameCodeGV();
+
+            db.Log_Syllabi.Add(new Log_Syllabus
+            {
+                id_syllabus = new_syllabus.id_syllabus,
+                content_value = $"Giảng viên {gvName} vừa tạo mới đề cương phiên bản {nextVersion}",
+                log_time = unixTimestamp
+            });
+
             await db.SaveChangesAsync();
+
             return Ok(new
             {
                 message = $"Tạo mẫu đề cương phiên bản {nextVersion} thành công.",
@@ -284,6 +351,26 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 version = nextVersion
             });
         }
+
+        private int? GetUserIdFromJWT()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token)) return null;
+
+            var handler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                var jwt = handler.ReadJwtToken(token);
+                var val = jwt.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+                return int.TryParse(val, out var id) ? id : null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
 
         [HttpPost]
         [Route("inherit-template-syllabus")]
@@ -406,6 +493,58 @@ namespace ProjectQLDCCT.Controllers.GVDC
             db.Log_Syllabi.Add(new_record_log);
             await db.SaveChangesAsync();
             return Ok(new { message = "Thu hồi đề cương thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("request-write-course-by-user")]
+        public async Task<IActionResult> RequestUserSyllabusEdit([FromBody] SyllabusDTOs items)
+        {
+            var GetIDUser = await GetUserPermissionIDUser();
+            if (!await db.ApproveUserSyllabi
+                .AnyAsync(x => x.id_user == GetIDUser && x.id_syllabus == items.id_syllabus))
+            {
+                db.ApproveUserSyllabi.Add(new ApproveUserSyllabus
+                {
+                    id_user = GetIDUser,
+                    id_syllabus = items.id_syllabus,
+                    is_approve = false,
+                    is_key_user = false,
+                    time_request = unixTimestamp,
+                    time_accept_request = null
+                });
+
+                await db.SaveChangesAsync();
+            }
+            await db.SaveChangesAsync();
+            return Ok(new { message = "Gửi yêu cầu tham gia thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("loads-list-join-write-course")]
+        public async Task<IActionResult> LoadListJoinWriteCourse([FromBody] SyllabusDTOs items)
+        {
+            var ListData = await db.ApproveUserSyllabi
+                .Where(x => x.id_syllabus == items.id_syllabus && x.is_key_user == false)
+                .Select(x => new
+                {
+                    x.id_ApproveUserSyllabus,
+                    code_civil = db.CivilServants.Where(g => g.email == x.id_userNavigation.email).Select(g => g.code_civilSer).FirstOrDefault(),
+                    name_civil = db.CivilServants.Where(g => g.email == x.id_userNavigation.email).Select(g => g.fullname_civilSer).FirstOrDefault(),
+                    email = x.id_userNavigation.email,
+                    name_program = db.CivilServants.Where(g => g.email == x.id_userNavigation.email).Select(g => g.id_programNavigation.name_program).FirstOrDefault(),
+                    x.is_approve,
+                    x.time_request,
+                    x.time_accept_request,
+                })
+                .ToListAsync();
+            if (ListData.Count > 0)
+            {
+                return Ok(new { data = ListData, success = true });
+            }
+            else
+            {
+                return Ok(new { message = "Chưa có dữ liệu", success = false });
+            }
         }
     }
 }
