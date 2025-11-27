@@ -602,18 +602,27 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("phan-quyen-gv-vao-phu-viet-de-cuong")]
         public async Task<IActionResult> PhanQuyenVietTiepDeCuong([FromBody] CivilServantsDTOs items)
         {
-            var GetProgram = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus).Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_program).FirstOrDefaultAsync();
+            var idProgram = await db.Syllabi
+                .Where(x => x.id_syllabus == items.id_syllabus)
+                .Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_program)
+                .FirstOrDefaultAsync();
+
             var checkCivil = await db.CivilServants
-                .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer && GetProgram == x.id_program);
+                .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer && x.id_program == idProgram);
+
             if (checkCivil == null)
-                return Ok(new { message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại", success = false });
+                return Ok(new
+                {
+                    message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại",
+                    success = false
+                });
 
             var checkUser = await db.Users
                 .FirstOrDefaultAsync(x => x.email == checkCivil.email);
 
             if (checkUser == null)
             {
-                var newUser = new User
+                checkUser = new User
                 {
                     email = checkCivil.email,
                     time_cre = unixTimestamp,
@@ -621,9 +630,9 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     id_type_users = 4,
                     status = 1
                 };
-                db.Users.Add(newUser);
+
+                db.Users.Add(checkUser);
                 await db.SaveChangesAsync();
-                checkUser = newUser;
             }
             else
             {
@@ -632,15 +641,27 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 checkUser.time_up = unixTimestamp;
                 await db.SaveChangesAsync();
             }
-            var newlistint = new int[] { 2, 3, 5 };
-            var CheckType = await db.Users.Where(x => x.id_users == checkUser.id_users && newlistint.Contains(x.id_type_users ?? 0)).FirstOrDefaultAsync();
-            if (CheckType != null)
-                return Ok(new { message = "Giảng viên này thuộc cấp quyền quản lý, không thể thêm", success = false });
+
+            var blockTypes = new int[] { 2, 3, 5 };
+            var isManager = await db.Users
+                .AnyAsync(x => x.id_users == checkUser.id_users && blockTypes.Contains(x.id_type_users ?? 0));
+
+            if (isManager)
+                return Ok(new
+                {
+                    message = "Giảng viên này thuộc cấp quyền quản lý, không thể thêm",
+                    success = false
+                });
+
             var existCourse = await db.ApproveUserSyllabi
                 .FirstOrDefaultAsync(x => x.id_user == checkUser.id_users && x.id_syllabus == items.id_syllabus);
 
             if (existCourse != null)
-                return Ok(new { message = "Giảng viên này đã được phân quyền vào đề cương môn học này", success = false });
+                return Ok(new
+                {
+                    message = "Giảng viên này đã được phân quyền vào đề cương môn học này",
+                    success = false
+                });
 
             var newRecord = new ApproveUserSyllabus
             {
@@ -652,10 +673,42 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 time_accept_request = unixTimestamp,
                 time_request = unixTimestamp
             };
+
             db.ApproveUserSyllabi.Add(newRecord);
             await db.SaveChangesAsync();
 
-            return Ok(new { message = "Phân quyền giảng viên viết đề cương thành công", success = true });
+
+            var syllabus = await db.Syllabi
+                .Include(s => s.id_teacherbysubjectNavigation)
+                .FirstOrDefaultAsync(s => s.id_syllabus == items.id_syllabus);
+
+            if (syllabus == null)
+                return Ok(new { message = "Không tìm thấy đề cương", success = false });
+
+            var courseId = syllabus.id_teacherbysubjectNavigation.id_course;
+
+            var checkTeacherBySubject = await db.TeacherBySubjects
+                .FirstOrDefaultAsync(x => x.id_course == courseId && x.id_user == checkUser.id_users);
+
+            if (checkTeacherBySubject == null)
+            {
+                var newTeacherBySubject = new TeacherBySubject
+                {
+                    id_course = courseId,
+                    id_user = checkUser.id_users,
+                    is_create_write = false
+                };
+
+                db.TeacherBySubjects.Add(newTeacherBySubject);
+                await db.SaveChangesAsync();
+            }
+
+            return Ok(new
+            {
+                message = "Phân quyền giảng viên viết đề cương thành công",
+                success = true
+            });
         }
+
     }
 }

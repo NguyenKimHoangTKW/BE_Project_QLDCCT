@@ -127,7 +127,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     x.syllabus_json,
                     course = x.id_teacherbysubjectNavigation.id_courseNavigation.name_course,
                     status = x.id_status == 4,
-                    is_open = db.OpenSyllabusWindowsCourses.Any(g => g.id_course == idCourse && g.is_open == 1)
+                    is_open = db.OpenSyllabusWindowsCourses.Any(g => g.id_course == idCourse && g.is_open == 1),
+                    syllabus_section_json = db.Syllabus_Draft_Sections.Where(x => x.id_syllabus == x.id_syllabus).Select(x => x.section_json).FirstOrDefault()
                 })
                 .FirstOrDefaultAsync();
 
