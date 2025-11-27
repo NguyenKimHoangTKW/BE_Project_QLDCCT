@@ -7,7 +7,7 @@ namespace ProjectQLDCCT.Models.DTOs
         public int Id_Plo { get; set; }
 
         public int? Id_Program { get; set; }
-
+        public int? id_key_semester { get; set; }
         public string? code { get; set; }
 
         public int? order_index { get; set; }

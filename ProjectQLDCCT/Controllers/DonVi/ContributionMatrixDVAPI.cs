@@ -87,7 +87,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
 
             var LoadPLO = await db.ProgramLearningOutcomes
                 .OrderBy(x => x.order_index)
-                .Where(x => x.Id_Program == items.Id_Program)
+                .Where(x => x.Id_Program == items.Id_Program && x.id_key_semester == items.id_key_semester)
                 .ToListAsync();
             var ListData = new List<object>();
             foreach (var plo in LoadPLO)

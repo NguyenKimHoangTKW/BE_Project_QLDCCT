@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -18,7 +19,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
     [ApiController]
     public class WriteCourseGVDCAPI : ControllerBase
     {
-       
+
         private readonly QLDCContext db;
         private readonly int unixTimestamp;
         public WriteCourseGVDCAPI(QLDCContext _db)
@@ -595,6 +596,66 @@ namespace ProjectQLDCCT.Controllers.GVDC
             db.ApproveUserSyllabi.Remove(checkApprove);
             await db.SaveChangesAsync();
             return Ok(new { message = "Loại thành viên thành công", success = true });
+        }
+
+        [HttpPost]
+        [Route("phan-quyen-gv-vao-phu-viet-de-cuong")]
+        public async Task<IActionResult> PhanQuyenVietTiepDeCuong([FromBody] CivilServantsDTOs items)
+        {
+            var GetProgram = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus).Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_program).FirstOrDefaultAsync();
+            var checkCivil = await db.CivilServants
+                .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer && GetProgram == x.id_program);
+            if (checkCivil == null)
+                return Ok(new { message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại", success = false });
+
+            var checkUser = await db.Users
+                .FirstOrDefaultAsync(x => x.email == checkCivil.email);
+
+            if (checkUser == null)
+            {
+                var newUser = new User
+                {
+                    email = checkCivil.email,
+                    time_cre = unixTimestamp,
+                    time_up = unixTimestamp,
+                    id_type_users = 4,
+                    status = 1
+                };
+                db.Users.Add(newUser);
+                await db.SaveChangesAsync();
+                checkUser = newUser;
+            }
+            else
+            {
+                checkUser.id_type_users = 4;
+                checkUser.status = 1;
+                checkUser.time_up = unixTimestamp;
+                await db.SaveChangesAsync();
+            }
+            var newlistint = new int[] { 2, 3, 5 };
+            var CheckType = await db.Users.Where(x => x.id_users == checkUser.id_users && newlistint.Contains(x.id_type_users ?? 0)).FirstOrDefaultAsync();
+            if (CheckType != null)
+                return Ok(new { message = "Giảng viên này thuộc cấp quyền quản lý, không thể thêm", success = false });
+            var existCourse = await db.ApproveUserSyllabi
+                .FirstOrDefaultAsync(x => x.id_user == checkUser.id_users && x.id_syllabus == items.id_syllabus);
+
+            if (existCourse != null)
+                return Ok(new { message = "Giảng viên này đã được phân quyền vào đề cương môn học này", success = false });
+
+            var newRecord = new ApproveUserSyllabus
+            {
+                id_user = checkUser.id_users,
+                id_syllabus = items.id_syllabus,
+                is_approve = true,
+                is_key_user = false,
+                is_refuse = false,
+                time_accept_request = unixTimestamp,
+                time_request = unixTimestamp
+            };
+            db.ApproveUserSyllabi.Add(newRecord);
+            await db.SaveChangesAsync();
+
+            return Ok(new { message = "Phân quyền giảng viên viết đề cương thành công", success = true });
         }
     }
 }

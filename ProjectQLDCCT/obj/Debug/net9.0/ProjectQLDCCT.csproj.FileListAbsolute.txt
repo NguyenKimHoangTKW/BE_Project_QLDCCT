@@ -578,5 +578,5 @@ D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\Newtonsoft.J
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\OpenAI.Net.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.Interactive.Async.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\System.Linq.Async.dll
-D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

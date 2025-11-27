@@ -56,7 +56,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
             return loadPermission;
         }
         [HttpGet]
-        [Route("load-ctdt-thuoc-dv")]
+        [Route("load-option-plo")]
         public async Task<IActionResult> LoadCTDTThuocDV()
         {
             GetFaculty = await GetUserPermissionFaculties();
@@ -68,7 +68,17 @@ namespace ProjectQLDCCT.Controllers.DonVi
                     x.name_program,
                 })
                 .ToListAsync();
-            return Ok(LoadCTDTThuocDV);
+
+            var GetList = await db.KeyYearSemesters
+                .Where(x => x.id_faculty == GetFaculty.FirstOrDefault())
+                .OrderByDescending(x => x.id_key_year_semester)
+                .Select(x => new
+                {
+                    x.id_key_year_semester,
+                    x.name_key_year_semester
+                })
+                .ToListAsync();
+            return Ok(new {ctdt = LoadCTDTThuocDV , keySemester = GetList });
         }
         [HttpPost]
         [Route("load-danh-sach-chuan-dau-ra-ctdt")]
@@ -76,7 +86,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
         {
             var totalRecords = await db.ProgramLearningOutcomes.Where(x => x.Id_Program == items.Id_Program).CountAsync();
             var GetItems = await db.ProgramLearningOutcomes
-              .Where(x => x.Id_Program == items.Id_Program)
+              .Where(x => x.Id_Program == items.Id_Program && items.id_key_semester == x.id_key_semester)
               .OrderBy(x => x.order_index)
               .Skip((items.Page - 1) * items.PageSize)
               .Take(items.PageSize)
@@ -129,6 +139,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 Id_Program = items.Id_Program,
                 code = items.code.Trim(),
                 Description = items.Description.Trim(),
+                id_key_semester = items.id_key_semester,
                 time_cre = unixTimestamp,
                 time_up = unixTimestamp
             };

@@ -333,6 +333,8 @@ public partial class QLDCContext : DbContext
         modelBuilder.Entity<ProgramLearningOutcome>(entity =>
         {
             entity.ToTable("ProgramLearningOutcome", tb => tb.HasTrigger("trg_delete_ProgramLearningOutcome"));
+
+            entity.HasOne(d => d.id_key_semesterNavigation).WithMany(p => p.ProgramLearningOutcomes).HasConstraintName("FK_ProgramLearningOutcome_KeyYearSemester");
         });
 
         modelBuilder.Entity<Semester>(entity =>

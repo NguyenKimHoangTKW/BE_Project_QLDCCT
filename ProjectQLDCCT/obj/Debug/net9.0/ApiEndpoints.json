@@ -1462,6 +1462,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
+    "Method": "ExportThongKe",
+    "RelativePath": "api/donvi/course/export-danh-sach-mon-hoc-chua-co-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "ExportCourse",
     "RelativePath": "api/donvi/course/export-danh-sach-mon-hoc-thuoc-don-vi",
     "HttpMethod": "POST",
@@ -1523,6 +1539,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
+    "Method": "LoadLogSyllabus",
+    "RelativePath": "api/donvi/course/log-hoat-dong-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.LogSyllabusDTOs",
         "IsRequired": true
       }
     ],
@@ -1816,16 +1848,6 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
-    "Method": "LoadCTDTThuocDV",
-    "RelativePath": "api/donvi/program-learning-outcome/load-ctdt-thuoc-dv",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
     "Method": "LoadPLO",
     "RelativePath": "api/donvi/program-learning-outcome/load-danh-sach-chuan-dau-ra-ctdt",
     "HttpMethod": "POST",
@@ -1838,6 +1860,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.PLODVAPI",
+    "Method": "LoadCTDTThuocDV",
+    "RelativePath": "api/donvi/program-learning-outcome/load-option-plo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -2555,6 +2587,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "PhanQuyenVietTiepDeCuong",
+    "RelativePath": "api/gvdc/write-course/phan-quyen-gv-vao-phu-viet-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
         "IsRequired": true
       }
     ],

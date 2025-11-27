@@ -165,7 +165,8 @@ namespace ProjectQLDCCT.Controllers.DonVi
                     x.time_up,
                     name = x.id_isCourseNavigation.name,
                     name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
-                    name_key_year_semester = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester
+                    name_key_year_semester = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester,
+                    is_syllabus = db.Syllabi.Any(g => g.id_teacherbysubjectNavigation.id_course == x.id_course && g.id_status == 4)
                 })
                 .ToListAsync();
 
@@ -291,6 +292,21 @@ namespace ProjectQLDCCT.Controllers.DonVi
             await db.SaveChangesAsync();
             return Ok(new { message = "Xóa dữ liệu thành công", success = true });
         }
+        [HttpPost]
+        [Route("log-hoat-dong-de-cuong")]
+        public async Task<IActionResult> LoadLogSyllabus([FromBody] LogSyllabusDTOs items)
+        {
+            var LoadLogOperation = await db.Log_Syllabi
+                .Where(x => x.id_syllabusNavigation.id_teacherbysubjectNavigation.id_course == items.id_course)
+                .Select(x => new
+                {
+                    x.content_value,
+                    x.log_time
+                })
+                .ToListAsync();
+            return Ok(LoadLogOperation);
+        }
+
         [HttpPost("upload-excel-danh-sach-mon-hoc")]
         public async Task<IActionResult> UploadExcelMonHoc(IFormFile file)
         {
@@ -485,6 +501,77 @@ namespace ProjectQLDCCT.Controllers.DonVi
             return DateTimeOffset.FromUnixTimeSeconds(unix.Value)
                                  .ToLocalTime()
                                  .ToString("dd/MM/yyyy");
+        }
+
+
+        [HttpPost]
+        [Route("export-danh-sach-mon-hoc-chua-co-de-cuong")]
+        public async Task<IActionResult> ExportThongKe([FromBody] CourseDTOs items)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var query = db.Courses.AsNoTracking().Where(x => x.id_program == items.id_program);
+            if (items.id_gr_course > 0)
+                query = query.Where(x => x.id_gr_course == items.id_gr_course);
+            if (items.id_isCourse > 0)
+                query = query.Where(x => x.id_isCourse == items.id_isCourse);
+            if (items.id_key_year_semester > 0)
+                query = query.Where(x => x.id_key_year_semester == items.id_key_year_semester);
+            if (items.id_semester > 0)
+                query = query.Where(x => x.id_semester == items.id_semester);
+
+            var data = await query
+                .OrderByDescending(x => x.id_course)
+                .Select(x => new
+                {
+                    x.code_course,
+                    x.name_course,
+                    name_gr_course = x.id_gr_courseNavigation.name_gr_course,
+                    name_program = x.id_programNavigation.name_program,
+                    name_is_course = x.id_isCourseNavigation.name,
+                    name_semester = x.id_semesterNavigation.code_semester + " - " + x.id_semesterNavigation.name_semester,
+                    name_key_year = x.id_key_year_semesterNavigation.code_key_year_semester + " - " + x.id_key_year_semesterNavigation.name_key_year_semester,
+                    status = db.Syllabi.Any(g => g.id_teacherbysubjectNavigation.id_course == x.id_course && g.id_status == 4)
+                })
+                .ToListAsync();
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã môn học","Tên môn học","Nhóm học phần","Thuộc CTĐT",
+                    "Loại học phần","Học kỳ","Khóa - Năm","Trạng thái tồn tại đề cương"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+            foreach (var item in data)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_course;
+                ws.Cells[row, 3].Value = item.name_course;
+                ws.Cells[row, 4].Value = item.name_gr_course;
+                ws.Cells[row, 5].Value = item.name_program;
+                ws.Cells[row, 6].Value = item.name_is_course;
+                ws.Cells[row, 7].Value = item.name_semester;
+                ws.Cells[row, 8].Value = item.name_key_year;
+                ws.Cells[row, 9].Value = item.status;
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"DanhSachMonHoc_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+            );
         }
     }
 }

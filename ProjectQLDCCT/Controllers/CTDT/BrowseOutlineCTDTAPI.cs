@@ -96,9 +96,9 @@ namespace ProjectQLDCCT.Controllers.CTDT
         public async Task<IActionResult> LoadDanhSachDeCuongCanDuyet([FromBody] SyllabusDTOs items)
         {
             var GetProgram = await GetUserPermissionPrograming();
-            var listint = new int?[] { 2, 3, 4 };
+            var listint = new int?[] { 2, 3, 4 ,7};
             var LoadSyllabus = db.Syllabi
-                .Where(x => GetProgram.Contains(x.id_teacherbysubjectNavigation.id_courseNavigation.id_program ?? 0)).AsQueryable();
+                .Where(x => GetProgram.Contains(x.id_teacherbysubjectNavigation.id_courseNavigation.id_program ?? 0) && listint.Contains(x.id_status)).AsQueryable();
             var ListCount = new List<object>();
             var CountSyllabus_2 = await LoadSyllabus.Where(x => x.id_status == 2).CountAsync();
             var CountSyllabus_3 = await LoadSyllabus.Where(x => x.id_status == 3).CountAsync();

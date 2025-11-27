@@ -306,10 +306,14 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 .Where(x => x.id_syllabus == items.id_syllabus)
                 .Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_program)
                 .FirstOrDefaultAsync();
+            var checkKey = await db.Syllabi
+              .Where(x => x.id_syllabus == items.id_syllabus)
+              .Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semester)
+              .FirstOrDefaultAsync();
             var listData = new List<object>();
             var LoadPLO = await db.ProgramLearningOutcomes
                 .OrderBy(x => x.order_index)
-                .Where(x => x.Id_Program == checkPro)
+                .Where(x => x.Id_Program == checkPro && x.id_key_semester == checkKey)
                 .ToListAsync();
             foreach (var item in LoadPLO)
             {
@@ -544,7 +548,7 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 return NotFound(new { success = false, message = "Không tìm thấy học phần" });
 
             var listPlo = await db.ProgramLearningOutcomes
-                .Where(x => x.Id_Program == checkCourse.id_program)
+                .Where(x => x.Id_Program == checkCourse.id_program && x.id_key_semester == checkCourse.id_key_year_semester)
                 .Select(x => new { x.Id_Plo, x.code })
                 .ToListAsync();
 
@@ -820,7 +824,7 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
 
             // Save Final
             syllabus.syllabus_json = System.Text.Json.JsonSerializer.Serialize(sections);
-            syllabus.id_status = 4;
+            syllabus.id_status = 2;
             syllabus.time_up = unixTimestamp;
 
             var userName = await db.Users

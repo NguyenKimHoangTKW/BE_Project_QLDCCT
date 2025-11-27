@@ -2130,6 +2130,37 @@
         }
       }
     },
+    "/api/donvi/course/log-hoat-dong-de-cuong": {
+      "post": {
+        "tags": [
+          "CourseDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course/upload-excel-danh-sach-mon-hoc": {
       "post": {
         "tags": [
@@ -2163,6 +2194,37 @@
       }
     },
     "/api/donvi/course/export-danh-sach-mon-hoc-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "CourseDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course/export-danh-sach-mon-hoc-chua-co-de-cuong": {
       "post": {
         "tags": [
           "CourseDVAPI"
@@ -3421,7 +3483,7 @@
         }
       }
     },
-    "/api/donvi/program-learning-outcome/load-ctdt-thuoc-dv": {
+    "/api/donvi/program-learning-outcome/load-option-plo": {
       "get": {
         "tags": [
           "PLODVAPI"
@@ -5251,6 +5313,37 @@
         }
       }
     },
+    "/api/gvdc/write-course/phan-quyen-gv-vao-phu-viet-de-cuong": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/gvdc/write-template-syllabus/preview-template": {
       "post": {
         "tags": [
@@ -6044,6 +6137,11 @@
             "format": "int32",
             "nullable": true
           },
+          "id_syllabus": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "ctdt_per": {
             "type": "array",
             "items": {
@@ -6553,6 +6651,11 @@
             "format": "int32"
           },
           "id_Program": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "id_key_semester": {
             "type": "integer",
             "format": "int32",
             "nullable": true
