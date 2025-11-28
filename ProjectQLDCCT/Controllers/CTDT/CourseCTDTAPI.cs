@@ -1,4 +1,8 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using HtmlToOpenXml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +12,8 @@ using ProjectQLDCCT.Data;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO.Compression;
 using System.Linq;
-
 namespace ProjectQLDCCT.Controllers.CTDT
 {
     [Authorize(Policy = "CTDT")]
@@ -238,7 +242,19 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     });
                 }
             }
-            return Ok(new { data = ListData, message = "Lọc dữ liệu thành công", success = true });
+            var listCourse = await db.Courses
+              .Where(x => x.id_key_year_semester == items.id_key_year_semester
+                       && x.id_program == items.id_program)
+              .Select(x => x.id_course)
+              .ToListAsync();
+
+            int totalCourse = listCourse.Count;
+
+            int totalSyllabus = await db.Syllabi
+                .CountAsync(g => listCourse.Contains(g.id_teacherbysubjectNavigation.id_course ?? 0)
+                              && g.id_status == 4);
+
+            return Ok(new { data = ListData, total_course = totalCourse, total_syllabus = totalSyllabus, message = "Lọc dữ liệu thành công", success = true });
         }
         [HttpPost]
         [Route("them-moi-mon-hoc")]
@@ -511,7 +527,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     exist.open_time = items.open_time;
                     exist.close_time = items.close_time;
                     exist.created_by = userId;
-                    exist.is_open =isOpenFlag;
+                    exist.is_open = isOpenFlag;
                 }
                 else
                 {
@@ -872,6 +888,73 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 fileBytes,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 $"DanhSachMonHoc_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+            );
+        }
+
+
+        [HttpPost]
+        [Route("export-multi-word")]
+        public async Task<IActionResult> ExportMultiCourse([FromBody] CourseDTOs req)
+        {
+            if (req.id_key_year_semester == 0)
+            {
+                return BadRequest(new { message = "Vui lòng chọn Khóa học trong bộ lọc để sử dụng tính năng này", success = false });
+            }
+            var checkCourse = await db.Courses
+                .Where(x => x.id_key_year_semester == req.id_key_year_semester)
+                .Select(x => x.id_course)
+                .ToListAsync();
+            var syllabi = await db.Syllabi
+                .Where(x => checkCourse.Contains(x.id_teacherbysubjectNavigation.id_course ?? 0) && x.id_status == 4)
+                .Select(x => new
+                {
+                    x.id_syllabus,
+                    x.html_export_word,
+                    name_course = x.id_teacherbysubjectNavigation.id_courseNavigation.name_course
+                })
+                .ToListAsync();
+
+            if (!syllabi.Any())
+                return BadRequest(new { message = "Không tìm thấy syllabus nào.", success = false });
+
+
+            using var zipStream = new MemoryStream();
+            using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var s in syllabi)
+                {
+                    if (string.IsNullOrWhiteSpace(s.html_export_word))
+                        continue;
+
+                    using var docStream = new MemoryStream();
+
+                    using (WordprocessingDocument wordDoc =
+                        WordprocessingDocument.Create(docStream, WordprocessingDocumentType.Document, true))
+                    {
+                        var mainPart = wordDoc.AddMainDocumentPart();
+                        mainPart.Document = new Document(new Body());
+
+                        var converter = new HtmlConverter(mainPart);
+                        converter.ParseHtml(s.html_export_word);
+
+                        mainPart.Document.Save();
+                    }
+
+                    docStream.Position = 0;
+                    string safeName = s.name_course.Replace(" ", "_").Replace("/", "_");
+
+                    var entry = zip.CreateEntry($"{safeName}.docx");
+
+                    using var entryStream = entry.Open();
+                    docStream.CopyTo(entryStream);
+                }
+            }
+            zipStream.Position = 0;
+
+            return File(
+                zipStream.ToArray(),
+                "application/zip",
+                $"All_Syllabus.zip"
             );
         }
     }

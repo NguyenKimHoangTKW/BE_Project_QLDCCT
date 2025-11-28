@@ -46,6 +46,9 @@ public partial class TrainingProgram
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 
     [InverseProperty("id_programNavigation")]
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+
+    [InverseProperty("id_programNavigation")]
     public virtual ICollection<UserByFaculProgram> UserByFaculPrograms { get; set; } = new List<UserByFaculProgram>();
 
     [ForeignKey("id_faculty")]

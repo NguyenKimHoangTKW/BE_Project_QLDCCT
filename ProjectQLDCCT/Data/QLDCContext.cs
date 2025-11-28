@@ -70,6 +70,8 @@ public partial class QLDCContext : DbContext
 
     public virtual DbSet<MappingCLObyPI> MappingCLObyPIs { get; set; }
 
+    public virtual DbSet<Notification> Notifications { get; set; }
+
     public virtual DbSet<OpenSyllabusWindowsCourse> OpenSyllabusWindowsCourses { get; set; }
 
     public virtual DbSet<PerformanceIndicator> PerformanceIndicators { get; set; }
@@ -314,6 +316,13 @@ public partial class QLDCContext : DbContext
             entity.HasOne(d => d.Id_PINavigation).WithMany(p => p.MappingCLObyPIs).HasConstraintName("FK_MappingCLObyPI_PerformanceIndicator");
 
             entity.HasOne(d => d.id_CLoMappingNavigation).WithMany(p => p.MappingCLObyPIs).HasConstraintName("FK_MappingCLObyPI_MappingCLOBySyllabus");
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.HasOne(d => d.id_programNavigation).WithMany(p => p.Notifications).HasConstraintName("FK_Notification_TrainingProgram");
+
+            entity.HasOne(d => d.id_userNavigation).WithMany(p => p.Notifications).HasConstraintName("FK_Notification_Users");
         });
 
         modelBuilder.Entity<OpenSyllabusWindowsCourse>(entity =>
