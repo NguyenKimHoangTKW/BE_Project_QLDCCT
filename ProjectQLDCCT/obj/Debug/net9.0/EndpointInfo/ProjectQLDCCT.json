@@ -2006,6 +2006,68 @@
         }
       }
     },
+    "/api/donvi/course/loads-danh-sach-giang-vien-viet-de-cuong": {
+      "post": {
+        "tags": [
+          "CourseDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/course/loads-mon-hoc-dang-hoc-ky": {
+      "post": {
+        "tags": [
+          "CourseDVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/donvi/course/them-moi-mon-hoc": {
       "post": {
         "tags": [
@@ -5765,17 +5827,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/HtmlToDocxRequest"
+                "$ref": "#/components/schemas/SyllabusDTOs"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/HtmlToDocxRequest"
+                "$ref": "#/components/schemas/SyllabusDTOs"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/HtmlToDocxRequest"
+                "$ref": "#/components/schemas/SyllabusDTOs"
               }
             }
           }
@@ -6000,6 +6062,11 @@
           },
           "is_key_user": {
             "type": "boolean",
+            "nullable": true
+          },
+          "id_course": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },
@@ -6730,7 +6797,12 @@
         "properties": {
           "id_syllabus": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
+          },
+          "html_export_word": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

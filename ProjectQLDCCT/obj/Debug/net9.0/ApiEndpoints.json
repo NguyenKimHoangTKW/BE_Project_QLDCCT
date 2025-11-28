@@ -1530,8 +1530,40 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
+    "Method": "LoadListGvVietDeCuong",
+    "RelativePath": "api/donvi/course/loads-danh-sach-giang-vien-viet-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ApproveUserSyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
     "Method": "LoadCourse",
     "RelativePath": "api/donvi/course/loads-danh-sach-mon-hoc-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CourseDVAPI",
+    "Method": "LoadHocPhan",
+    "RelativePath": "api/donvi/course/loads-mon-hoc-dang-hoc-ky",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -2746,7 +2778,7 @@
     "Parameters": [
       {
         "Name": "req",
-        "Type": "ProjectQLDCCT.Models.DTOs.HtmlToDocxRequest",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
         "IsRequired": true
       }
     ],

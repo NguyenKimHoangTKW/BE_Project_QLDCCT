@@ -11,5 +11,6 @@
         public bool? is_approve { get; set; }
 
         public bool? is_key_user { get; set; }
+        public int? id_course {  get; set; }
     }
 }

@@ -243,6 +243,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                  .FirstOrDefault();
             var GetNameCourse = await db.Courses
                 .Where(x => x.id_course == items.id_course)
+                .Select(x => x.name_course)
                 .FirstOrDefaultAsync();
             var checkIsCreate = await db.TeacherBySubjects
                 .Where(x => x.id_user == GetIDUser
@@ -251,10 +252,10 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 .FirstOrDefaultAsync();
 
             if (ListData.Any())
-                return Ok(new { data = ListData, name_course = GetNameCourse.name_course, is_write = checkIsCreate, success = true });
+                return Ok(new { data = ListData, name_course = GetNameCourse, is_write = checkIsCreate, success = true });
             else
 
-                return Ok(new { name_course = GetNameCourse, data = window, message = "Chưa có dữ liệu giảng viên viết đề cương", success = false });
+                return Ok(new { name_course = GetNameCourse, is_write = checkIsCreate, data = window, message = "Chưa có dữ liệu giảng viên viết đề cương", success = false });
         }
 
         [HttpPost]
@@ -588,13 +589,35 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("remove-join-write-course")]
         public async Task<IActionResult> RemoveJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
         {
-            var checkApprove = await db.ApproveUserSyllabi.Where(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus).FirstOrDefaultAsync();
+            var checkApprove = await db.ApproveUserSyllabi
+                .Include(x => x.id_syllabusNavigation)
+                    .ThenInclude(x => x.id_teacherbysubjectNavigation)
+                .FirstOrDefaultAsync(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus);
+
             if (checkApprove == null)
             {
                 return Ok(new { message = "Không tìm thấy thông tin", success = false });
             }
+
+            var syllabusNav = checkApprove.id_syllabusNavigation;
+            var tbsNav = syllabusNav?.id_teacherbysubjectNavigation;
+
+            if (tbsNav != null)
+            {
+                var checkTeacherBySyllabus = await db.TeacherBySubjects
+                    .FirstOrDefaultAsync(x =>
+                        x.id_course == tbsNav.id_course &&
+                        x.id_user == checkApprove.id_user);
+
+                if (checkTeacherBySyllabus != null)
+                {
+                    db.TeacherBySubjects.Remove(checkTeacherBySyllabus);
+                }
+            }
+
             db.ApproveUserSyllabi.Remove(checkApprove);
             await db.SaveChangesAsync();
+
             return Ok(new { message = "Loại thành viên thành công", success = true });
         }
 

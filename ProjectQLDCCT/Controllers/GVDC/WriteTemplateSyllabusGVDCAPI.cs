@@ -17,6 +17,7 @@ using ProjectQLDCCT.Helpers.SignalR;
 using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Text.Json;
 
@@ -114,6 +115,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("preview-template")]
         public async Task<IActionResult> PreviewTemplate([FromBody] SyllabusDTOs items)
         {
+            var getIdUser =  GetUserIdFromJWT();
             var idCourse = await (
                 from s in db.Syllabi
                 join t in db.TeacherBySubjects on s.id_teacherbysubject equals t.id_teacherbysubject
@@ -138,10 +140,11 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     message = "Không tìm thấy thông tin biểu mẫu",
                     success = false
                 });
-
+            var checkIsCreate = await db.ApproveUserSyllabi.Where(g => g.id_syllabus == items.id_syllabus && g.id_user == getIdUser).Select(g => g.is_key_user).FirstOrDefaultAsync();
             return Ok(new
             {
                 data = checkTemplate,
+                is_create = checkIsCreate,
                 success = true,
                 message = "Tải mẫu đề cương thành công"
             });
@@ -680,10 +683,21 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
 
 
         [HttpPost("export-word-html")]
-        public IActionResult ExportWordFromHtml([FromBody] HtmlToDocxRequest req)
+        public async Task<IActionResult> ExportWordFromHtml([FromBody] SyllabusDTOs req)
         {
-            if (req == null || string.IsNullOrWhiteSpace(req.Html))
-                return BadRequest("HTML không hợp lệ");
+            if (req == null || req.id_syllabus <= 0)
+                return BadRequest("Thiếu id_syllabus");
+
+            var syllabus = await db.Syllabi
+                .FirstOrDefaultAsync(x => x.id_syllabus == req.id_syllabus);
+
+            if (syllabus == null)
+                return NotFound("Không tìm thấy đề cương");
+
+            if (string.IsNullOrWhiteSpace(syllabus.html_export_word))
+                return BadRequest("Đề cương chưa có dữ liệu xuất Word");
+
+            string html = syllabus.html_export_word;
 
             using MemoryStream mem = new MemoryStream();
             using (WordprocessingDocument wordDoc =
@@ -693,7 +707,7 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 mainPart.Document = new Document(new Body());
 
                 var converter = new HtmlConverter(mainPart);
-                converter.ParseHtml(req.Html);
+                converter.ParseHtml(html);
 
                 mainPart.Document.Save();
             }
@@ -702,14 +716,9 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
             return File(
                 mem.ToArray(),
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "Syllabus.docx"
+                $"Syllabus_{req.id_syllabus}.docx"
             );
         }
-
-
-
-
-
         // 1) Lưu draft 1 section
         [HttpPost("save-draft-section")]
         public async Task<IActionResult> SaveDraftSection([FromBody] SaveDraftSectionDTO dto)
@@ -789,8 +798,32 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
         public async Task<IActionResult> SaveFinalFromDraft([FromBody] SaveFinalFromDraftDTO dto)
         {
             var userId = GetUserIdFromJWT();
+            var listInt = new int?[] { 1, 7 };
+            var GetCourse = await db.Syllabi.Where(x => x.id_syllabus == dto.id_syllabus)
+                .Select(x => x.id_teacherbysubjectNavigation.id_course)
+                .FirstOrDefaultAsync();
 
-            // check quyền: chỉ GV chính / người được quyền mới cho save
+            var CheckTypeSyllabus = await db.Syllabi
+                .Where(x => x.id_teacherbysubjectNavigation.id_user == userId && x.id_teacherbysubjectNavigation.id_course == GetCourse && !listInt.Contains(x.id_status))
+                .ToListAsync();
+
+            if (CheckTypeSyllabus.Any())
+            {
+                return Ok(new { message = "Bạn đang có đề cương đang được xử lý, không thể nộp thêm đề cương", success = false });
+            }
+            var CheckMappingCLO = await db.MappingCLOBySyllabi
+                .Where(x => x.id_syllabus == dto.id_syllabus)
+                .Select(x => x.id)
+                .ToListAsync();
+            if (!CheckMappingCLO.Any())
+                return Ok(new { message = "Bạn chưa có dữ liệu ma trận CLO, không thể lưu", success = false });
+
+            var CheckMappingPI = await db.MappingCLObyPIs
+                .Where(x => CheckMappingCLO.Contains(x.id_CLoMapping ?? 0))
+                .ToListAsync();
+            if (!CheckMappingPI.Any())
+                return Ok(new { message = "Bạn chưa có dữ liệu ma trận PI thuộc PLO, không thể lưu", success = false });
+
             var isOwner = await db.Syllabi
                 .AnyAsync(x => x.id_syllabus == dto.id_syllabus
                             && x.id_teacherbysubjectNavigation.id_user == userId);
@@ -804,36 +837,22 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
             if (syllabus == null)
                 return NotFound(new { success = false, message = "Không tìm thấy đề cương." });
 
-            // Deserialize về DTO chuẩn
             List<SyllabusSectionDTO> sections = new();
             if (!string.IsNullOrEmpty(syllabus.syllabus_json))
             {
                 sections = System.Text.Json.JsonSerializer.Deserialize<List<SyllabusSectionDTO>>(syllabus.syllabus_json);
             }
 
-            var drafts = await db.SyllabusDrafts
-                .Where(x => x.id_syllabus == dto.id_syllabus)
-                .ToListAsync();
 
-            // MERGE content từ draft
-            foreach (var sec in sections)
-            {
-                var draft = drafts.FirstOrDefault(d => d.section_code == sec.section_code);
-                if (draft != null)
-                    sec.value = draft.content_code ?? "";
-            }
-
-            // Save Final
             syllabus.syllabus_json = System.Text.Json.JsonSerializer.Serialize(sections);
             syllabus.id_status = 2;
             syllabus.time_up = unixTimestamp;
-
+            syllabus.html_export_word = dto.html_export_word;
             var userName = await db.Users
                 .Where(u => u.id_users == userId)
                 .Select(u => u.Username)
                 .FirstOrDefaultAsync();
 
-            // Log
             db.Log_Syllabi.Add(new Log_Syllabus
             {
                 id_syllabus = syllabus.id_syllabus,
@@ -841,15 +860,11 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 log_time = unixTimestamp
             });
 
-            // clear draft
-            db.SyllabusDrafts.RemoveRange(drafts);
-
             await db.SaveChangesAsync();
-
             return Ok(new
             {
                 success = true,
-                message = "Đã lưu bản final đề cương từ tất cả nội dung draft.",
+                message = "Đã lưu bản final đề cương, chờ xét duyệt",
             });
         }
 

@@ -182,6 +182,139 @@ namespace ProjectQLDCCT.Controllers.DonVi
         }
 
         [HttpPost]
+        [Route("loads-danh-sach-giang-vien-viet-de-cuong")]
+        public async Task<IActionResult> LoadListGvVietDeCuong([FromBody] ApproveUserSyllabusDTOs items)
+        {
+            var checkSyllabus = await db.Syllabi
+                .Include(x => x.id_teacherbysubjectNavigation)
+                .FirstOrDefaultAsync(x => x.id_teacherbysubjectNavigation.id_course == items.id_course);
+
+            if (checkSyllabus == null)
+            {
+                return Ok(new { message = "Chưa có danh sách giảng viên phụ trách viết đề cương trong môn học này", success = false });
+            }
+
+            var getList = await db.ApproveUserSyllabi
+                .Where(x => x.id_syllabus == checkSyllabus.id_syllabus)
+                .Select(x => new
+                {
+                    x.id_ApproveUserSyllabus,
+
+                    email = x.id_userNavigation != null ? x.id_userNavigation.email : null,
+
+                    civil = db.CivilServants
+                        .Where(g => g.email == x.id_userNavigation.email)
+                        .Select(g => new
+                        {
+                            g.code_civilSer,
+                            g.fullname_civilSer,
+                            program_name = g.id_programNavigation.name_program
+                        })
+                        .FirstOrDefault(),
+
+                    x.is_approve,
+                    x.is_key_user,
+                    x.is_refuse,
+                    x.time_request,
+                    x.time_accept_request,
+                })
+                .ToListAsync();
+
+            var result = getList.Select(x => new
+            {
+                x.id_ApproveUserSyllabus,
+                code_civil = x.civil?.code_civilSer ?? "",
+                name_civil = x.civil?.fullname_civilSer ?? "",
+                email = x.email ?? "",
+                name_program = x.civil?.program_name ?? "",
+                x.is_approve,
+                x.is_key_user,
+                x.is_refuse,
+                x.time_request,
+                x.time_accept_request
+            }).ToList();
+
+            if (result.Count == 0)
+            {
+                return Ok(new { message = "Chưa có dữ liệu", success = false });
+            }
+
+            return Ok(new { data = result, success = true });
+        }
+
+        [HttpPost]
+        [Route("loads-mon-hoc-dang-hoc-ky")]
+        public async Task<IActionResult> LoadHocPhan([FromBody] CourseDTOs items)
+        {
+            if (items.id_key_year_semester == 0)
+                return Ok(new { message = "Vui lòng chọn khóa học để có thể sử dụng chức năng này", success = false });
+            var CheckCTDT = await db.TrainingPrograms.FirstOrDefaultAsync(x => x.id_program == items.id_program);
+            var checkKeySemester = await db.KeyYearSemesters
+                .FirstOrDefaultAsync(x => x.id_key_year_semester == items.id_key_year_semester);
+
+            int? filterYear = null;
+            if (checkKeySemester != null && !string.IsNullOrEmpty(checkKeySemester.code_key_year_semester))
+            {
+                var suffix = new string(checkKeySemester.code_key_year_semester
+                    .Where(char.IsDigit)
+                    .ToArray());
+                if (int.TryParse(suffix, out int yearSuffix))
+                {
+                    filterYear = 2000 + yearSuffix;
+                }
+            }
+            var LoadSemesterQuery = db.Semesters
+                .Where(x => CheckCTDT.id_faculty == x.id_faculty);
+
+            if (filterYear.HasValue)
+            {
+                LoadSemesterQuery = LoadSemesterQuery
+                    .Where(x => Convert.ToInt32(x.code_semester.Substring(0, 4)) >= filterYear.Value);
+            }
+
+            var LoadSemester = await LoadSemesterQuery
+                .OrderBy(x => x.code_semester)
+                .ToListAsync();
+
+            var ListData = new List<object>();
+
+            foreach (var semester in LoadSemester)
+            {
+                var loadCourse = await db.Courses
+                    .Where(x =>
+                        x.id_semester == semester.id_semester &&
+                        x.id_key_year_semester == items.id_key_year_semester &&
+                        x.id_program == items.id_program)
+                    .Select(x => new
+                    {
+                        x.id_course,
+                        x.code_course,
+                        x.name_course,
+                        name_gr_course = x.id_gr_courseNavigation.name_gr_course,
+                        name_isCourse = x.id_isCourseNavigation.name,
+                        x.totalPractice,
+                        x.totalTheory,
+                        x.credits,
+                        count_syllabus = x.TeacherBySubjects.Count(),
+                        time_open = db.OpenSyllabusWindowsCourses.Where(g => g.id_course == x.id_course).Select(g => g.open_time).FirstOrDefault(),
+                        time_close = db.OpenSyllabusWindowsCourses.Where(g => g.id_course == x.id_course).Select(g => g.close_time).FirstOrDefault(),
+                        is_syllabus = db.Syllabi.Any(g => g.id_teacherbysubjectNavigation.id_course == x.id_course && g.id_status == 4)
+                    })
+                    .ToListAsync();
+                if (loadCourse.Count > 0)
+                {
+                    ListData.Add(new
+                    {
+                        id_se = semester.id_semester,
+                        name_se = semester.name_semester,
+                        code_se = semester.code_semester,
+                        course = loadCourse
+                    });
+                }
+            }
+            return Ok(new { data = ListData, message = "Lọc dữ liệu thành công", success = true });
+        }
+        [HttpPost]
         [Route("them-moi-mon-hoc")]
         public async Task<IActionResult> ThemMoiMonHoc([FromBody] CourseDTOs items)
         {

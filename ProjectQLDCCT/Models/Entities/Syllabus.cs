@@ -33,6 +33,8 @@ public partial class Syllabus
 
     public int? is_open_edit_final { get; set; }
 
+    public string? html_export_word { get; set; }
+
     [InverseProperty("id_syllabusNavigation")]
     public virtual ICollection<ApproveUserSyllabus> ApproveUserSyllabi { get; set; } = new List<ApproveUserSyllabus>();
 

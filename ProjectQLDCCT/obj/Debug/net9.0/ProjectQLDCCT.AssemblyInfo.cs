@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProjectQLDCCT")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37e140fd4814421ad370cf3810f6f046aaff34d9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89226ab14e304cf10700c108595052a169fc44cf")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProjectQLDCCT")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProjectQLDCCT")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
