@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using DinkToPdf;
+using DinkToPdf.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectQLDCCT.Data;
@@ -8,7 +10,7 @@ using ProjectQLDCCT.Helpers.Services;
 using ProjectQLDCCT.Helpers.SignalR;
 using ProjectQLDCCT.Hubs;
 using System.Text;
-
+using ProjectQLDCCT.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient("LmStudio", client =>
@@ -143,7 +145,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("User", p => p.RequireClaim("id_type_users", "1"));
 });
 
-
+// Add converter
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+builder.Services.AddScoped<IPdfService, PdfService>();
+var context = new CustomAssemblyLoadContext();
+context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "DinkToPdfLib", "libwkhtmltox.dll"));
 
 var app = builder.Build();
 

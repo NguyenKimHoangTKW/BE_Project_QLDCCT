@@ -1225,6 +1225,150 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "DeleteClass",
+    "RelativePath": "api/ctdt/student/delete-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "ExportCourse",
+    "RelativePath": "api/ctdt/student/export-danh-sach-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "GetListClass",
+    "RelativePath": "api/ctdt/student/get-list-class-by-program",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "InfoClass",
+    "RelativePath": "api/ctdt/student/info-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "LoadListClass",
+    "RelativePath": "api/ctdt/student/list-student",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/ctdt/student/them-moi-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "UpdateClass",
+    "RelativePath": "api/ctdt/student/update-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/ctdt/student/upload-excel-danh-sach-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Client.SearchSyllabusByCodeStudent",
+    "Method": "FilterCourse",
+    "RelativePath": "api/de-cuong-chi-tiet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.FilterClientSyllabus",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.CivilServantsDVAPI",
     "Method": "Export",
     "RelativePath": "api/donvi/civil-servants/export-danh-sach-giang-vien-thuoc-don-vi",
@@ -3458,6 +3602,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Client.SearchSyllabusByCodeStudent",
+    "Method": "PreviewSyllabus",
+    "RelativePath": "api/preview-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

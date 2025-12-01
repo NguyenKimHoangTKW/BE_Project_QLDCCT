@@ -20,12 +20,24 @@ namespace ProjectQLDCCT.Controllers.CTDT
             DateTime now = DateTime.UtcNow;
             unixTimestamp = (int)(now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
-
+        [HttpPost("get-list-class-by-program")]
+        public async Task<IActionResult> GetListClass([FromBody] ClassDTOs items)
+        {
+            var GetListClass = await db.Classes
+                .Where(x => x.id_program == items.id_program)
+                .Select(x => new
+                {
+                    x.id_class,
+                    x.name_class
+                })
+                .ToListAsync();
+            return Ok(GetListClass);
+        }
         [HttpPost("list-student")]
         public async Task<IActionResult> LoadListClass([FromBody] StudentDTOs items)
         {
             var query = db.Students.Where(x => x.id_classNavigation.id_program == items.id_program).AsQueryable();
-            if(items.id_class > 0)
+            if (items.id_class > 0)
             {
                 query = query.Where(x => x.id_class == items.id_class);
             }
@@ -41,11 +53,12 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     x.code_student,
                     x.name_student,
                     x.id_classNavigation.name_class,
+                    x.id_classNavigation.id_programNavigation.name_program,
                     x.time_up,
                     x.tim_cre
                 })
                 .ToListAsync();
-         
+
             return Ok(new
             {
                 success = true,
@@ -64,7 +77,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 return Ok(new { message = "Không được bỏ trống tên sinh viên", success = false });
             if (string.IsNullOrEmpty(items.code_student))
                 return Ok(new { message = "Không được bỏ trống mã sinh viên", success = false });
-            var CheckLop = await db.Students.Where(x => x.id_classNavigation.id_program == items.id_program && x.code_student.ToLower().Trim() == items.code_student.ToLower().Trim()).FirstOrDefaultAsync();
+            var CheckLop = await db.Students.Where(x => x.code_student.ToLower().Trim() == items.code_student.ToLower().Trim()).FirstOrDefaultAsync();
             if (CheckLop != null)
                 return Ok(new { message = "Sinh viên này đã tồn tại trong chương trình đào tạo, vui lòng kiểm tra lại", success = false });
 
@@ -129,69 +142,80 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
                 return Ok(new { message = "Chỉ hỗ trợ upload file Excel.", success = false });
+
             try
             {
                 ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-                var ID = Request.Form["id_program"];
-                int IdProgram = int.Parse(ID);
-                var checkCtdt = await db.TrainingPrograms.FirstOrDefaultAsync(x => x.id_program == IdProgram);
-                using (var stream = new MemoryStream())
+
+                using var stream = new MemoryStream();
+                await file.CopyToAsync(stream);
+                stream.Position = 0;
+
+                using var package = new ExcelPackage(stream);
+                var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+
+                if (worksheet == null)
+                    return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+
+                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
                 {
-                    await file.CopyToAsync(stream);
-                    stream.Position = 0;
+                    var code_sv = worksheet.Cells[row, 2].Text?.Trim();
+                    var ten_sv = worksheet.Cells[row, 3].Text?.Trim();
+                    var ten_lop = worksheet.Cells[row, 4].Text?.Trim();
 
-                    using (var package = new ExcelPackage(stream))
+                    if (string.IsNullOrWhiteSpace(code_sv))
+                        continue;
+
+                    Class CheckLop = null;
+                    if (!string.IsNullOrWhiteSpace(ten_lop))
                     {
-                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-                        if (worksheet == null)
+                        CheckLop = await db.Classes
+                            .FirstOrDefaultAsync(x => x.name_class.ToLower().Trim() == ten_lop.ToLower().Trim());
+
+                        if (CheckLop == null)
                         {
-                            return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
+                            return Ok(new
+                            {
+                                message = $"Tên lớp '{ten_lop}' không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại",
+                                success = false
+                            });
                         }
-
-
-                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
-                        {
-                            var code_sv = worksheet.Cells[row, 2].Text?.Trim();
-                            var ten_sv = worksheet.Cells[row, 3].Text?.Trim();
-                            var ten_lop = worksheet.Cells[row, 4].Text?.Trim();
-                            var CheckLop = await db.Classes.Where(x => x.name_class.ToLower().Trim() == ten_lop.ToLower().Trim()).FirstOrDefaultAsync();
-                            if (!string.IsNullOrWhiteSpace(ten_lop) && CheckLop == null)
-                            {
-                                return Ok(new { message = $"Tên lớp ${ten_lop} không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại", success = false });
-                            }
-                            var check_lop = await db.Students
-                                .FirstOrDefaultAsync(x =>
-                                    x.code_student.ToLower().Trim() == code_sv.ToLower().Trim() 
-                                    );
-                            if (check_lop == null)
-                            {
-                                check_lop = new Student
-                                {
-                                    code_student = code_sv.ToUpper(),
-                                    name_student = ten_sv,
-                                    id_class = check_lop.id_class,
-                                    tim_cre = unixTimestamp,
-                                    time_up = unixTimestamp
-                                };
-                                db.Students.Add(check_lop);
-                            }
-                            else
-                            {
-                                check_lop.name_student = string.IsNullOrWhiteSpace(ten_sv) ? null : ten_sv.ToUpper();
-                                check_lop.time_up = unixTimestamp;
-                            }
-                            await db.SaveChangesAsync();
-                        }
-
-                        return Ok(new { message = "Import dữ liệu thành công", success = true });
                     }
+
+                    var check_sv = await db.Students
+                        .FirstOrDefaultAsync(x => x.code_student.ToLower().Trim() == code_sv.ToLower().Trim());
+
+                    if (check_sv == null)
+                    {
+                        check_sv = new Student
+                        {
+                            code_student = code_sv.ToUpper(),
+                            name_student = string.IsNullOrWhiteSpace(ten_sv) ? null : ten_sv.ToUpper(),
+                            id_class = CheckLop?.id_class,
+                            tim_cre = unixTimestamp,
+                            time_up = unixTimestamp
+                        };
+
+                        db.Students.Add(check_sv);
+                    }
+                    else
+                    {
+                        check_sv.name_student = string.IsNullOrWhiteSpace(ten_sv) ? check_sv.name_student : ten_sv.ToUpper();
+                        check_sv.id_class = CheckLop?.id_class ?? check_sv.id_class;
+                        check_sv.time_up = unixTimestamp;
+                    }
+
+                    await db.SaveChangesAsync();
                 }
+
+                return Ok(new { message = "Import dữ liệu thành công", success = true });
             }
             catch (Exception ex)
             {
                 return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
             }
         }
+
 
         [HttpPost]
         [Route("export-danh-sach-sinh-vien")]
