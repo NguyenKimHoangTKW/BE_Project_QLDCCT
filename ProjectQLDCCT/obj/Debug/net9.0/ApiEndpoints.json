@@ -717,6 +717,118 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "DeleteClass",
+    "RelativePath": "api/ctdt/class/delete-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "ExportCourse",
+    "RelativePath": "api/ctdt/class/export-danh-sach-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "InfoClass",
+    "RelativePath": "api/ctdt/class/info-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "LoadListClass",
+    "RelativePath": "api/ctdt/class/list-class",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/ctdt/class/them-moi-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "UpdateClass",
+    "RelativePath": "api/ctdt/class/update-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.ClassCTDTAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/ctdt/class/upload-excel-danh-sach-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "UpdateMonHoc",
     "RelativePath": "api/ctdt/course/cap-nhat-mon-hoc",
@@ -983,6 +1095,120 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "CountNotification",
+    "RelativePath": "api/ctdt/notification/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "DeleteNotification",
+    "RelativePath": "api/ctdt/notification/delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "DeleteAllNotifications",
+    "RelativePath": "api/ctdt/notification/delete-all",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "GetListNotification",
+    "RelativePath": "api/ctdt/notification/list",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "UpdateAllIsReadFalse",
+    "RelativePath": "api/ctdt/notification/update-all-is-read-false",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "UpdateAllIsReadTrue",
+    "RelativePath": "api/ctdt/notification/update-all-is-read-true",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "UpdateIsReadFalse",
+    "RelativePath": "api/ctdt/notification/update-is-read-false",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "UpdateIsReadTrue",
+    "RelativePath": "api/ctdt/notification/update-is-read-true",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.NotificationCTDTAPI",
+    "Method": "ViewAllNotification",
+    "RelativePath": "api/ctdt/notification/view-all-notification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
         "IsRequired": true
       }
     ],
@@ -2529,6 +2755,120 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "CountNotification",
+    "RelativePath": "api/gvdc/notification/count",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "DeleteNotification",
+    "RelativePath": "api/gvdc/notification/delete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "DeleteAllNotifications",
+    "RelativePath": "api/gvdc/notification/delete-all",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "GetListNotification",
+    "RelativePath": "api/gvdc/notification/list",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "UpdateAllIsReadFalse",
+    "RelativePath": "api/gvdc/notification/update-all-is-read-false",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "UpdateAllIsReadTrue",
+    "RelativePath": "api/gvdc/notification/update-all-is-read-true",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "UpdateIsReadFalse",
+    "RelativePath": "api/gvdc/notification/update-is-read-false",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "UpdateIsReadTrue",
+    "RelativePath": "api/gvdc/notification/update-is-read-true",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.NotificationGVDCAPI",
+    "Method": "ViewAllNotification",
+    "RelativePath": "api/gvdc/notification/view-all-notification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.NotificationDTOs",
         "IsRequired": true
       }
     ],

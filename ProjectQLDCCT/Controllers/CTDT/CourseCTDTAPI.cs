@@ -339,7 +339,6 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 return Ok(new { message = "Không tìm thấy dữ liệu Môn học", success = false });
             }
-
             checkCourse.code_course = items.code_course;
             checkCourse.name_course = items.name_course;
             checkCourse.credits = items.credits;
@@ -373,17 +372,19 @@ namespace ProjectQLDCCT.Controllers.CTDT
         public async Task<IActionResult> SavePhanQuyenVietDeCuong([FromBody] CivilServantsDTOs items)
         {
             var GetProgram = await GetUserPermissionProgram();
+
             var checkCivil = await db.CivilServants
-                .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer && GetProgram.Contains(x.id_program ?? 0));
+                .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer
+                                       && GetProgram.Contains(x.id_program ?? 0));
+
             if (checkCivil == null)
                 return Ok(new { message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại", success = false });
 
-            var checkUser = await db.Users
-                .FirstOrDefaultAsync(x => x.email == checkCivil.email);
+            var checkUser = await db.Users.FirstOrDefaultAsync(x => x.email == checkCivil.email);
 
             if (checkUser == null)
             {
-                var newUser = new User
+                checkUser = new User
                 {
                     email = checkCivil.email,
                     time_cre = unixTimestamp,
@@ -391,9 +392,8 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     id_type_users = 4,
                     status = 1
                 };
-                db.Users.Add(newUser);
+                db.Users.Add(checkUser);
                 await db.SaveChangesAsync();
-                checkUser = newUser;
             }
             else
             {
@@ -413,13 +413,40 @@ namespace ProjectQLDCCT.Controllers.CTDT
             {
                 id_user = checkUser.id_users,
                 id_course = items.id_course,
-                is_create_write = true,
+                is_create_write = true
             };
             db.TeacherBySubjects.Add(newRecord);
+
+            var GetCourse = await db.Courses
+                .Include(c => c.id_semesterNavigation)
+                .Include(c => c.id_key_year_semesterNavigation)
+                .FirstOrDefaultAsync(c => c.id_course == items.id_course);
+
+            if (GetCourse == null)
+                return Ok(new { success = false, message = "Không tìm thấy môn học" });
+
+            db.Notifications.Add(new Notification
+            {
+                id_user = checkUser.id_users,
+                id_program = null,
+                title = "Phân công viết đề cương",
+                message =
+                    $"Bạn đã được Trưởng CTĐT phân công viết đề cương môn " +
+                    $"{GetCourse.code_course} - " +
+                    $"{GetCourse.name_course} - " +
+                    $"{GetCourse.id_semesterNavigation.name_semester} - " +
+                    $"{GetCourse.id_key_year_semesterNavigation.name_key_year_semester}, bấm vào để xem chi tiết",
+                type = "accept_permission_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
+
             await db.SaveChangesAsync();
 
             return Ok(new { message = "Phân quyền giảng viên viết đề cương thành công", success = true });
         }
+
         [HttpPost]
         [Route("loads-giang-vien-de-cuong-by-mon-hoc")]
         public async Task<IActionResult> LoadsGiangVienDeCuongByMonHoc([FromBody] CourseDTOs items)
@@ -459,20 +486,64 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("delete-permission-gv-ra-de-cuong")]
         public async Task<IActionResult> DeletePermissionCourse([FromBody] TeacherBySubjectDTOs items)
         {
-            var CheckSyllabus = await db.Syllabi.Where(x => x.id_teacherbysubject == items.id_teacherbysubject).FirstOrDefaultAsync();
+            var CheckSyllabus = await db.Syllabi
+                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject)
+                .FirstOrDefaultAsync();
+
             if (CheckSyllabus != null)
             {
-                return Ok(new { message = "Giảng viên này đang tồn tại trong đề cương chi tiết, không thể xóa", success = false });
+                return Ok(new
+                {
+                    message = "Giảng viên này đang tồn tại trong đề cương chi tiết, không thể xóa",
+                    success = false
+                });
             }
-            var CheckTeacher = await db.TeacherBySubjects.Where(x => x.id_teacherbysubject == items.id_teacherbysubject).FirstOrDefaultAsync();
+
+            var CheckTeacher = await db.TeacherBySubjects
+                .Include(x => x.id_courseNavigation)
+                    .ThenInclude(c => c.id_semesterNavigation)
+                .Include(x => x.id_courseNavigation)
+                    .ThenInclude(c => c.id_key_year_semesterNavigation)
+                .FirstOrDefaultAsync(x => x.id_teacherbysubject == items.id_teacherbysubject);
+
             if (CheckTeacher == null)
             {
-                return Ok(new { message = "Không tìm thấy thông tin giảng viên trong đề cương", success = false });
+                return Ok(new
+                {
+                    message = "Không tìm thấy thông tin giảng viên trong phân công",
+                    success = false
+                });
             }
+
+            db.Notifications.Add(new Notification
+            {
+                id_user = CheckTeacher.id_user,
+                id_program = null,
+                title = "Hủy phân công viết đề cương",
+                message =
+                    $"Bạn đã bị hủy quyền viết đề cương môn " +
+                    $"{CheckTeacher.id_courseNavigation.code_course} – " +
+                    $"{CheckTeacher.id_courseNavigation.name_course} – " +
+                    $"{CheckTeacher.id_courseNavigation.id_semesterNavigation?.name_semester} – " +
+                    $"{CheckTeacher.id_courseNavigation.id_key_year_semesterNavigation?.name_key_year_semester}. " +
+                    $"Vui lòng liên hệ Trưởng CTĐT để biết thêm chi tiết.",
+                type = "remove_permission_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
+
             db.TeacherBySubjects.Remove(CheckTeacher);
+
             await db.SaveChangesAsync();
-            return Ok(new { message = "Xóa dữ liệu thành công", success = true });
+
+            return Ok(new
+            {
+                message = "Xóa phân công giảng viên thành công",
+                success = true
+            });
         }
+
 
         [HttpPost]
         [Route("set-up-time-open-course-by-key")]
@@ -544,9 +615,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             if (newRecords.Any())
                 db.OpenSyllabusWindowsCourses.AddRange(newRecords);
-
             await db.SaveChangesAsync();
-
             return Ok(new { success = true, message = "Cập nhật thời gian mở đề cương cho toàn bộ môn học thành công!" });
         }
 

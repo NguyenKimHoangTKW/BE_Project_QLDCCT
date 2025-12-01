@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using ProjectQLDCCT.Models;
 using ProjectQLDCCT.Models.DTOs;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Dynamic.Core;
 using System.Security.Cryptography.Xml;
 
 namespace ProjectQLDCCT.Controllers.GVDC
@@ -125,30 +127,58 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("loads-danh-sach-de-cuong-can-soan")]
         public async Task<IActionResult> LoadCourseByPermission()
         {
-            var List = await GetUserPermissionCourse();
-            var raw = await db.TeacherBySubjects
-                  .Where(x => List.Contains(x.id_course ?? 0))
-                  .Select(x => new
-                  {
-                      x.id_teacherbysubject,
-                      x.id_course,
-                      x.id_courseNavigation.code_course,
-                      x.id_courseNavigation.name_course,
-                      name_gr_course = x.id_courseNavigation.id_gr_courseNavigation.name_gr_course,
-                      x.id_courseNavigation.credits,
-                      x.id_courseNavigation.totalTheory,
-                      x.id_courseNavigation.totalPractice,
-                      name_isCourse = x.id_courseNavigation.id_isCourseNavigation.name,
-                      name_key_year_semester = x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
-                      name_semester = x.id_courseNavigation.id_semesterNavigation.name_semester,
-                      name_program = x.id_courseNavigation.id_programNavigation.name_program,
+            var listWindow = await db.OpenSyllabusWindowsCourses.ToListAsync();
 
-                      window = db.OpenSyllabusWindowsCourses
-                          .Where(g => g.id_course == x.id_course)
-                          .Select(g => new { g.open_time, g.close_time, g.is_open })
-                          .FirstOrDefault()
-                  })
-                  .ToListAsync();
+            foreach (var w in listWindow)
+            {
+                if (w.open_time == null || w.close_time == null)
+                {
+                    w.is_open = 0;
+                    continue;
+                }
+
+                if (unixTimestamp < w.open_time)
+                {
+                    w.is_open = 0;
+                }
+                else if (unixTimestamp > w.close_time)
+                {
+                    w.is_open = 0; 
+                }
+                else
+                {
+                    w.is_open = 1;
+                }
+            }
+
+            await db.SaveChangesAsync();
+
+
+            var List = await GetUserPermissionCourse();
+
+            var raw = await db.TeacherBySubjects
+                .Where(x => List.Contains(x.id_course ?? 0))
+                .Select(x => new
+                {
+                    x.id_teacherbysubject,
+                    x.id_course,
+                    x.id_courseNavigation.code_course,
+                    x.id_courseNavigation.name_course,
+                    name_gr_course = x.id_courseNavigation.id_gr_courseNavigation.name_gr_course,
+                    x.id_courseNavigation.credits,
+                    x.id_courseNavigation.totalTheory,
+                    x.id_courseNavigation.totalPractice,
+                    name_isCourse = x.id_courseNavigation.id_isCourseNavigation.name,
+                    name_key_year_semester = x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
+                    name_semester = x.id_courseNavigation.id_semesterNavigation.name_semester,
+                    name_program = x.id_courseNavigation.id_programNavigation.name_program,
+
+                    window = db.OpenSyllabusWindowsCourses
+                        .Where(g => g.id_course == x.id_course)
+                        .Select(g => new { g.open_time, g.close_time, g.is_open })
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
 
             var ListCourse = raw
                 .GroupBy(x => x.id_course)
@@ -169,19 +199,16 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     x.name_program,
                     time_open = x.window?.open_time,
                     time_close = x.window?.close_time,
-                    is_open = x.window?.is_open
+                    is_open = x.window?.is_open ?? 0
                 })
                 .ToList();
 
-            if (ListCourse.Count > 0)
-            {
-                return Ok(new { data = ListCourse, message = "Tải dữ liệu thành công", success = true });
-            }
-            else
-            {
-                return Ok(new { message = "Bạn chưa có học phần được phân để viết đề cương.", success = false });
-            }
+            return ListCourse.Count > 0
+                ? Ok(new { data = ListCourse, message = "Tải dữ liệu thành công", success = true })
+                : Ok(new { message = "Bạn chưa có học phần được phân để viết đề cương.", success = false });
         }
+
+
 
         [HttpPost]
         [Route("danh-sach-giang-vien-viet-de-cuong-trong-mon-hoc")]
@@ -238,7 +265,9 @@ namespace ProjectQLDCCT.Controllers.GVDC
                  .Select(g => new
                  {
                      time_open = g.open_time,
-                     time_close = g.close_time
+                     time_close = g.close_time,
+                     is_open = g.is_open
+                     
                  })
                  .FirstOrDefault();
             var GetNameCourse = await db.Courses
@@ -453,19 +482,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("request-edit-syllabus")]
         public async Task<IActionResult> RequestEditSyllabus([FromBody] SyllabusDTOs items)
         {
+            var GetNameGV = await GetUserPermissionNameCodeGV();
             if (string.IsNullOrEmpty(items.edit_content))
             {
                 return Ok(new { message = "Không được bỏ trống lý do yêu cầu chỉnh sửa", success = false });
             }
             var checkSyllabus = await db.Syllabi
-                .Where(x => x.id_syllabus == items.id_syllabus)
-                .FirstOrDefaultAsync();
+          .Include(x => x.id_teacherbysubjectNavigation)
+              .ThenInclude(x => x.id_courseNavigation)
+                  .ThenInclude(x => x.id_semesterNavigation)
+          .Include(x => x.id_teacherbysubjectNavigation)
+              .ThenInclude(x => x.id_courseNavigation)
+                  .ThenInclude(x => x.id_key_year_semesterNavigation)
+          .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);    
             if (checkSyllabus == null)
                 return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
 
             checkSyllabus.is_open_edit_final = 1;
             checkSyllabus.edit_content = items.edit_content;
-            var GetNameGV = await GetUserPermissionNameCodeGV();
             var new_record_log = new Log_Syllabus
             {
                 id_syllabus = checkSyllabus.id_syllabus,
@@ -473,6 +507,23 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 log_time = unixTimestamp
             };
             db.Log_Syllabi.Add(new_record_log);
+            db.Notifications.Add(new Notification
+            {
+                id_user = null,
+                id_program = checkSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_program,
+                title = "Yêu cầu mở chỉnh sửa đề cương",
+                message =
+                 $"Giảng viên {GetNameGV} đã gửi yêu cầu mở chỉnh sửa đề cương môn " +
+                 $"{checkSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.code_course} – " +
+                 $"{checkSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.name_course} – " +
+                 $"{checkSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_semesterNavigation?.name_semester} – " +
+                 $"{checkSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semesterNavigation?.name_key_year_semester}. " +
+                 $"Vui lòng xem xét và phê duyệt.",
+                type = "request_edit_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/ctdt/danh-sach-de-cuong-can-duyet"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Gửi yêu cầu mở chỉnh sửa bổ sung thành công", success = true });
         }
@@ -505,6 +556,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
         public async Task<IActionResult> RequestUserSyllabusEdit([FromBody] SyllabusDTOs items)
         {
             var GetIDUser = await GetUserPermissionIDUser();
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+
             if (!await db.ApproveUserSyllabi
                 .AnyAsync(x => x.id_user == GetIDUser && x.id_syllabus == items.id_syllabus))
             {
@@ -521,6 +574,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
 
                 await db.SaveChangesAsync();
             }
+            var GetSyllabus = await db.Syllabi.FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
+            db.Notifications.Add(new Notification
+            {
+                id_user = GetSyllabus.id_teacherbysubjectNavigation.id_user,
+                id_program = null,
+                title = "Yêu cầu tham gia viết đề cương",
+                message =
+                    $"Giảng viên {GetNameGV} đã gửi yêu cầu tham gia viết đề cương môn học " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.code_course} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.name_course} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_semesterNavigation?.name_semester} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semesterNavigation?.name_key_year_semester}. " +
+                    $"Vui lòng xem xét và phê duyệt.",
+                type = "request_write_course_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Gửi yêu cầu tham gia thành công", success = true });
         }
@@ -558,6 +629,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("accept-join-write-course")]
         public async Task<IActionResult> AcceptJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
         {
+            var GetIDUser = await GetUserPermissionIDUser();
+            var GetNameGV = await GetUserPermissionNameCodeGV();
             var checkApprove = await db.ApproveUserSyllabi.Where(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus).FirstOrDefaultAsync();
             if (checkApprove == null)
             {
@@ -566,6 +639,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
             checkApprove.is_approve = true;
             checkApprove.is_refuse = false;
             checkApprove.time_accept_request = unixTimestamp;
+
+            var GetSyllabus = await db.Syllabi.FirstOrDefaultAsync(x => x.id_syllabus == checkApprove.id_syllabus);
+            db.Notifications.Add(new Notification
+            {
+                id_user = checkApprove.id_user,
+                id_program = null,
+                title = "Duyệt yêu cầu tham gia viết đề cương",
+                message =
+                    $"Giảng viên {GetNameGV} đã duyệt cầu tham gia viết đề cương môn học " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.code_course} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.name_course} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_semesterNavigation?.name_semester} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semesterNavigation?.name_key_year_semester}. ",
+                type = "accept_write_course_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Duyệt yêu cầu thành công", success = true });
         }
@@ -574,6 +665,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("reject-join-write-course")]
         public async Task<IActionResult> RejectJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
         {
+            var GetIDUser = await GetUserPermissionIDUser();
+            var GetNameGV = await GetUserPermissionNameCodeGV();
             var checkApprove = await db.ApproveUserSyllabi.Where(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus).FirstOrDefaultAsync();
             if (checkApprove == null)
             {
@@ -582,6 +675,23 @@ namespace ProjectQLDCCT.Controllers.GVDC
             checkApprove.is_approve = false;
             checkApprove.is_refuse = true;
             checkApprove.time_accept_request = unixTimestamp;
+            var GetSyllabus = await db.Syllabi.FirstOrDefaultAsync(x => x.id_syllabus == checkApprove.id_syllabus);
+            db.Notifications.Add(new Notification
+            {
+                id_user = checkApprove.id_user,
+                id_program = null,
+                title = "Từ chối yêu cầu tham gia viết đề cương",
+                message =
+                    $"Giảng viên {GetNameGV} đã từ chối yêu cầu tham gia viết đề cương môn học " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.code_course} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.name_course} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_semesterNavigation?.name_semester} – " +
+                    $"{GetSyllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semesterNavigation?.name_key_year_semester}.",
+                type = "reject_write_course_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Từ chối yêu cầu thành công", success = true });
         }
@@ -589,18 +699,25 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("remove-join-write-course")]
         public async Task<IActionResult> RemoveJoinWriteCourse([FromBody] ApproveUserSyllabusDTOs items)
         {
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+
             var checkApprove = await db.ApproveUserSyllabi
                 .Include(x => x.id_syllabusNavigation)
-                    .ThenInclude(x => x.id_teacherbysubjectNavigation)
+                    .ThenInclude(s => s.id_teacherbysubjectNavigation)
+                        .ThenInclude(t => t.id_courseNavigation)
+                            .ThenInclude(c => c.id_semesterNavigation)
+                .Include(x => x.id_syllabusNavigation)
+                    .ThenInclude(s => s.id_teacherbysubjectNavigation)
+                        .ThenInclude(t => t.id_courseNavigation)
+                            .ThenInclude(c => c.id_key_year_semesterNavigation)
                 .FirstOrDefaultAsync(x => x.id_ApproveUserSyllabus == items.id_ApproveUserSyllabus);
 
             if (checkApprove == null)
-            {
                 return Ok(new { message = "Không tìm thấy thông tin", success = false });
-            }
 
-            var syllabusNav = checkApprove.id_syllabusNavigation;
-            var tbsNav = syllabusNav?.id_teacherbysubjectNavigation;
+            var syllabus = checkApprove.id_syllabusNavigation;
+            var tbsNav = syllabus?.id_teacherbysubjectNavigation;
+            var course = tbsNav?.id_courseNavigation;
 
             if (tbsNav != null)
             {
@@ -615,7 +732,24 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 }
             }
 
+            db.Notifications.Add(new Notification
+            {
+                id_user = checkApprove.id_user,
+                id_program = null,
+                title = "Loại khỏi danh sách viết đề cương",
+                message =
+                    $"Giảng viên {GetNameGV} đã loại bạn khỏi danh sách tham gia viết đề cương môn học " +
+                    $"{course.code_course} – {course.name_course} – " +
+                    $"{course.id_semesterNavigation?.name_semester} – " +
+                    $"{course.id_key_year_semesterNavigation?.name_key_year_semester}.",
+                type = "remove_write_course_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
+
             db.ApproveUserSyllabi.Remove(checkApprove);
+
             await db.SaveChangesAsync();
 
             return Ok(new { message = "Loại thành viên thành công", success = true });
@@ -625,6 +759,8 @@ namespace ProjectQLDCCT.Controllers.GVDC
         [Route("phan-quyen-gv-vao-phu-viet-de-cuong")]
         public async Task<IActionResult> PhanQuyenVietTiepDeCuong([FromBody] CivilServantsDTOs items)
         {
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+
             var idProgram = await db.Syllabi
                 .Where(x => x.id_syllabus == items.id_syllabus)
                 .Select(x => x.id_teacherbysubjectNavigation.id_courseNavigation.id_program)
@@ -634,14 +770,9 @@ namespace ProjectQLDCCT.Controllers.GVDC
                 .FirstOrDefaultAsync(x => x.code_civilSer == items.code_civilSer && x.id_program == idProgram);
 
             if (checkCivil == null)
-                return Ok(new
-                {
-                    message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại",
-                    success = false
-                });
+                return Ok(new { message = "Giảng viên này không tồn tại hoặc sai mã, vui lòng kiểm tra lại", success = false });
 
-            var checkUser = await db.Users
-                .FirstOrDefaultAsync(x => x.email == checkCivil.email);
+            var checkUser = await db.Users.FirstOrDefaultAsync(x => x.email == checkCivil.email);
 
             if (checkUser == null)
             {
@@ -653,7 +784,6 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     id_type_users = 4,
                     status = 1
                 };
-
                 db.Users.Add(checkUser);
                 await db.SaveChangesAsync();
             }
@@ -666,72 +796,78 @@ namespace ProjectQLDCCT.Controllers.GVDC
             }
 
             var blockTypes = new int[] { 2, 3, 5 };
-            var isManager = await db.Users
-                .AnyAsync(x => x.id_users == checkUser.id_users && blockTypes.Contains(x.id_type_users ?? 0));
+            var isManager = blockTypes.Contains(checkUser.id_type_users ?? 0);
 
             if (isManager)
-                return Ok(new
-                {
-                    message = "Giảng viên này thuộc cấp quyền quản lý, không thể thêm",
-                    success = false
-                });
+                return Ok(new { message = "Giảng viên này thuộc cấp quyền quản lý, không thể thêm", success = false });
 
-            var existCourse = await db.ApproveUserSyllabi
-                .FirstOrDefaultAsync(x => x.id_user == checkUser.id_users && x.id_syllabus == items.id_syllabus);
+            var exist = await db.ApproveUserSyllabi
+                .AnyAsync(x => x.id_user == checkUser.id_users && x.id_syllabus == items.id_syllabus);
 
-            if (existCourse != null)
-                return Ok(new
-                {
-                    message = "Giảng viên này đã được phân quyền vào đề cương môn học này",
-                    success = false
-                });
+            if (exist)
+                return Ok(new { message = "Giảng viên này đã được phân quyền vào đề cương này", success = false });
 
-            var newRecord = new ApproveUserSyllabus
+            db.ApproveUserSyllabi.Add(new ApproveUserSyllabus
             {
                 id_user = checkUser.id_users,
                 id_syllabus = items.id_syllabus,
                 is_approve = true,
                 is_key_user = false,
                 is_refuse = false,
-                time_accept_request = unixTimestamp,
-                time_request = unixTimestamp
-            };
+                time_request = unixTimestamp,
+                time_accept_request = unixTimestamp
+            });
 
-            db.ApproveUserSyllabi.Add(newRecord);
             await db.SaveChangesAsync();
-
 
             var syllabus = await db.Syllabi
                 .Include(s => s.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_semesterNavigation)
+                .Include(s => s.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_key_year_semesterNavigation)
                 .FirstOrDefaultAsync(s => s.id_syllabus == items.id_syllabus);
 
             if (syllabus == null)
                 return Ok(new { message = "Không tìm thấy đề cương", success = false });
 
-            var courseId = syllabus.id_teacherbysubjectNavigation.id_course;
+            var course = syllabus.id_teacherbysubjectNavigation.id_courseNavigation;
 
-            var checkTeacherBySubject = await db.TeacherBySubjects
-                .FirstOrDefaultAsync(x => x.id_course == courseId && x.id_user == checkUser.id_users);
+            var existTBS = await db.TeacherBySubjects
+                .FirstOrDefaultAsync(x => x.id_course == course.id_course && x.id_user == checkUser.id_users);
 
-            if (checkTeacherBySubject == null)
+            if (existTBS == null)
             {
-                var newTeacherBySubject = new TeacherBySubject
+                db.TeacherBySubjects.Add(new TeacherBySubject
                 {
-                    id_course = courseId,
                     id_user = checkUser.id_users,
+                    id_course = course.id_course,
                     is_create_write = false
-                };
-
-                db.TeacherBySubjects.Add(newTeacherBySubject);
-                await db.SaveChangesAsync();
+                });
             }
 
-            return Ok(new
+            db.Notifications.Add(new Notification
             {
-                message = "Phân quyền giảng viên viết đề cương thành công",
-                success = true
+                id_user = checkUser.id_users,
+                id_program = null,
+                title = "Phân công phụ viết đề cương",
+                message =
+                    $"Giảng viên {GetNameGV} đã phân công bạn tham gia phụ viết đề cương môn " +
+                    $"{course.code_course} – {course.name_course} – " +
+                    $"{course.id_semesterNavigation?.name_semester} – " +
+                    $"{course.id_key_year_semesterNavigation?.name_key_year_semester}.",
+                type = "permission_write_course_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
             });
+
+            await db.SaveChangesAsync();
+
+            return Ok(new { message = "Phân quyền giảng viên phụ viết đề cương thành công", success = true });
         }
+
 
     }
 }

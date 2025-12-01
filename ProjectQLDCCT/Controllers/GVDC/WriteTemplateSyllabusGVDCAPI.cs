@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Google.Cloud.AIPlatform.V1;
 using Google.Protobuf.WellKnownTypes;
@@ -38,9 +39,6 @@ namespace ProjectQLDCCT.Controllers.GVDC
             public string courseName { get; set; }
             public string customPrompt { get; set; }
         }
-
-
-      
         public WriteTemplateSyllabusGVDCAPI(QLDCContext _db, ILmStudioService lmStudio, IHubContext<SyllabusHub> hub)
         {
             db = _db;
@@ -130,7 +128,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     course = x.id_teacherbysubjectNavigation.id_courseNavigation.name_course,
                     status = x.id_status == 4,
                     is_open = db.OpenSyllabusWindowsCourses.Any(g => g.id_course == idCourse && g.is_open == 1),
-                    syllabus_section_json = db.Syllabus_Draft_Sections.Where(x => x.id_syllabus == x.id_syllabus).Select(x => x.section_json).FirstOrDefault()
+                    syllabus_section_json = db.Syllabus_Draft_Sections.Where(g => g.id_syllabus == x.id_syllabus).Select(g => g.section_json).FirstOrDefault()
                 })
                 .FirstOrDefaultAsync();
 
@@ -798,44 +796,54 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
         public async Task<IActionResult> SaveFinalFromDraft([FromBody] SaveFinalFromDraftDTO dto)
         {
             var userId = GetUserIdFromJWT();
-            var listInt = new int?[] { 1, 7 };
-            var GetCourse = await db.Syllabi.Where(x => x.id_syllabus == dto.id_syllabus)
-                .Select(x => x.id_teacherbysubjectNavigation.id_course)
-                .FirstOrDefaultAsync();
+            var GetNameGV = await GetUserPermissionNameCodeGV();
+
+            var syllabus = await db.Syllabi
+                .Include(s => s.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_semesterNavigation)
+                .Include(s => s.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_key_year_semesterNavigation)
+                .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus);
+
+            if (syllabus == null)
+                return Ok(new { success = false, message = "Không tìm thấy đề cương." });
+
+            var idProgram = syllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_program;
+            var idCourse = syllabus.id_teacherbysubjectNavigation.id_course;
+
+            var listInt = new int?[] { 1, 3, 7 };
 
             var CheckTypeSyllabus = await db.Syllabi
-                .Where(x => x.id_teacherbysubjectNavigation.id_user == userId && x.id_teacherbysubjectNavigation.id_course == GetCourse && !listInt.Contains(x.id_status))
+                .Where(x =>
+                    x.id_teacherbysubjectNavigation.id_user == userId &&
+                    x.id_teacherbysubjectNavigation.id_course == idCourse &&
+                    !listInt.Contains(x.id_status))
                 .ToListAsync();
 
             if (CheckTypeSyllabus.Any())
-            {
                 return Ok(new { message = "Bạn đang có đề cương đang được xử lý, không thể nộp thêm đề cương", success = false });
-            }
+
             var CheckMappingCLO = await db.MappingCLOBySyllabi
                 .Where(x => x.id_syllabus == dto.id_syllabus)
                 .Select(x => x.id)
                 .ToListAsync();
+
             if (!CheckMappingCLO.Any())
                 return Ok(new { message = "Bạn chưa có dữ liệu ma trận CLO, không thể lưu", success = false });
 
             var CheckMappingPI = await db.MappingCLObyPIs
                 .Where(x => CheckMappingCLO.Contains(x.id_CLoMapping ?? 0))
                 .ToListAsync();
+
             if (!CheckMappingPI.Any())
                 return Ok(new { message = "Bạn chưa có dữ liệu ma trận PI thuộc PLO, không thể lưu", success = false });
 
-            var isOwner = await db.Syllabi
-                .AnyAsync(x => x.id_syllabus == dto.id_syllabus
-                            && x.id_teacherbysubjectNavigation.id_user == userId);
+            var isOwner = syllabus.id_teacherbysubjectNavigation.id_user == userId;
 
             if (!isOwner)
                 return Ok(new { success = false, message = "Bạn không có quyền lưu bản final của đề cương này." });
-
-            var syllabus = await db.Syllabi
-                .FirstOrDefaultAsync(x => x.id_syllabus == dto.id_syllabus);
-
-            if (syllabus == null)
-                return NotFound(new { success = false, message = "Không tìm thấy đề cương." });
 
             List<SyllabusSectionDTO> sections = new();
             if (!string.IsNullOrEmpty(syllabus.syllabus_json))
@@ -843,11 +851,22 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 sections = System.Text.Json.JsonSerializer.Deserialize<List<SyllabusSectionDTO>>(syllabus.syllabus_json);
             }
 
+            var drafts = await db.SyllabusDrafts
+                .Where(x => x.id_syllabus == dto.id_syllabus)
+                .ToListAsync();
+
+            foreach (var sec in sections)
+            {
+                var draft = drafts.FirstOrDefault(d => d.section_code == sec.section_code);
+                if (draft != null)
+                    sec.value = draft.content_code ?? "";
+            }
 
             syllabus.syllabus_json = System.Text.Json.JsonSerializer.Serialize(sections);
             syllabus.id_status = 2;
             syllabus.time_up = unixTimestamp;
             syllabus.html_export_word = dto.html_export_word;
+
             var userName = await db.Users
                 .Where(u => u.id_users == userId)
                 .Select(u => u.Username)
@@ -860,13 +879,32 @@ Viết nội dung cho mục ""{sectionTitle}"" của học phần ""{courseName}
                 log_time = unixTimestamp
             });
 
+            db.Notifications.Add(new Notification
+            {
+                id_user = null,
+                id_program = idProgram,
+                title = "Nộp bản Final đề cương",
+                message =
+                    $"Giảng viên {GetNameGV} vừa nộp bản Final đề cương môn " +
+                    $"{syllabus.id_teacherbysubjectNavigation.id_courseNavigation.code_course} – " +
+                    $"{syllabus.id_teacherbysubjectNavigation.id_courseNavigation.name_course} – " +
+                    $"{syllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_semesterNavigation?.name_semester} – " +
+                    $"{syllabus.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semesterNavigation?.name_key_year_semester}. Đang chờ duyệt.",
+                type = "permission_write_course_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/ctdt/danh-sach-de-cuong-can-duyet"
+            });
+
             await db.SaveChangesAsync();
+
             return Ok(new
             {
                 success = true,
                 message = "Đã lưu bản final đề cương, chờ xét duyệt",
             });
         }
+
 
         //ssssssssssssss
         [HttpPost("save-content-draft")]

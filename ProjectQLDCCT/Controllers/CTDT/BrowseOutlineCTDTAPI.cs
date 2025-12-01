@@ -91,6 +91,31 @@ namespace ProjectQLDCCT.Controllers.CTDT
 
             return loadPermission ?? "";
         }
+        private int GetUserIdFromJWT()
+        {
+            var token = HttpContext.Request.Cookies["jwt"];
+            if (string.IsNullOrWhiteSpace(token))
+                throw new UnauthorizedAccessException("Thiếu cookie JWT hoặc chưa đăng nhập.");
+
+            var handler = new JwtSecurityTokenHandler();
+            JwtSecurityToken jwtToken;
+
+            try
+            {
+                jwtToken = handler.ReadJwtToken(token);
+            }
+            catch
+            {
+                throw new UnauthorizedAccessException("Token không hợp lệ hoặc bị sửa đổi.");
+            }
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "id_users")?.Value;
+            if (!int.TryParse(userIdClaim, out int userId))
+                throw new UnauthorizedAccessException("Token không chứa id_users hợp lệ.");
+
+            return userId;
+        }
+
         [HttpPost]
         [Route("loads-de-cuong-can-duyet")]
         public async Task<IActionResult> LoadDanhSachDeCuongCanDuyet([FromBody] SyllabusDTOs items)
@@ -161,12 +186,26 @@ namespace ProjectQLDCCT.Controllers.CTDT
         {
             if (string.IsNullOrEmpty(items.returned_content))
                 return Ok(new { message = "Vui lòng nhập lý do hoàn trả đề cương để chỉnh sửa", success = false });
-            var CheckSyllabus = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus).FirstOrDefaultAsync();
+            var CheckSyllabus = await db.Syllabi
+                .Include(x => x.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_semesterNavigation)
+                .Include(x => x.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_key_year_semesterNavigation)
+                .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
             if (CheckSyllabus == null)
                 return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
 
             CheckSyllabus.returned_content = items.returned_content;
             CheckSyllabus.id_status = 3;
+            var tbs = CheckSyllabus.id_teacherbysubjectNavigation;
+            if (tbs == null)
+                return Ok(new { success = false, message = "Không tìm thấy giảng viên phụ trách đề cương" });
+
+            var course = tbs.id_courseNavigation;
+            if (course == null)
+                return Ok(new { success = false, message = "Không tìm thấy môn học" });
             var GetNameGV = await GetUserPermissionNameCodeGV();
             var new_record_log = new Log_Syllabus
             {
@@ -175,6 +214,18 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 log_time = unixTimestamp
             };
             db.Log_Syllabi.Add(new_record_log);
+
+            db.Notifications.Add(new Notification
+            {
+                id_user = tbs.id_user,
+                id_program = null,
+                title = "Hoàn trả đề cương không đạt chuẩn",
+                message = $"Đề cương môn {course.code_course} - {course.name_course} - {course.id_semesterNavigation?.name_semester} - {course.id_key_year_semesterNavigation?.name_key_year_semester} của bạn đã bị hoàn trả để kiểm tra lại do không đạt chuẩn, vui lòng xem xét lại.",
+                type = "refund_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Hoàn trả đề cương thành công", success = true });
         }
@@ -182,25 +233,56 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("approve-syllabus")]
         public async Task<IActionResult> BrowseSyllabus([FromBody] SyllabusDTOs items)
         {
-            var CheckSyllabus = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus).FirstOrDefaultAsync();
+            var GetID = GetUserIdFromJWT();
+
+            var CheckSyllabus = await db.Syllabi
+                .Include(x => x.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_semesterNavigation)
+                .Include(x => x.id_teacherbysubjectNavigation)
+                    .ThenInclude(t => t.id_courseNavigation)
+                        .ThenInclude(c => c.id_key_year_semesterNavigation)
+                .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
+
             if (CheckSyllabus == null)
-                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+                return Ok(new { success = false, message = "Không tìm thấy đề cương" });
+
+            var tbs = CheckSyllabus.id_teacherbysubjectNavigation;
+            if (tbs == null)
+                return Ok(new { success = false, message = "Không tìm thấy giảng viên phụ trách đề cương" });
+
+            var course = tbs.id_courseNavigation;
+            if (course == null)
+                return Ok(new { success = false, message = "Không tìm thấy môn học" });
 
             CheckSyllabus.id_status = 4;
             CheckSyllabus.returned_content = null;
+
             var GetNameGV = await GetUserPermissionNameCodeGV();
-            var new_record_log = new Log_Syllabus
+            db.Log_Syllabi.Add(new Log_Syllabus
             {
                 id_syllabus = CheckSyllabus.id_syllabus,
                 content_value = $"Giảng viên {GetNameGV} vừa hoàn tất duyệt đề cương",
                 log_time = unixTimestamp
-            };
-            db.Log_Syllabi.Add(new_record_log);
+            });
+
+            db.Notifications.Add(new Notification
+            {
+                id_user = tbs.id_user,
+                id_program = null,
+                title = "Duyệt đề cương thành công",
+                message = $"Đề cương môn {course.code_course} - {course.name_course} - {course.id_semesterNavigation?.name_semester} - {course.id_key_year_semesterNavigation?.name_key_year_semester} của bạn đã được duyệt thành công",
+                type = "approve_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
-            return Ok(new { message = "Hoàn trả đề cương thành công", success = true });
+            return Ok(new { success = true, message = "Duyệt đề cương thành công" });
         }
 
-        [HttpPost]
+
+        [HttpPost] 
         [Route("log-hoat-dong-de-cuong")]
         public async Task<IActionResult> LoadLogSyllabus([FromBody] LogSyllabusDTOs items)
         {
@@ -235,11 +317,24 @@ namespace ProjectQLDCCT.Controllers.CTDT
         public async Task<IActionResult> AcceptRequestEditSyllabus([FromBody] SyllabusDTOs items)
         {
             var CheckSyllabus = await db.Syllabi
-                .Where(x => x.id_syllabus == items.id_syllabus)
-                .FirstOrDefaultAsync();
-            if (CheckSyllabus == null)
-                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+                  .Include(x => x.id_teacherbysubjectNavigation)
+                      .ThenInclude(t => t.id_courseNavigation)
+                          .ThenInclude(c => c.id_semesterNavigation)
+                  .Include(x => x.id_teacherbysubjectNavigation)
+                      .ThenInclude(t => t.id_courseNavigation)
+                          .ThenInclude(c => c.id_key_year_semesterNavigation)
+                  .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
 
+            if (CheckSyllabus == null)
+                return Ok(new { success = false, message = "Không tìm thấy đề cương" });
+
+            var tbs = CheckSyllabus.id_teacherbysubjectNavigation;
+            if (tbs == null)
+                return Ok(new { success = false, message = "Không tìm thấy giảng viên phụ trách đề cương" });
+
+            var course = tbs.id_courseNavigation;
+            if (course == null)
+                return Ok(new { success = false, message = "Không tìm thấy môn học" });
             CheckSyllabus.is_open_edit_final = 0;
             CheckSyllabus.edit_content = null;
             CheckSyllabus.id_status = 7;
@@ -251,6 +346,17 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 log_time = unixTimestamp
             };
             db.Log_Syllabi.Add(new_record_log);
+            db.Notifications.Add(new Notification
+            {
+                id_user = tbs.id_user,
+                id_program = null,
+                title = "Duyệt yêu cầu chỉnh sửa bổ sung đề cương sau duyệt",
+                message = $"Đề cương môn {course.code_course} - {course.name_course} - {course.id_semesterNavigation?.name_semester} - {course.id_key_year_semesterNavigation?.name_key_year_semester} của bạn được mở chỉnh sửa bổ đề cương sau duyệt",
+                type = "accept_request_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Duyệt thành công", success = true });
         }
@@ -264,10 +370,24 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 return Ok(new { message = "Không được để trống lý do từ chối yêu cầu mở chỉnh sửa", success = false });
             }
             var CheckSyllabus = await db.Syllabi
-                .Where(x => x.id_syllabus == items.id_syllabus)
-                .FirstOrDefaultAsync();
+                   .Include(x => x.id_teacherbysubjectNavigation)
+                       .ThenInclude(t => t.id_courseNavigation)
+                           .ThenInclude(c => c.id_semesterNavigation)
+                   .Include(x => x.id_teacherbysubjectNavigation)
+                       .ThenInclude(t => t.id_courseNavigation)
+                           .ThenInclude(c => c.id_key_year_semesterNavigation)
+                   .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
+
             if (CheckSyllabus == null)
-                return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
+                return Ok(new { success = false, message = "Không tìm thấy đề cương" });
+
+            var tbs = CheckSyllabus.id_teacherbysubjectNavigation;
+            if (tbs == null)
+                return Ok(new { success = false, message = "Không tìm thấy giảng viên phụ trách đề cương" });
+
+            var course = tbs.id_courseNavigation;
+            if (course == null)
+                return Ok(new { success = false, message = "Không tìm thấy môn học" });
 
             CheckSyllabus.is_open_edit_final = 2;
             CheckSyllabus.returned_content = items.returned_content;
@@ -279,6 +399,20 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 log_time = unixTimestamp
             };
             db.Log_Syllabi.Add(new_record_log);
+            db.Notifications.Add(new Notification
+            {
+                id_user = tbs.id_user,
+                id_program = null,
+                title = "Từ chối yêu cầu chỉnh sửa bổ sung đề cương sau duyệt",
+                message = $"Đề cương môn {course.code_course} " +
+                $"- {course.name_course} " +
+                $"- {course.id_semesterNavigation?.name_semester} " +
+                $"- {course.id_key_year_semesterNavigation?.name_key_year_semester} của bạn bị từ chối mở bổ sung đề cương sau duyệt",
+                type = "cancer_request_syllabus",
+                create_time = unixTimestamp,
+                is_read = false,
+                link = "/gv-de-cuong/danh-sach-de-cuong-duoc-phan-cong"
+            });
             await db.SaveChangesAsync();
             return Ok(new { message = "Từ chối yêu cầu thành công", success = true });
         }
