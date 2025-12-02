@@ -1,10 +1,18 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
+  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\baocaototnghiep\\be_project_qldcct\\projectqldcct\\controllers\\client\\searchsyllabusbycodestudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\client\\searchsyllabusbycodestudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\statisticalcloctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\statisticalcloctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\ctdt\\ploctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\ctdt\\ploctdtapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\donvi\\studentdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\donvi\\studentdvapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 165,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SearchSyllabusByCodeStudent.cs",
-              "DocumentMoniker": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Client\\SearchSyllabusByCodeStudent.cs",
-              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\Client\\SearchSyllabusByCodeStudent.cs",
-              "ToolTip": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\Client\\SearchSyllabusByCodeStudent.cs",
-              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\Client\\SearchSyllabusByCodeStudent.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAUwJAAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "PLOCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\PLOCTDTAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\PLOCTDTAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\PLOCTDTAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\PLOCTDTAPI.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-01T09:12:26.548Z",
+              "WhenOpened": "2025-12-01T17:13:38.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "StudentDVAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\StudentDVAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\DonVi\\StudentDVAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\DonVi\\StudentDVAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\DonVi\\StudentDVAPI.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowEUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T17:13:09.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StatisticalCLOCTDTAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\StatisticalCLOCTDTAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\CTDT\\StatisticalCLOCTDTAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\CTDT\\StatisticalCLOCTDTAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\CTDT\\StatisticalCLOCTDTAPI.cs",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAAGUAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-01T16:51:42.916Z",
               "EditorCaption": ""
             }
           ]

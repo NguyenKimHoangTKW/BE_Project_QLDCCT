@@ -93,6 +93,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 .ToListAsync();
             var LoadIsSemester = await db.Semesters
                 .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .OrderByDescending(x => x.code_semester)
                 .Select(x => new
                 {
                     value = x.id_semester,
@@ -101,6 +102,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 .ToListAsync();
             var LoadKeyYearSemester = await db.KeyYearSemesters
                 .Where(x => GetFaculty.Contains(x.id_faculty ?? 0))
+                .OrderByDescending(x => x.code_key_year_semester)
                 .Select(x => new
                 {
                     value = x.id_key_year_semester,
@@ -312,7 +314,18 @@ namespace ProjectQLDCCT.Controllers.DonVi
                     });
                 }
             }
-            return Ok(new { data = ListData, message = "Lọc dữ liệu thành công", success = true });
+            var listCourse = await db.Courses
+          .Where(x => x.id_key_year_semester == items.id_key_year_semester
+                   && x.id_program == items.id_program)
+          .Select(x => x.id_course)
+          .ToListAsync();
+
+            int totalCourse = listCourse.Count;
+
+            int totalSyllabus = await db.Syllabi
+                .CountAsync(g => listCourse.Contains(g.id_teacherbysubjectNavigation.id_course ?? 0)
+                              && g.id_status == 4);
+            return Ok(new { data = ListData, total_course = totalCourse, total_syllabus = totalSyllabus, message = "Lọc dữ liệu thành công", success = true });
         }
         [HttpPost]
         [Route("them-moi-mon-hoc")]

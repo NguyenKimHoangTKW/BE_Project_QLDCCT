@@ -582,3 +582,5 @@ D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDat
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DinkToPdf.dll
 D:\BaoCaoTotNghiep\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DinkToPdfLib\libwkhtmltox.dll
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DinkToPdfLib\libwkhtmltox.dll
+D:\BCTN\BE_Project_QLDCCT\ProjectQLDCCT\bin\Debug\net9.0\DinkToPdf.dll

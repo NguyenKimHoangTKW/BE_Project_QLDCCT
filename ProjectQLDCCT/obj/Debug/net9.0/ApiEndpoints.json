@@ -1225,6 +1225,198 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "UpdatePIThuocPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/cap-nhat-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "InfoPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/info-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "LoadPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/load-danh-sach-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "LoadCTDTThuocDV",
+    "RelativePath": "api/ctdt/program-learning-outcome/load-option-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "LoadPITrongPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/load-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/ctdt/program-learning-outcome/them-moi-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "ThemMoiPIThuocPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/them-moi-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "InfoPIThuocPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/thong-tin-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "UpdatePLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/update-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "DeletePLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/xoa-du-lieu-chuan-dau-ra-ctdt",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.PLOCTDTAPI",
+    "Method": "DeletePIThuocPLO",
+    "RelativePath": "api/ctdt/program-learning-outcome/xoa-du-lieu-pi-thuoc-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StatisticalCLOCTDTAPI",
+    "Method": "LoadStaCLO",
+    "RelativePath": "api/ctdt/statistical-plo/thong-ke-nhap-lieu-plo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StatisticalCLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StudentCTDTAPI",
     "Method": "DeleteClass",
     "RelativePath": "api/ctdt/student/delete-sinh-vien",
@@ -1528,6 +1720,144 @@
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "DeleteClass",
+    "RelativePath": "api/donvi/class/delete-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "ExportCourse",
+    "RelativePath": "api/donvi/class/export-danh-sach-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CourseDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "InfoClass",
+    "RelativePath": "api/donvi/class/info-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "LoadListClass",
+    "RelativePath": "api/donvi/class/list-class",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "LoadOptionSelectedUpdate",
+    "RelativePath": "api/donvi/class/load-select-chuc-nang-course",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "LoadsCTDTByDV",
+    "RelativePath": "api/donvi/class/loads-ctdt-by-dv",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/donvi/class/them-moi-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "UpdateClass",
+    "RelativePath": "api/donvi/class/update-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.ClassDVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/class/upload-excel-danh-sach-lop",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2624,6 +2954,144 @@
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.HocKyDVApi",
     "Method": "UploadExcelMonHoc",
     "RelativePath": "api/donvi/semester/upload-excel-danh-sach-hoc-ky",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "DeleteClass",
+    "RelativePath": "api/donvi/student/delete-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "ExportCourse",
+    "RelativePath": "api/donvi/student/export-danh-sach-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "GetListClass",
+    "RelativePath": "api/donvi/student/get-list-class-by-program",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ClassDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "InfoClass",
+    "RelativePath": "api/donvi/student/info-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "LoadListClass",
+    "RelativePath": "api/donvi/student/list-student",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "LoadsCTDTByDV",
+    "RelativePath": "api/donvi/student/loads-ctdt-by-dv",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "AddNew",
+    "RelativePath": "api/donvi/student/them-moi-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "UpdateClass",
+    "RelativePath": "api/donvi/student/update-sinh-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StudentDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/donvi/student/upload-excel-danh-sach-sinh-vien",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
