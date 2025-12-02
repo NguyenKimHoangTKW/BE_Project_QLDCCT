@@ -42,15 +42,19 @@ namespace ProjectQLDCCT.Controllers.Admin
             return Ok(new { message = "Không có dữ liệu", success = false });
         }
         [HttpPost]
-        [Route("loads-danh-sach-users/{idtype}")]
-        public async Task<IActionResult> DanhSachUser(int idtype, [FromBody] DataTableRequest request)
+        [Route("loads-danh-sach-users")]
+        public async Task<IActionResult> DanhSachUser([FromBody] UsersDTOs items)
         {
             var query = db.Users.AsQueryable();
-            if (idtype != 0)
+            if (items.id_type_users > 0)
             {
-                query = query.Where(x => x.id_type_users == idtype);
+                query = query.Where(x => x.id_type_users == items.id_type_users);
             }
+            var totalRecords = await query.CountAsync();
             var _query = query
+                .OrderByDescending(x => x.id_users)
+                .Skip((items.Page - 1) * items.PageSize)
+                .Take(items.PageSize)
                 .Select(x => new
                 {
                     x.id_users,
@@ -62,8 +66,15 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.id_type_usersNavigation.name_type_users,
                     status = x.status == 1 ? "Đang hoạt động" : "Đã khóa"
                 });
-            var result = await DataTableHelper.GetDataTableAsync(_query, request);
-            return Ok(result);
+            return Ok(new
+            {
+                success = true,
+                data = _query,
+                currentPage = items.Page,
+                items.PageSize,
+                totalRecords,
+                totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
+            });
         }
         [HttpPost]
         [Route("them-moi-thu-cong-user")]

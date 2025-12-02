@@ -15,6 +15,7 @@
         public int status { get; set; }
         public int? id_course { get; set; }
         public int? id_syllabus { get; set; }
+        public int? id_faculty { get; set; }
         public List<int?>? ctdt_per { get; set; } = new();
     }
 }

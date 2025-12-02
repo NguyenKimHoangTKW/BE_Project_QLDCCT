@@ -1,29 +1,8 @@
 [
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
-    "Method": "GetCivilServants",
-    "RelativePath": "api/admin/civilservants/{id}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
-    "Method": "AddNew",
-    "RelativePath": "api/admin/civilservants/add-new",
+    "Method": "Export",
+    "RelativePath": "api/admin/civilservants/export-danh-sach-giang-vien-thuoc-don-vi",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -38,15 +17,15 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
-    "Method": "Delete",
-    "RelativePath": "api/admin/civilservants/delete/{id}",
-    "HttpMethod": "DELETE",
+    "Method": "InfoCO",
+    "RelativePath": "api/admin/civilservants/info-can-bo-vien-chuc",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
         "IsRequired": true
       }
     ],
@@ -54,15 +33,41 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
-    "Method": "LoadInfo",
-    "RelativePath": "api/admin/civilservants/load-thong-tin/{id}",
+    "Method": "LoadOptionCTDT",
+    "RelativePath": "api/admin/civilservants/load-ctdt-by-don-vi-civilservants",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "LoadOption",
+    "RelativePath": "api/admin/civilservants/load-don-vi-by-civiservants",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "LoadCBVC",
+    "RelativePath": "api/admin/civilservants/loads-danh-sach-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
         "IsRequired": true
       }
     ],
@@ -70,17 +75,76 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
-    "Method": "Update",
-    "RelativePath": "api/admin/civilservants/update/{id}",
-    "HttpMethod": "PUT",
+    "Method": "ThemMoiCO",
+    "RelativePath": "api/admin/civilservants/them-moi-can-bo-vien-chuc",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
         "IsRequired": true
-      },
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "UpdateCO",
+    "RelativePath": "api/admin/civilservants/update-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "UploadExcelMonHoc",
+    "RelativePath": "api/admin/civilservants/upload-excel-danh-sach-giang-vien",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.CivilServantsApiAdmin",
+    "Method": "DeleteCO",
+    "RelativePath": "api/admin/civilservants/xoa-du-lieu-can-bo-vien-chuc",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
+    "Method": "Export",
+    "RelativePath": "api/admin/faculty/export-khoa-vien-truong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.CivilServantsDTOs",
@@ -108,19 +172,14 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
     "Method": "LoadData",
-    "RelativePath": "api/admin/faculty/loadsdonvibynam/{id}",
+    "RelativePath": "api/admin/faculty/loads-don-vi",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.FacultyDTOs",
         "IsRequired": true
       }
     ],
@@ -177,14 +236,14 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.FacultyApiAdmin",
     "Method": "Delete",
-    "RelativePath": "api/admin/faculty/xoa-thong-tin-don-vi/{id}",
-    "HttpMethod": "DELETE",
+    "RelativePath": "api/admin/faculty/xoa-thong-tin-don-vi",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.FacultyDTOs",
         "IsRequired": true
       }
     ],
@@ -288,6 +347,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
+    "Method": "ExportCourse",
+    "RelativePath": "api/admin/program/export-danh-sach-ctdt-thuoc-don-vi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
     "Method": "InfoCTDT",
     "RelativePath": "api/admin/program/get-thong-tin-ctdt",
     "HttpMethod": "POST",
@@ -305,19 +380,14 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
     "Method": "LoadData",
-    "RelativePath": "api/admin/program/loads-ctdt-thuoc-don-vi/{idDonvi}",
+    "RelativePath": "api/admin/program/loads-ctdt-thuoc-don-vi",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "idDonvi",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
         "Name": "items",
-        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
         "IsRequired": true
       }
     ],
@@ -326,7 +396,7 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
     "Method": "LoadDonViByCTDT",
-    "RelativePath": "api/admin/program/loads-select-don-vi-by-year",
+    "RelativePath": "api/admin/program/loads-select-don-vi",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -336,7 +406,7 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
     "Method": "ThemMoiCTDT",
-    "RelativePath": "api/admin/program/them-moi-ctdt-thuoc-nam",
+    "RelativePath": "api/admin/program/them-moi-ctdt",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -368,14 +438,14 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.TrainingProgramAPIAdmin",
     "Method": "DeleteCTDT",
-    "RelativePath": "api/admin/program/xoa-du-lieu-ctdt/{id}",
-    "HttpMethod": "DELETE",
+    "RelativePath": "api/admin/program/xoa-du-lieu-ctdt",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.TrainingProgramDTOs",
         "IsRequired": true
       }
     ],
@@ -432,19 +502,14 @@
   {
     "ContainingType": "ProjectQLDCCT.Controllers.Admin.ListUserApiAdmin",
     "Method": "DanhSachUser",
-    "RelativePath": "api/admin/users/loads-danh-sach-users/{idtype}",
+    "RelativePath": "api/admin/users/loads-danh-sach-users",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "idtype",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "ProjectQLDCCT.Models.DTOs.DataTableRequest",
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.UsersDTOs",
         "IsRequired": true
       }
     ],
@@ -1395,6 +1460,22 @@
       {
         "Name": "items",
         "Type": "ProjectQLDCCT.Models.DTOs.PIDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.StatisticalCLOCTDTAPI",
+    "Method": "LoadCTDTThuocDV",
+    "RelativePath": "api/ctdt/statistical-plo/load-option-thong-ke-nhap-lieu",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
         "IsRequired": true
       }
     ],
@@ -2967,6 +3048,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StatisticalCLODVAPI",
+    "Method": "LoadCTDTThuocDV",
+    "RelativePath": "api/donvi/statistical-clo/load-option-thong-ke-nhap-lieu",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.PLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StatisticalCLODVAPI",
+    "Method": "LoadsCTDTByDV",
+    "RelativePath": "api/donvi/statistical-clo/loads-ctdt-by-dv",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StatisticalCLODVAPI",
+    "Method": "LoadStaCLO",
+    "RelativePath": "api/donvi/statistical-clo/thong-ke-nhap-lieu-clo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.StatisticalCLODTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectQLDCCT.Controllers.DonVi.StudentDVAPI",
     "Method": "DeleteClass",
     "RelativePath": "api/donvi/student/delete-sinh-vien",
@@ -3506,6 +3629,22 @@
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "CancerSyllabusEdit",
     "RelativePath": "api/gvdc/write-course/cancer-edit-syllabus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
+    "Method": "CloneSyllabus",
+    "RelativePath": "api/gvdc/write-course/clone-syllabus",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

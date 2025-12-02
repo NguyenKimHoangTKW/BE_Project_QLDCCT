@@ -222,95 +222,11 @@
         }
       }
     },
-    "/api/admin/civilservants/{id}": {
-      "post": {
-        "tags": [
-          "CivilServantsApiAdmin"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/admin/civilservants/add-new": {
-      "post": {
-        "tags": [
-          "CivilServantsApiAdmin"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CivilServantsDTOs"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CivilServantsDTOs"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CivilServantsDTOs"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/admin/civilservants/load-thong-tin/{id}": {
+    "/api/admin/civilservants/load-don-vi-by-civiservants": {
       "get": {
         "tags": [
           "CivilServantsApiAdmin"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -318,21 +234,41 @@
         }
       }
     },
-    "/api/admin/civilservants/update/{id}": {
-      "put": {
+    "/api/admin/civilservants/load-ctdt-by-don-vi-civilservants": {
+      "post": {
         "tags": [
           "CivilServantsApiAdmin"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/loads-danh-sach-can-bo-vien-chuc": {
+      "post": {
+        "tags": [
+          "CivilServantsApiAdmin"
         ],
         "requestBody": {
           "content": {
@@ -360,22 +296,186 @@
         }
       }
     },
-    "/api/admin/civilservants/delete/{id}": {
-      "delete": {
+    "/api/admin/civilservants/them-moi-can-bo-vien-chuc": {
+      "post": {
         "tags": [
           "CivilServantsApiAdmin"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
             }
           }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/info-can-bo-vien-chuc": {
+      "post": {
+        "tags": [
+          "CivilServantsApiAdmin"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/update-can-bo-vien-chuc": {
+      "post": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/xoa-du-lieu-can-bo-vien-chuc": {
+      "post": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/upload-excel-danh-sach-giang-vien": {
+      "post": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/civilservants/export-danh-sach-giang-vien-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "CivilServantsApiAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2863,37 +2963,26 @@
         }
       }
     },
-    "/api/admin/faculty/loadsdonvibynam/{id}": {
+    "/api/admin/faculty/loads-don-vi": {
       "post": {
         "tags": [
           "FacultyApiAdmin"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/FacultyDTOs"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/FacultyDTOs"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/FacultyDTOs"
               }
             }
           }
@@ -2998,22 +3087,30 @@
         }
       }
     },
-    "/api/admin/faculty/xoa-thong-tin-don-vi/{id}": {
-      "delete": {
+    "/api/admin/faculty/xoa-thong-tin-don-vi": {
+      "post": {
         "tags": [
           "FacultyApiAdmin"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDTOs"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -3042,6 +3139,37 @@
                 "file": {
                   "style": "form"
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/faculty/export-khoa-vien-truong": {
+      "post": {
+        "tags": [
+          "FacultyApiAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CivilServantsDTOs"
               }
             }
           }
@@ -3792,37 +3920,26 @@
         }
       }
     },
-    "/api/admin/users/loads-danh-sach-users/{idtype}": {
+    "/api/admin/users/loads-danh-sach-users": {
       "post": {
         "tags": [
           "ListUserApiAdmin"
-        ],
-        "parameters": [
-          {
-            "name": "idtype",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/UsersDTOs"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/UsersDTOs"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/UsersDTOs"
               }
             }
           }
@@ -5389,10 +5506,115 @@
         }
       }
     },
+    "/api/ctdt/statistical-plo/load-option-thong-ke-nhap-lieu": {
+      "post": {
+        "tags": [
+          "StatisticalCLOCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/ctdt/statistical-plo/thong-ke-nhap-lieu-plo": {
       "post": {
         "tags": [
           "StatisticalCLOCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticalCLODTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticalCLODTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatisticalCLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/statistical-clo/loads-ctdt-by-dv": {
+      "get": {
+        "tags": [
+          "StatisticalCLODVAPI"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/statistical-clo/load-option-thong-ke-nhap-lieu": {
+      "post": {
+        "tags": [
+          "StatisticalCLODVAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PLODTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/donvi/statistical-clo/thong-ke-nhap-lieu-clo": {
+      "post": {
+        "tags": [
+          "StatisticalCLODVAPI"
         ],
         "requestBody": {
           "content": {
@@ -6350,7 +6572,7 @@
         }
       }
     },
-    "/api/admin/program/loads-select-don-vi-by-year": {
+    "/api/admin/program/loads-select-don-vi": {
       "get": {
         "tags": [
           "TrainingProgramAPIAdmin"
@@ -6362,37 +6584,26 @@
         }
       }
     },
-    "/api/admin/program/loads-ctdt-thuoc-don-vi/{idDonvi}": {
+    "/api/admin/program/loads-ctdt-thuoc-don-vi": {
       "post": {
         "tags": [
           "TrainingProgramAPIAdmin"
-        ],
-        "parameters": [
-          {
-            "name": "idDonvi",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/DataTableRequest"
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
               }
             }
           }
@@ -6404,7 +6615,7 @@
         }
       }
     },
-    "/api/admin/program/them-moi-ctdt-thuoc-nam": {
+    "/api/admin/program/them-moi-ctdt": {
       "post": {
         "tags": [
           "TrainingProgramAPIAdmin"
@@ -6497,22 +6708,30 @@
         }
       }
     },
-    "/api/admin/program/xoa-du-lieu-ctdt/{id}": {
-      "delete": {
+    "/api/admin/program/xoa-du-lieu-ctdt": {
+      "post": {
         "tags": [
           "TrainingProgramAPIAdmin"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -6541,6 +6760,37 @@
                 "file": {
                   "style": "form"
                 }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/admin/program/export-danh-sach-ctdt-thuoc-don-vi": {
+      "post": {
+        "tags": [
+          "TrainingProgramAPIAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingProgramDTOs"
               }
             }
           }
@@ -7012,6 +7262,37 @@
       }
     },
     "/api/gvdc/write-course/cancer-edit-syllabus": {
+      "post": {
+        "tags": [
+          "WriteCourseGVDCAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/gvdc/write-course/clone-syllabus": {
       "post": {
         "tags": [
           "WriteCourseGVDCAPI"
@@ -8031,6 +8312,11 @@
             "format": "int32",
             "nullable": true
           },
+          "id_faculty": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "ctdt_per": {
             "type": "array",
             "items": {
@@ -8225,6 +8511,14 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -9136,7 +9430,8 @@
         "properties": {
           "id_users": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "username": {
             "type": "string",
@@ -9156,6 +9451,15 @@
             "nullable": true
           },
           "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           }

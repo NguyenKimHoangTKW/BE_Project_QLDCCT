@@ -550,6 +550,91 @@ namespace ProjectQLDCCT.Controllers.GVDC
             await db.SaveChangesAsync();
             return Ok(new { message = "Thu hồi đề cương thành công", success = true });
         }
+        [HttpPost]
+        [Route("clone-syllabus")]
+        public async Task<IActionResult> CloneSyllabus([FromBody] SyllabusDTOs items)
+        {
+            var userId = GetUserIdFromJWT();
+            if (userId == null)
+                return Unauthorized("Thiếu hoặc sai JWT token.");
+
+            var teacherSubject = await db.TeacherBySubjects
+                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject)
+                .Select(x => new
+                {
+                    x.id_teacherbysubject,
+                    id_user = x.id_user,
+                    faculty = x.id_courseNavigation.id_programNavigation.id_faculty
+                })
+                .FirstOrDefaultAsync();
+
+            if (teacherSubject == null)
+                return BadRequest(new { message = "Môn học không tồn tại.", success = false });
+
+
+            var numericVersions = await db.Syllabi
+                .Where(x => x.id_teacherbysubject == items.id_teacherbysubject
+                         && x.create_by == userId)
+                .Select(x => x.version)
+                .ToListAsync();
+
+            int nextVersion = numericVersions
+                .Select(v => int.TryParse(v, out int n) ? n : 0)
+                .DefaultIfEmpty(0)
+                .Max() + 1;
+
+            var defaultTemplate = await db.SyllabusTemplates
+                .Where(x => x.id_faculty == teacherSubject.faculty)
+                .Select(x => x.template_json)
+                .FirstOrDefaultAsync();
+
+            var nowUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var checkSyllabus = await db.Syllabi.Where(x => x.id_syllabus == items.id_syllabus).FirstOrDefaultAsync();
+            var new_syllabus = new Syllabus
+            {
+                id_teacherbysubject = items.id_teacherbysubject,
+                id_status = 8,
+                version = nextVersion.ToString(),
+                create_by = userId.Value,
+                time_cre = unixTimestamp,
+                time_up = unixTimestamp,
+                syllabus_json = checkSyllabus.syllabus_json,
+                is_open_edit_final = 0
+            };
+
+            db.Syllabi.Add(new_syllabus);
+            await db.SaveChangesAsync();
+            if (!await db.ApproveUserSyllabi
+                .AnyAsync(x => x.id_user == teacherSubject.id_user && x.id_syllabus == new_syllabus.id_syllabus))
+            {
+                db.ApproveUserSyllabi.Add(new ApproveUserSyllabus
+                {
+                    id_user = teacherSubject.id_user,
+                    id_syllabus = new_syllabus.id_syllabus,
+                    is_approve = true,
+                    is_key_user = true
+                });
+
+                await db.SaveChangesAsync();
+            }
+            var gvName = await GetUserPermissionNameCodeGV();
+
+            db.Log_Syllabi.Add(new Log_Syllabus
+            {
+                id_syllabus = new_syllabus.id_syllabus,
+                content_value = $"Giảng viên {gvName} vừa Clone phiên bản đề cương {nextVersion}",
+                log_time = unixTimestamp
+            });
+
+            await db.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = $"Clone mẫu đề cương thành công",
+                success = true,
+                version = nextVersion
+            });
+        }
 
         [HttpPost]
         [Route("request-write-course-by-user")]

@@ -31,10 +31,14 @@ namespace ProjectQLDCCT.Controllers.Admin
             _hubContext = hubContext;
         }
         [HttpPost]
-        [Route("loadsdonvibynam/{id}")]
-        public async Task<IActionResult> LoadData(int id, [FromBody] DataTableRequest request)
+        [Route("loads-don-vi")]
+        public async Task<IActionResult> LoadData([FromBody] FacultyDTOs items)
         {
+            var totalRecords = db.Faculties.Count();
             var query = db.Faculties
+                .OrderByDescending(x => x.id_faculty)
+                .Skip((items.Page - 1) * items.PageSize)
+                .Take(items.PageSize)
                 .Select(x => new
                 {
                     x.id_faculty,
@@ -43,17 +47,16 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.time_cre,
                     x.time_up,
                 });
-            if (!string.IsNullOrEmpty(request.SearchText))
+            return Ok(new
             {
-                var keyword = request.SearchText.ToLower().Trim();
-                query = query.Where(x =>
-                    x.name_faculty.ToLower().Contains(keyword) ||
-                    (x.code_faciulty ?? "").ToLower().Contains(keyword));
-            }
-            var result = await DataTableHelper.GetDataTableAsync(query, request);
-            return Ok(result);
+                success = true,
+                data = query,
+                currentPage = items.Page,
+                items.PageSize,
+                totalRecords,
+                totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
+            });
         }
-
         [HttpPost]
         [Route("them-moi-don-vi")]
         public async Task<IActionResult> AddNew([FromBody] FacultyDTOs items)
@@ -105,11 +108,11 @@ namespace ProjectQLDCCT.Controllers.Admin
             await db.SaveChangesAsync();
             return Ok(new { message = "Cập nhật thông tin thành công", success = true });
         }
-        [HttpDelete]
-        [Route("xoa-thong-tin-don-vi/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpPost]
+        [Route("xoa-thong-tin-don-vi")]
+        public async Task<IActionResult> Delete([FromBody] FacultyDTOs items)
         {
-            var CheckItems = await db.Faculties.FirstOrDefaultAsync(x => x.id_faculty == id);
+            var CheckItems = await db.Faculties.FirstOrDefaultAsync(x => x.id_faculty == items.id_faculty);
             if (CheckItems == null)
             {
                 return Ok(new { message = "Không tìm thấy thông tin đơn vị", success = false });
@@ -187,6 +190,66 @@ namespace ProjectQLDCCT.Controllers.Admin
             {
                 return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
             }
+        }
+
+        [HttpPost]
+        [Route("export-khoa-vien-truong")]
+        public async Task<IActionResult> Export([FromBody] CivilServantsDTOs items)
+        {
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            var query = db.Faculties
+              .OrderByDescending(x => x.id_faculty)
+              .Select(x => new
+              {
+                  x.id_faculty,
+                  x.code_faciulty,
+                  x.name_faculty,
+                  x.time_cre,
+                  x.time_up,
+              });
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã đơn vị","Tên đơn vị","Ngày tạo","Cập nhật lần cuối"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+
+            foreach (var item in query)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_faciulty;
+                ws.Cells[row, 3].Value = item.name_faculty;
+                ws.Cells[row, 4].Value = ConvertUnix(item.time_cre);
+                ws.Cells[row, 5].Value = ConvertUnix(item.time_up);
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Exports.xlsx"
+            );
+        }
+
+        private string ConvertUnix(int? unix)
+        {
+            if (unix == null || unix <= 0) return "";
+            return DateTimeOffset.FromUnixTimeSeconds(unix.Value)
+                                 .ToLocalTime()
+                                 .ToString("dd/MM/yyyy HH:mm:ss");
         }
     }
 }

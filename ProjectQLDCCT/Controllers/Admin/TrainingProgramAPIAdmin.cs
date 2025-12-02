@@ -26,7 +26,7 @@ namespace ProjectQLDCCT.Controllers.Admin
         }
 
         [HttpGet]
-        [Route("loads-select-don-vi-by-year")]
+        [Route("loads-select-don-vi")]
         public async Task<IActionResult> LoadDonViByCTDT()
         {
             var GetDV = await db.Faculties
@@ -39,20 +39,20 @@ namespace ProjectQLDCCT.Controllers.Admin
             return Ok(GetDV);
         }
         [HttpPost]
-        [Route("loads-ctdt-thuoc-don-vi/{idDonvi}")]
-        public async Task<IActionResult> LoadData(int idDonvi, [FromBody] DataTableRequest items)
+        [Route("loads-ctdt-thuoc-don-vi")]
+        public async Task<IActionResult> LoadData([FromBody] TrainingProgramDTOs items)
         {
             var query = db.TrainingPrograms.AsQueryable();
 
-            if (idDonvi == 0)
+            if (items.id_faculty > 0)
             {
-                query = query;
+                query = query.Where(x => x.id_faculty == items.id_faculty); ;
             }
-            else
-            {
-                query = query.Where(x => x.id_faculty == idDonvi);
-            }
-            var _query = query
+            var totalRecords = await query.CountAsync();
+            var _query = await query
+                .OrderByDescending(x => x.id_program)
+                .Skip((items.Page - 1) * items.PageSize)
+                .Take(items.PageSize)
                 .Select(x => new
                 {
                     x.id_program,
@@ -61,20 +61,19 @@ namespace ProjectQLDCCT.Controllers.Admin
                     x.time_up,
                     x.time_cre,
                     x.id_facultyNavigation.name_faculty
-                });
-
-            if (!string.IsNullOrEmpty(items.SearchText))
+                }).ToListAsync();
+            return Ok(new
             {
-                var keyword = items.SearchText.ToLower().Trim();
-                _query = _query.Where(x => x.name_program.ToLower().Contains(keyword) ||
-                (x.code_program ?? "").ToLower().Contains(keyword) ||
-                x.name_faculty.ToLower().Contains(keyword));
-            }
-            var result = await DataTableHelper.GetDataTableAsync(_query, items);
-            return Ok(result);
+                success = true,
+                data = _query,
+                currentPage = items.Page,
+                items.PageSize,
+                totalRecords,
+                totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
+            });
         }
         [HttpPost]
-        [Route("them-moi-ctdt-thuoc-nam")]
+        [Route("them-moi-ctdt")]
         public async Task<IActionResult> ThemMoiCTDT([FromBody] TrainingProgramDTOs items)
         {
             if (string.IsNullOrEmpty(items.code_program))
@@ -137,11 +136,11 @@ namespace ProjectQLDCCT.Controllers.Admin
             await db.SaveChangesAsync();
             return Ok(new { message = "Cập nhật dữ liệu thành công", success = true });
         }
-        [HttpDelete]
-        [Route("xoa-du-lieu-ctdt/{id}")]
-        public async Task<IActionResult> DeleteCTDT(int id)
+        [HttpPost]
+        [Route("xoa-du-lieu-ctdt")]
+        public async Task<IActionResult> DeleteCTDT([FromBody] TrainingProgramDTOs items)
         {
-            var CheckItems = await db.TrainingPrograms.FirstOrDefaultAsync(x => x.id_program == id);
+            var CheckItems = await db.TrainingPrograms.FirstOrDefaultAsync(x => x.id_program == items.id_program);
             if (CheckItems == null)
             {
                 return Ok(new { message = "Không tìm thấy thông tin CTĐT", success = false });
@@ -161,7 +160,8 @@ namespace ProjectQLDCCT.Controllers.Admin
             try
             {
                 ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-
+                var ID = Request.Form["id_program"];
+                int IdProgram = int.Parse(ID);
                 using (var stream = new MemoryStream())
                 {
                     await file.CopyToAsync(stream);
@@ -174,39 +174,21 @@ namespace ProjectQLDCCT.Controllers.Admin
                         {
                             return Ok(new { message = "Không tìm thấy worksheet trong file Excel", success = false });
                         }
-
-
                         for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
                         {
-                            var ten_don_vi = worksheet.Cells[row, 2].Text?.Trim();
-                            var ma_ctdt = worksheet.Cells[row, 3].Text?.Trim();
-                            var ten_ctdt = worksheet.Cells[row, 4].Text?.Trim();
-                            var checkDonVi = await db.Faculties
-                                    .FirstOrDefaultAsync(x =>
-                                        (x.name_faculty ?? "").ToLower().Trim() == ten_don_vi.ToLower().Trim());
-                            if (string.IsNullOrEmpty(ten_don_vi))
-                                continue;
-
-                            if (checkDonVi == null)
-                            {
-                                return Ok(new
-                                {
-                                    message = $"Đơn vị '{ten_don_vi}' không tồn tại hoặc sai định dạng, vui lòng kiểm tra lại ở dòng {row}.",
-                                    success = false
-                                });
-                            }
+                            var ma_ctdt = worksheet.Cells[row, 2].Text?.Trim();
+                            var ten_ctdt = worksheet.Cells[row, 3].Text?.Trim();
                             var check_ctdt = await db.TrainingPrograms
                                 .FirstOrDefaultAsync(x =>
-                                   (x.code_program ?? "").ToLower().Trim() == (ma_ctdt ?? "").ToLower() &&
-                                    ((x.name_program ?? "") ?? "").ToLower().Trim() == (ten_ctdt ?? "").ToLower());
+                                   (x.code_program.ToLower().Trim() == ma_ctdt.ToLower().Trim() && x.name_program.ToLower().Trim() == ten_ctdt.ToLower().Trim()));
 
                             if (check_ctdt == null)
                             {
                                 check_ctdt = new TrainingProgram
                                 {
-                                    id_faculty = string.IsNullOrEmpty(ten_don_vi) ? null : checkDonVi.id_faculty,
+                                    id_faculty = IdProgram,
                                     code_program = string.IsNullOrWhiteSpace(ma_ctdt) ? null : ma_ctdt.ToUpper(),
-                                    name_program = ten_ctdt,
+                                    name_program = string.IsNullOrWhiteSpace(ten_ctdt) ? null : ten_ctdt,
                                     time_cre = unixTimestamp,
                                     time_up = unixTimestamp
                                 };
@@ -228,6 +210,74 @@ namespace ProjectQLDCCT.Controllers.Admin
             {
                 return Ok(new { message = $"Lỗi khi đọc file Excel: {ex.Message}", success = false });
             }
+        }
+        [HttpPost]
+        [Route("export-danh-sach-ctdt-thuoc-don-vi")]
+        public async Task<IActionResult> ExportCourse([FromBody] TrainingProgramDTOs items)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var query = db.TrainingPrograms.AsQueryable();
+
+            if (items.id_faculty > 0)
+            {
+                query = query.Where(x => x.id_faculty == items.id_faculty);
+            }
+            var _query = await query
+                .OrderByDescending(x => x.id_program)
+                .Select(x => new
+                {
+                    x.id_program,
+                    x.code_program,
+                    x.name_program,
+                    x.time_up,
+                    x.time_cre,
+                    x.id_facultyNavigation.name_faculty
+                }).ToListAsync();
+
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("DanhSachMonHoc");
+
+            string[] headers = {
+                    "STT","Mã chương trình đào tạo","Tên chương trình đào tạo","Thuộc đơn vị",
+                    "Ngày tạo","Cập nhật"
+                };
+
+            for (int i = 0; i < headers.Length; i++)
+            {
+                ws.Cells[1, i + 1].Value = headers[i];
+                ws.Column(i + 1).Width = 20;
+            }
+
+            int row = 2;
+            int index = 1;
+
+            foreach (var item in _query)
+            {
+                ws.Cells[row, 1].Value = index++;
+                ws.Cells[row, 2].Value = item.code_program;
+                ws.Cells[row, 3].Value = item.name_program;
+                ws.Cells[row, 4].Value = item.name_faculty;
+                ws.Cells[row, 5].Value = ConvertUnix(item.time_cre);
+                ws.Cells[row, 6].Value = ConvertUnix(item.time_up);
+                row++;
+            }
+
+            var fileBytes = package.GetAsByteArray();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"DanhSachMonHoc_{DateTime.Now:yyyyMMddHHmmss}.xlsx"
+            );
+        }
+
+        private string ConvertUnix(int? unix)
+        {
+            if (unix == null || unix <= 0) return "";
+            return DateTimeOffset.FromUnixTimeSeconds(unix.Value)
+                                 .ToLocalTime()
+                                 .ToString("dd/MM/yyyy");
         }
     }
 }
