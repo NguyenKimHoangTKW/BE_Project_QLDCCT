@@ -71,7 +71,8 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 {
                     x.id_template,
                     x.template_name,
-                    allow_input = x.is_default == 1 ? "Cho phép nhập liệu" : "Không cho phép nhập liệu",
+                    allow_input = x.is_default == 1 ? "Mở mẫu đề cương" : "Đóng mẫu đề cương",
+                    json = x.template_json != null ? true : false,
                     x.time_up,
                     x.time_cre
                 })
