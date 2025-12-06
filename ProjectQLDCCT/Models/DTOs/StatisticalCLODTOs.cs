@@ -7,5 +7,6 @@
         public int? id_key_semester { get; set; }
 
         public int? id_program { get; set; }
+        public string? searchTerm { get; set; }
     }
 }

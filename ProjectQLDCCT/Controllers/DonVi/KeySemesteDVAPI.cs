@@ -26,10 +26,19 @@ namespace ProjectQLDCCT.Controllers.DonVi
         [Route("loads-danh-sach-khoa-hoc")]
         public async Task<IActionResult> LoadListKeySemester([FromBody] KeySemesterDTOs items)
         {
-            var totalRecords = await db.KeyYearSemesters
-                .Where(x => x.id_faculty == items.id_faculty).CountAsync();
-
-            var KeySemesterList = await db.KeyYearSemesters
+           
+            var query = db.KeyYearSemesters
+                .Where(x => x.id_faculty == items.id_faculty).AsQueryable();
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_key_year_semester.ToLower().Contains(keyword) ||
+                x.name_key_year_semester.ToLower().Contains(keyword));
+            }
+            var totalRecords = await query
+               .Where(x => x.id_faculty == items.id_faculty).CountAsync();
+            var KeySemesterList = await query
                 .Where(x => x.id_faculty == items.id_faculty)
                 .OrderByDescending(x => x.id_key_year_semester)
                 .Skip((items.Page - 1) * items.PageSize)

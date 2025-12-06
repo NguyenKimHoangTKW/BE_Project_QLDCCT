@@ -91,15 +91,25 @@ namespace ProjectQLDCCT.Controllers.DonVi
         public async Task<IActionResult> LoadCBVC([FromBody] CivilServantsDTOs items)
         {
             var GetFaculty = await GetUserPermissionFaculties();
-            var totalRecords = await db.CivilServants
-                .Where(x => GetFaculty.Contains(x.id_programNavigation.id_faculty ?? 0))
-                .CountAsync();
+
             var query = db.CivilServants
                 .Where(x => GetFaculty.Contains(x.id_programNavigation.id_faculty ?? 0)).AsQueryable();
             if (items.id_program > 0)
             {
                 query = query.Where(x => x.id_program == items.id_program);
             }
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_civilSer.ToLower().Contains(keyword) ||
+                x.fullname_civilSer.ToLower().Contains(keyword) ||
+                x.email.ToLower().Contains(keyword) ||
+                 x.id_programNavigation.name_program.ToLower().Contains(keyword));
+            }
+            var totalRecords = await query
+              .Where(x => GetFaculty.Contains(x.id_programNavigation.id_faculty ?? 0))
+              .CountAsync();
             var GetItems = await query
                 .OrderByDescending(x => x.id_civilSer)
                 .Skip((items.Page - 1) * items.PageSize)
@@ -294,7 +304,7 @@ namespace ProjectQLDCCT.Controllers.DonVi
                 var user = await db.Users
                     .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.email == cbvc.email);
-                if(user.id_type_users == 4)
+                if (user.id_type_users == 4)
                 {
                     return Ok(new { message = "Giảng viên này đang được phân công viết đề cương, không thể phân công cấp chương trình", success = false });
                 }

@@ -54,8 +54,17 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [Route("load-danh-sach-chuan-dau-ra-ctdt")]
         public async Task<IActionResult> LoadPLO([FromBody] PLODTOs items)
         {
-            var totalRecords = await db.ProgramLearningOutcomes.Where(x => x.Id_Program == items.Id_Program).CountAsync();
-            var GetItems = await db.ProgramLearningOutcomes
+            var query =  db.ProgramLearningOutcomes.Where(x => x.Id_Program == items.Id_Program).AsQueryable();
+
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code.ToLower().Contains(keyword) ||
+                x.Description.ToLower().Contains(keyword));
+            }
+            var totalRecords = await query.Where(x => x.Id_Program == items.Id_Program).CountAsync();
+            var GetItems = await query
               .Where(x => x.Id_Program == items.Id_Program && items.id_key_semester == x.id_key_semester)
               .OrderBy(x => x.order_index)
               .Skip((items.Page - 1) * items.PageSize)
@@ -135,6 +144,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     x.Id_Plo,
                     x.Id_Program,
                     x.code,
+                    x.id_key_semester,
                     x.order_index,
                     x.Description
                 })

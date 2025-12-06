@@ -1023,6 +1023,22 @@
   },
   {
     "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
+    "Method": "LoadListGvVietDeCuong",
+    "RelativePath": "api/ctdt/course/loads-danh-sach-giang-vien-viet-de-cuong",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.ApproveUserSyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProjectQLDCCT.Controllers.CTDT.CourseCTDTAPI",
     "Method": "LoadCourse",
     "RelativePath": "api/ctdt/course/loads-danh-sach-mon-hoc-thuoc-ctdt",
     "HttpMethod": "POST",
@@ -3709,10 +3725,16 @@
     "ContainingType": "ProjectQLDCCT.Controllers.GVDC.WriteCourseGVDCAPI",
     "Method": "LoadCourseByPermission",
     "RelativePath": "api/gvdc/write-course/loads-danh-sach-de-cuong-can-soan",
-    "HttpMethod": "GET",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "items",
+        "Type": "ProjectQLDCCT.Models.DTOs.SyllabusDTOs",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

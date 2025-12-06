@@ -1,12 +1,55 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\BaoCaoTotNghiep\\BE_Project_QLDCCT\\",
-  "Documents": [],
+  "WorkspaceRootPath": "D:\\BCTN\\BE_Project_QLDCCT\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|d:\\bctn\\be_project_qldcct\\projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C8BCA86-97BA-4C0B-AFA3-64FB34378477}|ProjectQLDCCT\\ProjectQLDCCT.csproj|solutionrelative:projectqldcct\\controllers\\gvdc\\writetemplatesyllabusgvdcapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WriteTemplateSyllabusGVDCAPI.cs",
+              "DocumentMoniker": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "RelativeDocumentMoniker": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "ToolTip": "D:\\BCTN\\BE_Project_QLDCCT\\ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "RelativeToolTip": "ProjectQLDCCT\\Controllers\\GVDC\\WriteTemplateSyllabusGVDCAPI.cs",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAuwAIBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-06T16:38:37.418Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 703,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

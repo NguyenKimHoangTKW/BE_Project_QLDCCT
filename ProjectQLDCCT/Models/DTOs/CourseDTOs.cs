@@ -23,7 +23,7 @@ namespace ProjectQLDCCT.Models.DTOs
         public int? id_key_year_semester { get; set; }
 
         public int? totalPractice { get; set; }
-
+        public string? searchTerm { get; set; }
 
         public int? is_obligatory { get; set; }
 

@@ -18,5 +18,6 @@ namespace ProjectQLDCCT.Models.DTOs
         public int? id_year { get; set; }
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
+        public string? searchTerm { get; set; }
     }
 }

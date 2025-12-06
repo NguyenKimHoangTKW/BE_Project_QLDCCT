@@ -61,11 +61,21 @@ namespace ProjectQLDCCT.Controllers.DonVi
         public async Task<IActionResult> LoadsHocKy([FromBody] SemesterDTOs? items)
         {
             var GetFaculty = await GetUserPermissionFaculties();
-            var totalRecords = await db.Semesters
+            var query = db.Semesters
+                .Where(x => x.id_faculty == items.id_faculty).AsQueryable();
+
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_semester.ToLower().Contains(keyword) ||
+                x.name_semester.ToLower().Contains(keyword));
+            }
+            var totalRecords =await query
                 .Where(x => x.id_faculty == items.id_faculty)
                 .CountAsync();
 
-            var hocKyList = await db.Semesters
+            var hocKyList =await query
                 .Where(x => x.id_faculty == items.id_faculty)
                 .OrderByDescending(x => x.id_semester)
                 .Skip((items.Page - 1) * items.PageSize)

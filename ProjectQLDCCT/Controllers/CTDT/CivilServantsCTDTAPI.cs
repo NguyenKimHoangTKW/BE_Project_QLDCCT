@@ -27,8 +27,19 @@ namespace ProjectQLDCCT.Controllers.CTDT
         public async Task<IActionResult> LoadCBVC([FromBody] CivilServantsDTOs items)
         {
             var excludeIds = new int?[] { 2, 3 };
-
-            var baseQuery = db.CivilServants
+            var query = db.CivilServants
+                .Where(cs => cs.id_program == items.id_program &&
+                             !db.Users.Any(u => u.email == cs.email && excludeIds.Contains(u.id_type_users))).AsQueryable();
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_civilSer.ToLower().Contains(keyword) ||
+                x.fullname_civilSer.ToLower().Contains(keyword) ||
+                x.email.ToLower().Contains(keyword)||
+                x.id_programNavigation.name_program.ToLower().Contains(keyword));
+            }
+            var baseQuery = query
                 .Where(cs => cs.id_program == items.id_program &&
                              !db.Users.Any(u => u.email == cs.email && excludeIds.Contains(u.id_type_users)))
                 .Select(cs => new

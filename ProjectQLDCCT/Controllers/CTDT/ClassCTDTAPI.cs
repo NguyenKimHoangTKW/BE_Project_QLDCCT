@@ -25,7 +25,16 @@ namespace ProjectQLDCCT.Controllers.CTDT
         [HttpPost("list-class")]
         public async Task<IActionResult> LoadListClass([FromBody] ClassDTOs items)
         {
-            var LoadClass = await db.Classes
+            var query = db.Classes
+              .Where(x => x.id_program == items.id_program).AsQueryable();
+
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.name_class.ToLower().Contains(keyword));
+            }
+            var LoadClass = await query
                 .Where(x => x.id_program == items.id_program)
                 .OrderByDescending(x => x.id_class)
                 .Skip((items.Page - 1) * items.PageSize)
@@ -38,7 +47,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                     x.tim_cre
                 })
                 .ToListAsync();
-            var totalRecords = await db.Classes
+            var totalRecords = await query
               .Where(x => x.id_program == items.id_program).CountAsync();
             return Ok(new
             {
@@ -158,7 +167,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                             }
                             else
                             {
-                                check_lop.name_class = string.IsNullOrWhiteSpace(ten_class) ? null : ten_class.ToUpper() ;
+                                check_lop.name_class = string.IsNullOrWhiteSpace(ten_class) ? null : ten_class.ToUpper();
                                 check_lop.time_up = unixTimestamp;
                             }
                             await db.SaveChangesAsync();

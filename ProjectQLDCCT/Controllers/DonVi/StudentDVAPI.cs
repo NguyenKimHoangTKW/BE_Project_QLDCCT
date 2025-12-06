@@ -89,7 +89,17 @@ namespace ProjectQLDCCT.Controllers.DonVi
             {
                 query = query.Where(x => x.id_class == items.id_class);
             }
-            var totalRecords = await db.Students
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_student.ToLower().Contains(keyword) ||
+                x.name_student.ToLower().Contains(keyword) ||
+                x.id_classNavigation.name_class.ToLower().Contains(keyword) ||
+                x.id_classNavigation.id_programNavigation.name_program.ToLower().Contains(keyword));
+            }
+
+            var totalRecords = await query
               .Where(x => x.id_classNavigation.id_program == items.id_program).CountAsync();
             var LoadClass = await query
                 .OrderByDescending(x => x.id_class)

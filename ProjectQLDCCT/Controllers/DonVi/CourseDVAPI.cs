@@ -147,6 +147,17 @@ namespace ProjectQLDCCT.Controllers.DonVi
             {
                 query = query.Where(x => x.id_semester == items.id_semester);
             }
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_course.ToLower().Contains(keyword) ||
+                x.name_course.ToLower().Contains(keyword) ||
+                x.id_gr_courseNavigation.name_gr_course.ToLower().Contains(keyword) ||
+                x.credits.ToString().Contains(keyword) ||
+                x.totalTheory.ToString().Contains(keyword) ||
+                x.id_programNavigation.name_program.ToLower().Contains(keyword));
+            }
             var totalRecords = await query.CountAsync();
 
             var data = await query

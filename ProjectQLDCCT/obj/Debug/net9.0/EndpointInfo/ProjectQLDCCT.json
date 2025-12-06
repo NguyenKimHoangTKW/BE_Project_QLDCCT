@@ -2312,6 +2312,37 @@
         }
       }
     },
+    "/api/ctdt/course/loads-danh-sach-giang-vien-viet-de-cuong": {
+      "post": {
+        "tags": [
+          "CourseCTDTAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveUserSyllabusDTOs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/ctdt/course/delete-permission-gv-ra-de-cuong": {
       "post": {
         "tags": [
@@ -7033,10 +7064,29 @@
       }
     },
     "/api/gvdc/write-course/loads-danh-sach-de-cuong-can-soan": {
-      "get": {
+      "post": {
         "tags": [
           "WriteCourseGVDCAPI"
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyllabusDTOs"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -8293,6 +8343,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
+          },
           "id_type_users": {
             "type": "integer",
             "format": "int32",
@@ -8352,6 +8406,10 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8445,6 +8503,10 @@
           "totalPractice": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "searchTerm": {
+            "type": "string",
             "nullable": true
           },
           "is_obligatory": {
@@ -8602,7 +8664,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "searchText": {
+          "searchTerm": {
             "type": "string",
             "nullable": true
           },
@@ -8956,6 +9018,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
+          },
           "id_syllabus": {
             "type": "integer",
             "format": "int32",
@@ -9128,7 +9194,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "searchText": {
+          "searchTerm": {
             "type": "string",
             "nullable": true
           }
@@ -9156,6 +9222,10 @@
           "id_program": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "searchTerm": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -9194,6 +9264,10 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9245,6 +9319,18 @@
           "is_open_edit_final": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -9421,6 +9507,10 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

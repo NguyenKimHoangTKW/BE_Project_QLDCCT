@@ -71,7 +71,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 )
                 .ToListAsync();
 
-            var ListData = new List<object>();
+            var ListData = new List<dynamic>();
 
             foreach (var it in CheckSyllabus)
             {
@@ -96,6 +96,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 var describeCourse = sections
                     .FirstOrDefault(s => s.section_name == "Mô tả học phần")
                     ?.value ?? "";
+
                 var MoTaHocPhan = sections
                     .FirstOrDefault(s =>
                         s.section_code == "3" ||
@@ -103,23 +104,37 @@ namespace ProjectQLDCCT.Controllers.CTDT
                         s.dataBinding.Replace("\u00A0", " ").Trim()
                             .Contains("CO - Biểu mẫu Mục tiêu học phần"))
                     )?.value ?? "";
+
                 var formattedCLO = string.Join("<br/>",
                     GetCLO.Select(c => $"{c.map_clo}: {c.description}")
                 );
+
                 ListData.Add(new
                 {
                     name_course = it.id_teacherbysubjectNavigation.id_courseNavigation.code_course
                         + " - "
                         + it.id_teacherbysubjectNavigation.id_courseNavigation.name_course,
-
                     describe_course = describeCourse,
-                    mo_ta = MoTaHocPhan,             
-                    clo = formattedCLO               
+                    mo_ta = MoTaHocPhan,
+                    clo = formattedCLO
                 });
+            }
+
+            if (!string.IsNullOrWhiteSpace(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower().Trim();
+
+                ListData = ListData.Where(x =>
+                    (x.name_course ?? "").ToLower().Contains(keyword) ||
+                    (x.describe_course ?? "").ToLower().Contains(keyword) ||
+                    (x.mo_ta ?? "").ToLower().Contains(keyword) ||
+                    (x.clo ?? "").ToLower().Contains(keyword)
+                ).ToList();
             }
 
             return Ok(new { data = ListData, success = true });
         }
+
 
     }
 }

@@ -121,9 +121,26 @@ namespace ProjectQLDCCT.Controllers.CTDT
         public async Task<IActionResult> LoadDanhSachDeCuongCanDuyet([FromBody] SyllabusDTOs items)
         {
             var GetProgram = await GetUserPermissionPrograming();
-            var listint = new int?[] { 2, 3, 4 ,7};
+            var listint = new int?[] { 2, 3, 4, 7 };
             var LoadSyllabus = db.Syllabi
                 .Where(x => GetProgram.Contains(x.id_teacherbysubjectNavigation.id_courseNavigation.id_program ?? 0) && listint.Contains(x.id_status)).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+
+                LoadSyllabus = LoadSyllabus.Where(x =>
+                    (x.id_teacherbysubjectNavigation.id_courseNavigation.code_course ?? "").ToLower().Contains(keyword) ||
+                    (x.id_teacherbysubjectNavigation.id_courseNavigation.name_course ?? "").ToLower().Contains(keyword) ||
+                    (x.id_teacherbysubjectNavigation.id_courseNavigation.id_semesterNavigation.name_semester ?? "").ToLower().Contains(keyword) ||
+                    (x.id_teacherbysubjectNavigation.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester ?? "").ToLower().Contains(keyword) ||
+                    (x.id_teacherbysubjectNavigation.id_courseNavigation.id_programNavigation.name_program ?? "").ToLower().Contains(keyword) ||
+                    (db.CivilServants.Any(g => g.email == x.id_teacherbysubjectNavigation.id_userNavigation.email
+                                          && ((g.code_civilSer ?? "").ToLower().Contains(keyword) ||
+                                              (g.fullname_civilSer ?? "").ToLower().Contains(keyword) ||
+                                              (g.email ?? "").ToLower().Contains(keyword))))
+                );
+            }
+
             var ListCount = new List<object>();
             var CountSyllabus_2 = await LoadSyllabus.Where(x => x.id_status == 2).CountAsync();
             var CountSyllabus_3 = await LoadSyllabus.Where(x => x.id_status == 3).CountAsync();
@@ -153,6 +170,9 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 LoadSyllabus = LoadSyllabus.Where(x => x.is_open_edit_final == items.is_open_edit_final);
             }
             var query = await LoadSyllabus
+                    .OrderByDescending(x => x.id_syllabus)
+                    .Skip((items.Page - 1) * items.PageSize)
+                    .Take(items.PageSize)
                     .Select(x => new
                     {
                         x.id_syllabus,
@@ -171,14 +191,17 @@ namespace ProjectQLDCCT.Controllers.CTDT
                         x.is_open_edit_final
                     })
                     .ToListAsync();
-            if (query.Count > 0)
+            var totalRecords = await LoadSyllabus.CountAsync();
+            return Ok(new
             {
-                return Ok(new { message = "Tải dữ liệu thành công", data = query, success = true, count = ListCount });
-            }
-            else
-            {
-                return Ok(new { message = "Chưa có đề cương môn học nào cần duyệt", success = false, count = ListCount });
-            }
+                success = true,
+                data = query,
+                currentPage = items.Page,
+                items.PageSize,
+                totalRecords,
+                count = ListCount,  
+                totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
+            });
         }
         [HttpPost]
         [Route("refund-syllabus")]
@@ -282,7 +305,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
         }
 
 
-        [HttpPost] 
+        [HttpPost]
         [Route("log-hoat-dong-de-cuong")]
         public async Task<IActionResult> LoadLogSyllabus([FromBody] LogSyllabusDTOs items)
         {

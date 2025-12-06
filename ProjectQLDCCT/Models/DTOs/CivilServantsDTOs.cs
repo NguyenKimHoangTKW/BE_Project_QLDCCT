@@ -11,6 +11,7 @@
         public int? id_program { get; set; }
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
+        public string? searchTerm { get; set; }
         public int? id_type_users { get; set; }
         public int status { get; set; }
         public int? id_course { get; set; }

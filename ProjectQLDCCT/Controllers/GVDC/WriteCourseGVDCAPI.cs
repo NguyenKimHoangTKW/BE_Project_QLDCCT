@@ -123,41 +123,31 @@ namespace ProjectQLDCCT.Controllers.GVDC
             return userId;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("loads-danh-sach-de-cuong-can-soan")]
-        public async Task<IActionResult> LoadCourseByPermission()
+        public async Task<IActionResult> LoadCourseByPermission([FromBody] SyllabusDTOs items)
         {
+            var unixTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             var listWindow = await db.OpenSyllabusWindowsCourses.ToListAsync();
 
             foreach (var w in listWindow)
             {
-                if (w.open_time == null || w.close_time == null)
+                if (w.open_time == null || w.close_time == null ||
+                    unixTimestamp < w.open_time || unixTimestamp > w.close_time)
                 {
                     w.is_open = 0;
-                    continue;
-                }
-
-                if (unixTimestamp < w.open_time)
-                {
-                    w.is_open = 0;
-                }
-                else if (unixTimestamp > w.close_time)
-                {
-                    w.is_open = 0; 
                 }
                 else
                 {
                     w.is_open = 1;
                 }
             }
-
             await db.SaveChangesAsync();
 
+            var userCourses = await GetUserPermissionCourse();
 
-            var List = await GetUserPermissionCourse();
-
-            var raw = await db.TeacherBySubjects
-                .Where(x => List.Contains(x.id_course ?? 0))
+            var query = db.TeacherBySubjects
+                .Where(x => userCourses.Contains(x.id_course ?? 0))
                 .Select(x => new
                 {
                     x.id_teacherbysubject,
@@ -172,17 +162,37 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     name_key_year_semester = x.id_courseNavigation.id_key_year_semesterNavigation.name_key_year_semester,
                     name_semester = x.id_courseNavigation.id_semesterNavigation.name_semester,
                     name_program = x.id_courseNavigation.id_programNavigation.name_program,
-
                     window = db.OpenSyllabusWindowsCourses
                         .Where(g => g.id_course == x.id_course)
                         .Select(g => new { g.open_time, g.close_time, g.is_open })
                         .FirstOrDefault()
                 })
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(items.searchTerm))
+            {
+                string keyword = items.searchTerm.Trim().ToLower();
+
+                query = query.Where(x =>
+                    (x.code_course ?? "").ToLower().Contains(keyword) ||
+                    (x.name_course ?? "").ToLower().Contains(keyword) ||
+                    (x.name_gr_course ?? "").ToLower().Contains(keyword) ||
+                    (x.name_isCourse ?? "").ToLower().Contains(keyword) ||
+                    (x.name_key_year_semester ?? "").ToLower().Contains(keyword) ||
+                    (x.name_semester ?? "").ToLower().Contains(keyword) ||
+                    (x.name_program ?? "").ToLower().Contains(keyword)
+                );
+            }
+
+            var raw = await query
+                .OrderByDescending(x => x.id_teacherbysubject)
                 .ToListAsync();
 
             var ListCourse = raw
                 .GroupBy(x => x.id_course)
                 .Select(g => g.First())
+                .Skip((items.Page - 1) * items.PageSize)
+                .Take(items.PageSize)
                 .Select(x => new
                 {
                     x.id_teacherbysubject,
@@ -202,11 +212,18 @@ namespace ProjectQLDCCT.Controllers.GVDC
                     is_open = x.window?.is_open ?? 0
                 })
                 .ToList();
-
-            return ListCourse.Count > 0
-                ? Ok(new { data = ListCourse, message = "Tải dữ liệu thành công", success = true })
-                : Ok(new { message = "Bạn chưa có học phần được phân để viết đề cương.", success = false });
+            var totalRecords = raw.Count();
+            return Ok(new
+            {
+                success = true,
+                data = ListCourse,
+                currentPage = items.Page,
+                items.PageSize,
+                totalRecords,
+                totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
+            });
         }
+
 
 
 
@@ -267,7 +284,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
                      time_open = g.open_time,
                      time_close = g.close_time,
                      is_open = g.is_open
-                     
+
                  })
                  .FirstOrDefault();
             var GetNameCourse = await db.Courses
@@ -494,7 +511,7 @@ namespace ProjectQLDCCT.Controllers.GVDC
           .Include(x => x.id_teacherbysubjectNavigation)
               .ThenInclude(x => x.id_courseNavigation)
                   .ThenInclude(x => x.id_key_year_semesterNavigation)
-          .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);    
+          .FirstOrDefaultAsync(x => x.id_syllabus == items.id_syllabus);
             if (checkSyllabus == null)
                 return Ok(new { message = "Không tìm thấy thông tin đề cương", success = false });
 

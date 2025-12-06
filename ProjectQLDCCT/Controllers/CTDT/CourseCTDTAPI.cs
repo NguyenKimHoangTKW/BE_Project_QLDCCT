@@ -113,7 +113,17 @@ namespace ProjectQLDCCT.Controllers.CTDT
             var query = db.Courses
                 .AsNoTracking()
                 .Where(x => items.id_program == x.id_program);
-
+            if (!string.IsNullOrEmpty(items.searchTerm))
+            {
+                string keyword = items.searchTerm.ToLower();
+                query = query.Where(x =>
+                x.code_course.ToLower().Contains(keyword) ||
+                x.name_course.ToLower().Contains(keyword) ||
+                x.id_gr_courseNavigation.name_gr_course.ToLower().Contains(keyword) ||
+                x.credits.ToString().Contains(keyword) ||
+                x.totalTheory.ToString().Contains(keyword) ||
+                x.id_programNavigation.name_program.ToLower().Contains(keyword));
+            }
             if (items.id_gr_course > 0)
             {
                 query = query.Where(x => x.id_gr_course == items.id_gr_course);
@@ -172,6 +182,7 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 totalPages = (int)Math.Ceiling(totalRecords / (double)items.PageSize)
             });
         }
+
         [HttpPost]
         [Route("loads-mon-hoc-dang-hoc-ky")]
         public async Task<IActionResult> LoadHocPhan([FromBody] CourseDTOs items)
@@ -481,6 +492,66 @@ namespace ProjectQLDCCT.Controllers.CTDT
                 data = listGV,
                 success = true
             });
+        }
+        [HttpPost]
+        [Route("loads-danh-sach-giang-vien-viet-de-cuong")]
+        public async Task<IActionResult> LoadListGvVietDeCuong([FromBody] ApproveUserSyllabusDTOs items)
+        {
+            var checkSyllabus = await db.Syllabi
+                .Include(x => x.id_teacherbysubjectNavigation)
+                .FirstOrDefaultAsync(x => x.id_teacherbysubjectNavigation.id_course == items.id_course);
+
+            if (checkSyllabus == null)
+            {
+                return Ok(new { message = "Chưa có danh sách giảng viên phụ trách viết đề cương trong môn học này", success = false });
+            }
+
+            var getList = await db.ApproveUserSyllabi
+                .Where(x => x.id_syllabus == checkSyllabus.id_syllabus)
+                .Select(x => new
+                {
+                    x.id_ApproveUserSyllabus,
+
+                    email = x.id_userNavigation != null ? x.id_userNavigation.email : null,
+
+                    civil = db.CivilServants
+                        .Where(g => g.email == x.id_userNavigation.email)
+                        .Select(g => new
+                        {
+                            g.code_civilSer,
+                            g.fullname_civilSer,
+                            program_name = g.id_programNavigation.name_program
+                        })
+                        .FirstOrDefault(),
+
+                    x.is_approve,
+                    x.is_key_user,
+                    x.is_refuse,
+                    x.time_request,
+                    x.time_accept_request,
+                })
+                .ToListAsync();
+
+            var result = getList.Select(x => new
+            {
+                x.id_ApproveUserSyllabus,
+                code_civil = x.civil?.code_civilSer ?? "",
+                name_civil = x.civil?.fullname_civilSer ?? "",
+                email = x.email ?? "",
+                name_program = x.civil?.program_name ?? "",
+                x.is_approve,
+                x.is_key_user,
+                x.is_refuse,
+                x.time_request,
+                x.time_accept_request
+            }).ToList();
+
+            if (result.Count == 0)
+            {
+                return Ok(new { message = "Chưa có dữ liệu", success = false });
+            }
+
+            return Ok(new { data = result, success = true });
         }
         [HttpPost]
         [Route("delete-permission-gv-ra-de-cuong")]
